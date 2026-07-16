@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "AiIGL6EyrcWkogF2mVolZPcc88T8kTIzTyxw6kExMsU=",
+  "Source": "Vitrify.API",
+  "BasePath": "_content/Vitrify.API",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

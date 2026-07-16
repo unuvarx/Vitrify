@@ -1,0 +1,6 @@
+@Vitrify.API_HostAddress = http://localhost:5118
+
+GET {{Vitrify.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
