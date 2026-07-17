@@ -40,6 +40,10 @@ public class JobProcessingService
         try
         {
             item.Status = "processing";
+            // Hangfire bu kalemi daha önce başarısız olup tekrar deniyor olabilir —
+            // job "done" işaretlenmişse yeniden "processing"e al (aşağıda tekrar değerlendirilecek)
+            if (item.Job!.Status == "done")
+                item.Job.Status = "processing";
             await _db.SaveChangesAsync();
 
             // Görseli üret (Gemini base64 döndürür)
@@ -65,16 +69,13 @@ public class JobProcessingService
                 }
             }
 
-            // Job ilerleme sayacı
+            // Job ilerleme sayacı (sadece başarılı sayımı - progress bar için)
             item.Job!.CompletedItems += 1;
-            bool jobJustCompleted = false;
-            if (item.Job.CompletedItems >= item.Job.TotalItems)
-            {
-                item.Job.Status = "done";
-                jobJustCompleted = true;
-            }
-
             await _db.SaveChangesAsync();
+
+            // Bu kalemle birlikte job'daki tüm kalemler terminal duruma ulaştıysa
+            // (done/failed) job'ı bitir ve item.Job.Status'ü güncelle
+            await FinalizeJobIfCompleteAsync(item.JobId);
 
             // Flutter'a ANINDA haber ver: "bu görsel hazır!"
             await _hub.Clients.Group(item.JobId.ToString()).SendAsync(
@@ -88,26 +89,6 @@ public class JobProcessingService
                     totalItems = item.Job.TotalItems,
                     jobStatus = item.Job.Status
                 });
-
-            // Tüm görseller bitti → kullanıcıya push bildirimi gönder
-            if (jobJustCompleted)
-            {
-                var jobUser = await _db.Users
-                    .FirstOrDefaultAsync(u => u.Id == item.Job.UserId);
-
-                if (jobUser?.FcmToken != null)
-                {
-                    await _notification.SendNotificationAsync(
-                        jobUser.FcmToken,
-                        "Vitrify",
-                        $"🎉 {item.Job.TotalItems} görseliniz hazır!",
-                        new Dictionary<string, string>
-                        {
-                            { "jobId", item.Job.Id.ToString() },
-                            { "type", "job_completed" }
-                        });
-                }
-            }
         }
         catch (Exception)
         {
@@ -124,11 +105,49 @@ public class JobProcessingService
                     jobItemId = item.Id
                 });
 
+            // Bu kalem kalıcı olarak başarısız oldu — diğer tüm kalemler de
+            // terminal durumdaysa job'ı yine de bitir ve bildirim gönder
+            // (aksi halde bir kalem hiç bitmemiş gibi Job sonsuza dek "processing" kalırdı)
+            await FinalizeJobIfCompleteAsync(item.JobId);
+
             throw; // Hangfire retry için
         }
         finally
         {
             _semaphore.Release(); // slot serbest
+        }
+    }
+
+    // Job'a ait bekleyen/işlenen kalem kalmadıysa job'ı "done" işaretler ve
+    // tamamlanma push bildirimini gönderir. Hangfire bir kalemi sonradan tekrar
+    // denerse job en tepede otomatik olarak "processing"e döner ve bir sonraki
+    // çağrıda burada yeniden değerlendirilir — bu yüzden sayaç yerine canlı
+    // sorgu kullanıyoruz (çift sayım riski olmadan).
+    private async Task FinalizeJobIfCompleteAsync(Guid jobId)
+    {
+        var stillPending = await _db.JobItems.AnyAsync(i =>
+            i.JobId == jobId && (i.Status == "pending" || i.Status == "processing"));
+
+        if (stillPending) return;
+
+        var job = await _db.Jobs.FirstOrDefaultAsync(j => j.Id == jobId);
+        if (job == null || job.Status == "done") return;
+
+        job.Status = "done";
+        await _db.SaveChangesAsync();
+
+        var jobUser = await _db.Users.FirstOrDefaultAsync(u => u.Id == job.UserId);
+        if (jobUser?.FcmToken != null)
+        {
+            await _notification.SendNotificationAsync(
+                jobUser.FcmToken,
+                "Vitrify",
+                $"{job.TotalItems} görseliniz işlendi.",
+                new Dictionary<string, string>
+                {
+                    { "jobId", job.Id.ToString() },
+                    { "type", "job_completed" }
+                });
         }
     }
 }

@@ -28,7 +28,13 @@ builder.Services.AddSwaggerGen();
 // PostgreSQL veritabanı bağlantısı
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(
-        builder.Configuration.GetConnectionString("DefaultConnection")
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        npgsqlOptions => npgsqlOptions
+            .EnableRetryOnFailure(
+                maxRetryCount: 5,
+                maxRetryDelay: TimeSpan.FromSeconds(10),
+                errorCodesToAdd: null)
+            .CommandTimeout(60)
     )
 );
 
@@ -68,11 +74,10 @@ builder.Services.AddHangfireServer(options =>
 // SignalR (gerçek zamanlı bildirim)
 builder.Services.AddSignalR();
 
-// HttpClient (Replicate API çağrıları için)
+// HttpClient (Gemini API çağrıları için)
 builder.Services.AddHttpClient();
 
 // Servisler
-builder.Services.AddScoped<Vitrify.API.Services.ReplicateService>();
 builder.Services.AddScoped<Vitrify.API.Services.JobProcessingService>();
 builder.Services.AddScoped<Vitrify.API.Services.NotificationService>();
 builder.Services.AddScoped<Vitrify.API.Services.GeminiService>();
