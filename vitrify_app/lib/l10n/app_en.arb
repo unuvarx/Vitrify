@@ -1,0 +1,100 @@
+{
+  "@@locale": "en",
+
+  "genericErrorMessage": "Error: {error}",
+  "@genericErrorMessage": {
+    "placeholders": { "error": { "type": "String" } }
+  },
+
+  "loginEmailPasswordRequired": "Email and password are required.",
+  "loginEmailHint": "Email",
+  "loginPasswordHint": "Password",
+  "loginSignUpButton": "Sign Up",
+  "loginSignInButton": "Sign In",
+  "loginSwitchToSignIn": "Already have an account? Sign in",
+  "loginSwitchToSignUp": "Don't have an account? Sign up",
+  "loginCreditsLabel": "Credits: {credits}",
+  "@loginCreditsLabel": {
+    "placeholders": { "credits": { "type": "int" } }
+  },
+
+  "navTheme": "Theme",
+  "navCreate": "Create",
+  "navGallery": "Gallery",
+  "navProfile": "Profile",
+
+  "themeAppBarTitle": "Theme",
+  "themeSceneTitle": "Scene",
+  "themeSceneSubtitle": "Describe the setting your products will be showcased in",
+  "themeSceneHint": "E.g.: Around 9 AM, with the sun beautifully lighting the sea and beach, surrounded by islands",
+  "themeScenariosTitle": "Scenarios",
+  "themeScenariosSubtitle": "A separate image is generated for each scenario",
+  "themeScenarioHint": "Scenario {index} — E.g.: worn on a woman's wrist",
+  "@themeScenarioHint": {
+    "placeholders": { "index": { "type": "int" } }
+  },
+  "themeAspectRatioTitle": "Image Ratio",
+  "themeAspectRatioSubtitle": "Aspect ratio of the generated images",
+  "themeScenePromptRequired": "A scene description is required.",
+  "themeScenarioRequired": "At least one scenario is required.",
+  "themeSaved": "Theme saved ✓",
+  "themeSaveButton": "Save",
+  "themeSavedButton": "Saved",
+
+  "createAppBarTitle": "Create",
+  "createFillThemeFirst": "Please fill in the Theme page first.",
+  "createSelectAtLeastOneImage": "Select at least one product image.",
+  "createInsufficientCredits": "Insufficient credits. Required: {required}, Available: {available}",
+  "@createInsufficientCredits": {
+    "placeholders": {
+      "required": { "type": "int" },
+      "available": { "type": "int" }
+    }
+  },
+  "createSomeFailed": "{count} image(s) failed.",
+  "@createSomeFailed": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "createTimeout": "The process took too long. Please try again.",
+  "createProductImagesTitle": "Product Images",
+  "createSelectImages": "Select Images",
+  "createImagesSelected": "{count} image(s) selected",
+  "@createImagesSelected": {
+    "placeholders": { "count": { "type": "int" } }
+  },
+  "createSubmitting": "Submitting...",
+  "createGenerateButton": "Generate",
+  "createGenerating": "Generating...",
+  "createCompleted": "Completed 🎉",
+  "createGeneratedImagesTitle": "Generated Images",
+
+  "galleryAppBarTitle": "Gallery",
+  "galleryDeleteTitle": "Delete image",
+  "galleryDeleteContent": "This image will be permanently deleted from your device.",
+  "galleryCancel": "Cancel",
+  "galleryDelete": "Delete",
+  "gallerySavedToDevice": "Image saved to device gallery.",
+  "galleryPermissionDenied": "Gallery permission was denied.",
+  "galleryEmpty": "No generated images yet.",
+
+  "profileAppBarTitle": "Profile",
+  "profileCreditsRemaining": "Remaining Credits",
+  "profileBuyCreditsTitle": "Buy Credits",
+  "profileBuyCreditsSubtitle": "Add credits to generate more images",
+  "profileNoPackages": "No packages available for purchase right now.",
+  "profilePackagesLoadError": "Purchase packages could not be loaded right now.",
+  "profileCreditsAdded": "{credits} credits added ✓",
+  "@profileCreditsAdded": {
+    "placeholders": { "credits": { "type": "int" } }
+  },
+  "profilePurchaseCompletedButCreditsFailed": "Purchase completed but credits could not be added: {error}",
+  "@profilePurchaseCompletedButCreditsFailed": {
+    "placeholders": { "error": { "type": "String" } }
+  },
+  "profilePurchaseFailed": "Purchase failed.",
+  "profileCreditsSuffix": "{credits} credits",
+  "@profileCreditsSuffix": {
+    "placeholders": { "credits": { "type": "int" } }
+  },
+  "profileSignOut": "Sign Out"
+}

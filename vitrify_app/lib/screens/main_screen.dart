@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../config/app_colors.dart';
+import '../l10n/app_localizations.dart';
 import 'theme_screen.dart';
 import 'create_screen.dart';
 import 'gallery_screen.dart';
@@ -24,6 +25,8 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       body: IndexedStack(
         index: _currentIndex,
@@ -36,26 +39,26 @@ class _MainScreenState extends State<MainScreen> {
         backgroundColor: AppColors.derinGri,
         selectedItemColor: AppColors.vitrifyMavisi,
         unselectedItemColor: AppColors.acikGri,
-        items: const [
+        items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.palette_outlined),
-            activeIcon: Icon(Icons.palette),
-            label: 'Tema',
+            icon: const Icon(Icons.palette_outlined),
+            activeIcon: const Icon(Icons.palette),
+            label: l10n.navTheme,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.auto_awesome_outlined),
-            activeIcon: Icon(Icons.auto_awesome),
-            label: 'Oluştur',
+            icon: const Icon(Icons.auto_awesome_outlined),
+            activeIcon: const Icon(Icons.auto_awesome),
+            label: l10n.navCreate,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.photo_library_outlined),
-            activeIcon: Icon(Icons.photo_library),
-            label: 'Galeri',
+            icon: const Icon(Icons.photo_library_outlined),
+            activeIcon: const Icon(Icons.photo_library),
+            label: l10n.navGallery,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            activeIcon: Icon(Icons.person),
-            label: 'Profil',
+            icon: const Icon(Icons.person_outline),
+            activeIcon: const Icon(Icons.person),
+            label: l10n.navProfile,
           ),
         ],
       ),

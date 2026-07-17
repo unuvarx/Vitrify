@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../config/app_colors.dart';
+import '../l10n/app_localizations.dart';
 import '../services/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -26,11 +27,12 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Future<void> _submit() async {
+    final l10n = AppLocalizations.of(context)!;
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
 
     if (email.isEmpty || password.isEmpty) {
-      setState(() => _message = 'E-posta ve şifre gerekli.');
+      setState(() => _message = l10n.loginEmailPasswordRequired);
       return;
     }
 
@@ -48,18 +50,25 @@ class _LoginScreenState extends State<LoginScreen> {
 
       final result = await _authService.loginToBackend();
 
+      if (!mounted) return;
       setState(() {
-        _message = '${result['message']}\nKredi: ${result['credits']}';
+        _message =
+            '${result['message']}\n${l10n.loginCreditsLabel(result['credits'] as int)}';
       });
     } catch (e) {
-      setState(() => _message = 'Hata: $e');
+      if (!mounted) return;
+      setState(() => _message = l10n.genericErrorMessage('$e'));
     } finally {
-      setState(() => _isLoading = false);
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -90,9 +99,9 @@ class _LoginScreenState extends State<LoginScreen> {
               TextField(
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
-                decoration: const InputDecoration(
-                  hintText: 'E-posta',
-                  prefixIcon: Icon(Icons.email_outlined),
+                decoration: InputDecoration(
+                  hintText: l10n.loginEmailHint,
+                  prefixIcon: const Icon(Icons.email_outlined),
                 ),
               ),
               const SizedBox(height: 16),
@@ -100,9 +109,9 @@ class _LoginScreenState extends State<LoginScreen> {
               TextField(
                 controller: _passwordController,
                 obscureText: true,
-                decoration: const InputDecoration(
-                  hintText: 'Şifre',
-                  prefixIcon: Icon(Icons.lock_outline),
+                decoration: InputDecoration(
+                  hintText: l10n.loginPasswordHint,
+                  prefixIcon: const Icon(Icons.lock_outline),
                 ),
               ),
               const SizedBox(height: 24),
@@ -118,7 +127,9 @@ class _LoginScreenState extends State<LoginScreen> {
                     color: AppColors.safBeyaz,
                   ),
                 )
-                    : Text(_isSignUpMode ? 'Kayıt Ol' : 'Giriş Yap'),
+                    : Text(_isSignUpMode
+                        ? l10n.loginSignUpButton
+                        : l10n.loginSignInButton),
               ),
               const SizedBox(height: 16),
 
@@ -131,8 +142,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 }),
                 child: Text(
                   _isSignUpMode
-                      ? 'Zaten hesabın var mı? Giriş yap'
-                      : 'Hesabın yok mu? Kayıt ol',
+                      ? l10n.loginSwitchToSignIn
+                      : l10n.loginSwitchToSignUp,
                   style: const TextStyle(color: AppColors.acikGri),
                 ),
               ),

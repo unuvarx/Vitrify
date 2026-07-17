@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../config/app_colors.dart';
+import '../l10n/app_localizations.dart';
 import '../models/theme_settings.dart';
 import '../services/storage_service.dart';
 
@@ -78,18 +79,19 @@ class _ThemeScreenState extends State<ThemeScreen> {
 
   // Kaydet
   Future<void> _save() async {
+    final l10n = AppLocalizations.of(context)!;
     final scenarios = _scenarioControllers
         .map((c) => c.text.trim())
         .where((s) => s.isNotEmpty)
         .toList();
 
     if (_scenePromptController.text.trim().isEmpty) {
-      _showMessage('Mekan açıklaması gerekli.');
+      _showMessage(l10n.themeScenePromptRequired);
       return;
     }
 
     if (scenarios.isEmpty) {
-      _showMessage('En az bir senaryo gerekli.');
+      _showMessage(l10n.themeScenarioRequired);
       return;
     }
 
@@ -102,7 +104,7 @@ class _ThemeScreenState extends State<ThemeScreen> {
     await _storage.saveThemeSettings(settings);
 
     setState(() => _isSaved = true);
-    _showMessage('Tema kaydedildi ✓');
+    _showMessage(l10n.themeSaved);
   }
 
   void _showMessage(String message) {
@@ -117,9 +119,11 @@ class _ThemeScreenState extends State<ThemeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tema'),
+        title: Text(l10n.themeAppBarTitle),
         backgroundColor: AppColors.geceSiyahi,
         elevation: 0,
       ),
@@ -129,16 +133,15 @@ class _ThemeScreenState extends State<ThemeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // ---- MEKAN ----
-            _sectionTitle('Mekan', 'Ürünlerinizin sergileneceği ortamı tanımlayın'),
+            _sectionTitle(l10n.themeSceneTitle, l10n.themeSceneSubtitle),
             const SizedBox(height: 12),
             TextField(
               controller: _scenePromptController,
               maxLines: 4,
               onChanged: (_) => setState(() => _isSaved = false),
-              decoration: const InputDecoration(
-                hintText:
-                'Örn: Saat 09:00 civarı, güneşin denizin ve kumsalın hoş göründüğü, etrafında adaların olduğu bir ortam',
-                hintStyle: TextStyle(color: AppColors.acikGri, fontSize: 13),
+              decoration: InputDecoration(
+                hintText: l10n.themeSceneHint,
+                hintStyle: const TextStyle(color: AppColors.acikGri, fontSize: 13),
               ),
             ),
 
@@ -150,8 +153,8 @@ class _ThemeScreenState extends State<ThemeScreen> {
               children: [
                 Expanded(
                   child: _sectionTitle(
-                    'Senaryolar',
-                    'Her senaryo için ayrı bir görsel üretilir',
+                    l10n.themeScenariosTitle,
+                    l10n.themeScenariosSubtitle,
                   ),
                 ),
                 IconButton(
@@ -176,7 +179,7 @@ class _ThemeScreenState extends State<ThemeScreen> {
                         controller: _scenarioControllers[index],
                         onChanged: (_) => setState(() => _isSaved = false),
                         decoration: InputDecoration(
-                          hintText: 'Senaryo ${index + 1} — Örn: bir kadının koluna takılı şekilde',
+                          hintText: l10n.themeScenarioHint(index + 1),
                           hintStyle: const TextStyle(
                             color: AppColors.acikGri,
                             fontSize: 13,
@@ -200,7 +203,7 @@ class _ThemeScreenState extends State<ThemeScreen> {
             const SizedBox(height: 20),
 
             // ---- ASPECT RATIO ----
-            _sectionTitle('Görsel Oranı', 'Üretilecek görsellerin en-boy oranı'),
+            _sectionTitle(l10n.themeAspectRatioTitle, l10n.themeAspectRatioSubtitle),
             const SizedBox(height: 12),
             Wrap(
               spacing: 12,
@@ -233,7 +236,7 @@ class _ThemeScreenState extends State<ThemeScreen> {
               child: ElevatedButton.icon(
                 onPressed: _save,
                 icon: Icon(_isSaved ? Icons.check : Icons.save_outlined),
-                label: Text(_isSaved ? 'Kaydedildi' : 'Kaydet'),
+                label: Text(_isSaved ? l10n.themeSavedButton : l10n.themeSaveButton),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: _isSaved
                       ? AppColors.basariYesili

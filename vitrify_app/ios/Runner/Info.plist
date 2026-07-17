@@ -45,5 +45,7 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Üretilen ürün fotoğraflarını galerinize kaydedebilmemiz için izin gerekiyor.</string>
 </dict>
 </plist>

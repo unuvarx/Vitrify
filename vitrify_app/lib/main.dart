@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:vitrify_app/screens/main_screen.dart';
 import 'config/app_colors.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'l10n/app_localizations.dart';
 import 'screens/login_screen.dart';
+import 'services/purchase_service.dart';
 import 'services/storage_service.dart';
-import 'screens/theme_screen.dart';
 
 
 void main() async {
@@ -19,6 +21,12 @@ void main() async {
   // Hive'ı başlat (yerel depolama)
   await StorageService.init();
 
+  // RevenueCat'i başlat (henüz yapılandırılmadıysa sessizce geç —
+  // uygulamanın geri kalanı RevenueCat olmadan da çalışabilmeli)
+  try {
+    await PurchaseService().init();
+  } catch (_) {}
+
   runApp(const VitrifyApp());
 }
 
@@ -31,7 +39,9 @@ class VitrifyApp extends StatelessWidget {
       title: 'Vitrify',
       debugShowCheckedModeBanner: false,
       theme: _buildTheme(),
-      home: const MainScreen(),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      home: const AuthGate(),
     );
   }
 
@@ -82,42 +92,34 @@ class VitrifyApp extends StatelessWidget {
   }
 }
 
-// Geçici ana ekran - Adım 15+ ile gerçek ekranlar gelecek
-class PlaceholderHome extends StatelessWidget {
-  const PlaceholderHome({super.key});
+// Giriş yapılmışsa MainScreen, yapılmamışsa LoginScreen gösterir
+class AuthGate extends StatelessWidget {
+  const AuthGate({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Icon(
-              Icons.auto_awesome,
-              size: 64,
-              color: AppColors.vitrifyMavisi,
-            ),
-            const SizedBox(height: 24),
-            const Text(
-              'Vitrify',
-              style: TextStyle(
-                fontSize: 32,
-                fontWeight: FontWeight.bold,
-                color: AppColors.safBeyaz,
+    return StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            backgroundColor: AppColors.geceSiyahi,
+            body: Center(
+              child: CircularProgressIndicator(
+                color: AppColors.vitrifyMavisi,
               ),
             ),
-            const SizedBox(height: 8),
-            Text(
-              'Yapay zeka ürün fotoğrafçılığı',
-              style: TextStyle(
-                fontSize: 14,
-                color: AppColors.acikGri,
-              ),
-            ),
-          ],
-        ),
-      ),
+          );
+        }
+
+        if (snapshot.hasData) {
+          // RevenueCat kullanıcısını bu Firebase hesabına bağla (fire-and-forget)
+          PurchaseService().identify(snapshot.data!.uid);
+          return const MainScreen();
+        }
+
+        return const LoginScreen();
+      },
     );
   }
 }

@@ -1,8 +1,14 @@
+import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../config/app_colors.dart';
+import '../l10n/app_localizations.dart';
 import '../services/api_service.dart';
+import '../services/gallery_service.dart';
+import '../services/signalr_service.dart';
 import '../services/storage_service.dart';
 
 class CreateScreen extends StatefulWidget {
@@ -16,6 +22,8 @@ class _CreateScreenState extends State<CreateScreen> {
   final _api = ApiService();
   final _storage = StorageService();
   final _picker = ImagePicker();
+  final _signalR = SignalRService();
+  final _gallery = GalleryService();
 
   List<File> _selectedImages = [];
   List<String> _generatedImages = [];
@@ -25,12 +33,22 @@ class _CreateScreenState extends State<CreateScreen> {
   bool _isGenerating = false;
 
   int _completedCount = 0;
+  int _failedCount = 0;
   int _totalCount = 0;
+
+  Timer? _fallbackTimer;
 
   @override
   void initState() {
     super.initState();
     _loadCredits();
+  }
+
+  @override
+  void dispose() {
+    _fallbackTimer?.cancel();
+    _signalR.disconnect();
+    super.dispose();
   }
 
   Future<void> _loadCredits() async {
@@ -63,15 +81,16 @@ class _CreateScreenState extends State<CreateScreen> {
 
   // ÜRETİMİ BAŞLAT
   Future<void> _generate() async {
+    final l10n = AppLocalizations.of(context)!;
     final settings = _storage.getThemeSettings();
 
     if (!settings.isValid) {
-      _showMessage('Önce Tema sayfasını doldurun.');
+      _showMessage(l10n.createFillThemeFirst);
       return;
     }
 
     if (_selectedImages.isEmpty) {
-      _showMessage('En az bir ürün görseli seçin.');
+      _showMessage(l10n.createSelectAtLeastOneImage);
       return;
     }
 
@@ -79,9 +98,7 @@ class _CreateScreenState extends State<CreateScreen> {
     final requiredCredits = _selectedImages.length * scenarios.length;
 
     if (_credits < requiredCredits) {
-      _showMessage(
-        'Yetersiz kredi. Gerekli: $requiredCredits, Mevcut: $_credits',
-      );
+      _showMessage(l10n.createInsufficientCredits(requiredCredits, _credits));
       return;
     }
 
@@ -90,6 +107,7 @@ class _CreateScreenState extends State<CreateScreen> {
       _isLoading = true;
       _generatedImages = [];
       _completedCount = 0;
+      _failedCount = 0;
       _totalCount = requiredCredits;
     });
 
@@ -110,61 +128,139 @@ class _CreateScreenState extends State<CreateScreen> {
         _isGenerating = true;
       });
 
-      // Polling ile takip et (tek kaynak → çakışma yok)
-      _startStatusPolling(jobId);
+      // SignalR ile ANLIK takip (birincil); polling sadece güvenlik ağı
+      await _trackJob(jobId);
     } catch (e) {
       if (!mounted) return;
       setState(() {
         _isLoading = false;
         _isGenerating = false;
       });
-      _showMessage('Hata: $e');
+      _showMessage(l10n.genericErrorMessage('$e'));
     }
   }
 
-  // Periyodik durum kontrolü
-  Future<void> _startStatusPolling(String jobId) async {
-    int attempts = 0;
-    const maxAttempts = 150; // 2sn × 150 = ~5 dakika
+  // SignalR aboneliğini başlat + beklenmedik uzamalar için güvenlik ağı kur
+  Future<void> _trackJob(String jobId) async {
+    _fallbackTimer?.cancel();
 
-    while (_isGenerating && mounted && attempts < maxAttempts) {
-      await Future.delayed(const Duration(seconds: 2));
-      attempts++;
+    await _signalR.connectAndSubscribe(
+      jobId,
+      onReady: (data) => _handleImageReady(data),
+      onFailed: (data) => _handleImageFailed(data),
+    );
 
-      if (!_isGenerating || !mounted) break;
-
-      try {
-        final status = await _api.getJobStatus(jobId);
-        final images = List<String>.from(status['images'] ?? []);
-        final total = status['totalItems'] as int;
-        final jobStatus = status['status'] as String;
-
-        if (!mounted) break;
-
-        final isDone = jobStatus == 'done' || images.length >= total;
-
-        setState(() {
-          _generatedImages = images;
-          _completedCount = images.length;
-          _totalCount = total;
-
-          if (isDone) {
-            _isGenerating = false;
-            _loadCredits();
-          }
-        });
-
-        if (isDone) break;
-      } catch (e) {
-        // sessizce devam et
+    _fallbackTimer = Timer(const Duration(minutes: 5), () {
+      if (mounted && _isGenerating) {
+        _reconcileViaPolling(jobId);
       }
+    });
+  }
+
+  void _handleImageReady(Map<String, dynamic> data) {
+    if (!mounted) return;
+
+    final outputUrl = data['outputUrl'] as String?;
+    final jobItemId = data['jobItemId'] as String?;
+
+    setState(() {
+      if (outputUrl != null) _generatedImages.add(outputUrl);
+      _completedCount++;
+    });
+
+    if (outputUrl != null && jobItemId != null) {
+      _persistGeneratedImage(outputUrl, jobItemId);
     }
 
-    // Timeout
-    if (mounted && _isGenerating) {
-      setState(() => _isGenerating = false);
-      _showMessage('İşlem uzun sürdü. Lütfen tekrar deneyin.');
+    _checkIfJobFinished();
+  }
+
+  // Görseli cihaza kalıcı olarak kaydeder (Galeri sekmesinde listelenebilsin diye)
+  Future<void> _persistGeneratedImage(String outputUrl, String jobItemId) async {
+    final bytes = _decodeDataUri(outputUrl);
+    if (bytes == null) return;
+
+    try {
+      await _gallery.saveGeneratedImage(bytes, jobItemId);
+    } catch (_) {
+      // sessizce geç — galeriye kaydedilemedi, üretim sonucu yine de gösteriliyor
     }
+  }
+
+  void _handleImageFailed(Map<String, dynamic> data) {
+    if (!mounted) return;
+
+    setState(() => _failedCount++);
+    _checkIfJobFinished();
+  }
+
+  // Backend başarısız kalemlerde CompletedItems'ı artırmıyor (JobProcessingService),
+  // bu yüzden bitişi (başarılı + başarısız) >= toplam olarak sayıyoruz
+  void _checkIfJobFinished() {
+    if (_completedCount + _failedCount >= _totalCount) {
+      _finishJob();
+    }
+  }
+
+  Future<void> _finishJob() async {
+    _fallbackTimer?.cancel();
+    await _signalR.disconnect();
+
+    if (!mounted) return;
+    setState(() => _isGenerating = false);
+    _loadCredits();
+
+    if (_failedCount > 0) {
+      _showMessage(AppLocalizations.of(context)!.createSomeFailed(_failedCount));
+    }
+  }
+
+  // Güvenlik ağı: SignalR beklenenden uzun sürerse tek seferlik senkronizasyon
+  // (birincil mekanizma DEĞİL — sadece son çare)
+  Future<void> _reconcileViaPolling(String jobId) async {
+    try {
+      final status = await _api.getJobStatus(jobId);
+      final images = List<String>.from(status['images'] ?? []);
+
+      if (!mounted) return;
+      setState(() {
+        _generatedImages = images;
+        _completedCount = images.length;
+      });
+    } catch (_) {
+      // sessizce geç
+    }
+
+    await _signalR.disconnect();
+
+    if (!mounted) return;
+    setState(() => _isGenerating = false);
+    _loadCredits();
+    _showMessage(AppLocalizations.of(context)!.createTimeout);
+  }
+
+  // Backend "data:image/jpeg;base64,..." formatında dönüyor —
+  // Image.network HTTP isteği yaptığı için data URI'yi işleyemez, kendimiz çözüyoruz
+  Uint8List? _decodeDataUri(String dataUri) {
+    final commaIndex = dataUri.indexOf(',');
+    if (commaIndex == -1) return null;
+    try {
+      return base64Decode(dataUri.substring(commaIndex + 1));
+    } catch (_) {
+      return null;
+    }
+  }
+
+  Widget _brokenImagePlaceholder() {
+    return Container(
+      color: AppColors.derinGri,
+      child: const Center(
+        child: Icon(
+          Icons.broken_image_outlined,
+          color: AppColors.acikGri,
+        ),
+      ),
+    );
   }
 
   void _showMessage(String message) {
@@ -180,9 +276,11 @@ class _CreateScreenState extends State<CreateScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Oluştur'),
+        title: Text(l10n.createAppBarTitle),
         backgroundColor: AppColors.geceSiyahi,
         elevation: 0,
         actions: [
@@ -217,9 +315,9 @@ class _CreateScreenState extends State<CreateScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // ---- GÖRSEL SEÇME ----
-            const Text(
-              'Ürün Görselleri',
-              style: TextStyle(
+            Text(
+              l10n.createProductImagesTitle,
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: AppColors.safBeyaz,
@@ -234,8 +332,8 @@ class _CreateScreenState extends State<CreateScreen> {
                 icon: const Icon(Icons.add_photo_alternate_outlined),
                 label: Text(
                   _selectedImages.isEmpty
-                      ? 'Görsel Seç'
-                      : '${_selectedImages.length} görsel seçildi',
+                      ? l10n.createSelectImages
+                      : l10n.createImagesSelected(_selectedImages.length),
                 ),
                 style: OutlinedButton.styleFrom(
                   foregroundColor: AppColors.vitrifyMavisi,
@@ -315,7 +413,7 @@ class _CreateScreenState extends State<CreateScreen> {
                   ),
                 )
                     : const Icon(Icons.auto_awesome),
-                label: Text(_isLoading ? 'Gönderiliyor...' : 'Oluştur'),
+                label: Text(_isLoading ? l10n.createSubmitting : l10n.createGenerateButton),
               ),
             ),
 
@@ -335,7 +433,7 @@ class _CreateScreenState extends State<CreateScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          _isGenerating ? 'Üretiliyor...' : 'Tamamlandı 🎉',
+                          _isGenerating ? l10n.createGenerating : l10n.createCompleted,
                           style: const TextStyle(
                             color: AppColors.safBeyaz,
                             fontWeight: FontWeight.bold,
@@ -364,9 +462,9 @@ class _CreateScreenState extends State<CreateScreen> {
             // ---- ÜRETİLEN GÖRSELLER ----
             if (_generatedImages.isNotEmpty) ...[
               const SizedBox(height: 24),
-              const Text(
-                'Üretilen Görseller',
-                style: TextStyle(
+              Text(
+                l10n.createGeneratedImagesTitle,
+                style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                   color: AppColors.safBeyaz,
@@ -384,34 +482,17 @@ class _CreateScreenState extends State<CreateScreen> {
                 ),
                 itemCount: _generatedImages.length,
                 itemBuilder: (context, index) {
+                  final bytes = _decodeDataUri(_generatedImages[index]);
                   return ClipRRect(
                     borderRadius: BorderRadius.circular(12),
-                    child: Image.network(
-                      _generatedImages[index],
+                    child: bytes == null
+                        ? _brokenImagePlaceholder()
+                        : Image.memory(
+                      bytes,
                       key: ValueKey(_generatedImages[index]),
                       fit: BoxFit.cover,
-                      loadingBuilder: (context, child, progress) {
-                        if (progress == null) return child;
-                        return Container(
-                          color: AppColors.derinGri,
-                          child: const Center(
-                            child: CircularProgressIndicator(
-                              color: AppColors.vitrifyMavisi,
-                            ),
-                          ),
-                        );
-                      },
-                      errorBuilder: (context, error, stack) {
-                        return Container(
-                          color: AppColors.derinGri,
-                          child: const Center(
-                            child: Icon(
-                              Icons.broken_image_outlined,
-                              color: AppColors.acikGri,
-                            ),
-                          ),
-                        );
-                      },
+                      errorBuilder: (context, error, stack) =>
+                          _brokenImagePlaceholder(),
                     ),
                   );
                 },
