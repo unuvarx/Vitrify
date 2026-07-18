@@ -1,7 +1,7 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../config/app_colors.dart';
@@ -24,6 +24,7 @@ class _CreateScreenState extends State<CreateScreen> {
   final _picker = ImagePicker();
   final _signalR = SignalRService();
   final _gallery = GalleryService();
+  final _dio = Dio();
 
   List<File> _selectedImages = [];
   List<String> _generatedImages = [];
@@ -48,6 +49,7 @@ class _CreateScreenState extends State<CreateScreen> {
   void dispose() {
     _fallbackTimer?.cancel();
     _signalR.disconnect();
+    _dio.close();
     super.dispose();
   }
 
@@ -177,11 +179,15 @@ class _CreateScreenState extends State<CreateScreen> {
 
   // Görseli cihaza kalıcı olarak kaydeder (Galeri sekmesinde listelenebilsin diye)
   Future<void> _persistGeneratedImage(String outputUrl, String jobItemId) async {
-    final bytes = _decodeDataUri(outputUrl);
-    if (bytes == null) return;
-
     try {
-      await _gallery.saveGeneratedImage(bytes, jobItemId);
+      final response = await _dio.get<List<int>>(
+        outputUrl,
+        options: Options(responseType: ResponseType.bytes),
+      );
+      final bytes = response.data;
+      if (bytes == null) return;
+
+      await _gallery.saveGeneratedImage(Uint8List.fromList(bytes), jobItemId);
     } catch (_) {
       // sessizce geç — galeriye kaydedilemedi, üretim sonucu yine de gösteriliyor
     }
@@ -237,18 +243,6 @@ class _CreateScreenState extends State<CreateScreen> {
     setState(() => _isGenerating = false);
     _loadCredits();
     _showMessage(AppLocalizations.of(context)!.createTimeout);
-  }
-
-  // Backend "data:image/jpeg;base64,..." formatında dönüyor —
-  // Image.network HTTP isteği yaptığı için data URI'yi işleyemez, kendimiz çözüyoruz
-  Uint8List? _decodeDataUri(String dataUri) {
-    final commaIndex = dataUri.indexOf(',');
-    if (commaIndex == -1) return null;
-    try {
-      return base64Decode(dataUri.substring(commaIndex + 1));
-    } catch (_) {
-      return null;
-    }
   }
 
   Widget _brokenImagePlaceholder() {
@@ -482,15 +476,23 @@ class _CreateScreenState extends State<CreateScreen> {
                 ),
                 itemCount: _generatedImages.length,
                 itemBuilder: (context, index) {
-                  final bytes = _decodeDataUri(_generatedImages[index]);
                   return ClipRRect(
                     borderRadius: BorderRadius.circular(12),
-                    child: bytes == null
-                        ? _brokenImagePlaceholder()
-                        : Image.memory(
-                      bytes,
+                    child: Image.network(
+                      _generatedImages[index],
                       key: ValueKey(_generatedImages[index]),
                       fit: BoxFit.cover,
+                      loadingBuilder: (context, child, progress) {
+                        if (progress == null) return child;
+                        return Container(
+                          color: AppColors.derinGri,
+                          child: const Center(
+                            child: CircularProgressIndicator(
+                              color: AppColors.vitrifyMavisi,
+                            ),
+                          ),
+                        );
+                      },
                       errorBuilder: (context, error, stack) =>
                           _brokenImagePlaceholder(),
                     ),
