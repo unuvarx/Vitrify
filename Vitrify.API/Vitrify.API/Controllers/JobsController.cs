@@ -60,7 +60,7 @@ public class JobsController : BaseApiController
         _db.Jobs.Add(job);
 
         var jobItems = new List<JobItem>();
-        foreach (var imageBase64 in request.Images)
+        foreach (var imageDataUri in request.Images)
         {
             foreach (var scenario in request.Scenarios)
             {
@@ -68,7 +68,7 @@ public class JobsController : BaseApiController
                 jobItems.Add(new JobItem
                 {
                     JobId = job.Id,
-                    ReplicateFileUrl = imageBase64, // saf base64 (Gemini için)
+                    ReplicateFileUrl = StripDataUriPrefix(imageDataUri), // saf base64 (Gemini için)
                     Scenario = fullPrompt,
                     Status = "pending",
                     CreditDeducted = false
@@ -132,5 +132,13 @@ public class JobsController : BaseApiController
                "ultra-realistic commercial product photography, " +
                "professional studio lighting, high resolution, sharp focus, photorealistic. " +
                "Keep the product identical to the original image, do not change the product itself.";
+    }
+
+    // Flutter "data:image/jpeg;base64,..." formatında gönderiyor —
+    // Gemini SAF base64 beklediği için prefix'i burada temizliyoruz
+    private static string StripDataUriPrefix(string dataUri)
+    {
+        var commaIndex = dataUri.IndexOf(',');
+        return commaIndex == -1 ? dataUri : dataUri[(commaIndex + 1)..];
     }
 }

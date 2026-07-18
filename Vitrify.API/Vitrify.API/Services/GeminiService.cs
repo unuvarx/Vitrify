@@ -17,18 +17,21 @@ public class GeminiService
                   ?? throw new InvalidOperationException("Gemini API key bulunamadı.");
     }
 
-    // Görseli sıkıştır (base64 boyutunu küçültmek için)
-    public byte[] CompressImage(byte[] originalBytes)
+    // Görseli JPEG'e yeniden kodlar (PNG dahil, ImageSharp formatı kendisi
+    // algılar). Gemini çoğunlukla PNG (kayıpsız) döndürüyor — bunu kaliteli
+    // JPEG'e çevirmek görünür kalite kaybı yaratmadan dosya boyutunu ciddi
+    // küçültüyor. maxSize verilirse o boyutu aşan görseller orantılı
+    // küçültülür; null ise çözünürlüğe dokunulmaz.
+    public byte[] EncodeAsJpeg(byte[] originalBytes, int? maxSize = null, int quality = 90)
     {
         using var image = Image.Load(originalBytes);
-        int maxSize = 1024;
-        if (image.Width > maxSize || image.Height > maxSize)
+        if (maxSize.HasValue && (image.Width > maxSize.Value || image.Height > maxSize.Value))
         {
-            var ratio = Math.Min((double)maxSize / image.Width, (double)maxSize / image.Height);
+            var ratio = Math.Min((double)maxSize.Value / image.Width, (double)maxSize.Value / image.Height);
             image.Mutate(x => x.Resize((int)(image.Width * ratio), (int)(image.Height * ratio)));
         }
         using var ms = new MemoryStream();
-        image.Save(ms, new SixLabors.ImageSharp.Formats.Jpeg.JpegEncoder { Quality = 85 });
+        image.Save(ms, new SixLabors.ImageSharp.Formats.Jpeg.JpegEncoder { Quality = quality });
         return ms.ToArray();
     }
 

@@ -39,7 +39,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 );
 
 // Firebase JWT Authentication
-var firebaseProjectId = "vitrify-c68b0";
+var firebaseProjectId = "vitrifyfirebase";
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -81,6 +81,7 @@ builder.Services.AddHttpClient();
 builder.Services.AddScoped<Vitrify.API.Services.JobProcessingService>();
 builder.Services.AddScoped<Vitrify.API.Services.NotificationService>();
 builder.Services.AddScoped<Vitrify.API.Services.GeminiService>();
+builder.Services.AddScoped<Vitrify.API.Services.SupabaseStorageService>();
 
 // ========================================
 // UYGULAMA (builder.Build()'den SONRA)

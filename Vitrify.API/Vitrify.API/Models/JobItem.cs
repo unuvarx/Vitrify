@@ -7,11 +7,9 @@ public class JobItem
     public Guid JobId { get; set; }
     public Job? Job { get; set; }
 
-    // Replicate'e yüklenen orijinal görselin URL'si
+    // Girdi görselinin saf base64'ü (Gemini'ye gönderilir).
+    // Başarılı üretimden sonra null'lanır — tekrar gerekmiyor, yer kaplamasın.
     public string? ReplicateFileUrl { get; set; }
-
-    // Replicate prediction kimliği
-    public string? ReplicatePredictionId { get; set; }
 
     // Hangi senaryo ile üretildi
     public string Scenario { get; set; } = string.Empty;
