@@ -13,5 +13,5 @@ class AppConfig {
 
   static String get signalRHubUrl => "$apiBaseUrl/jobhub";
 
-  static const String firebaseProjectId = "vitrify-c68b0";
+  static const String firebaseProjectId = "vitrifyfirebase";
 }

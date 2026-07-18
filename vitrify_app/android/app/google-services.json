@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "793678980504",
-    "project_id": "vitrify-c68b0",
-    "storage_bucket": "vitrify-c68b0.firebasestorage.app"
+    "project_number": "925904321302",
+    "project_id": "vitrifyfirebase",
+    "storage_bucket": "vitrifyfirebase.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:793678980504:android:8937a2e73016cca10977ed",
+        "mobilesdk_app_id": "1:925904321302:android:52bb242a14b1949af06e37",
         "android_client_info": {
           "package_name": "com.vitrifystudio.vitrify_app"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBONUYLRNM4RuKxqxnA-3cyLhQjPhoh86k"
+          "current_key": "AIzaSyAO8OMTb-YWOeYBe1F-xfllhMUrkVb2o0g"
         }
       ],
       "services": {

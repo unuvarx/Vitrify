@@ -50,19 +50,18 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyBONUYLRNM4RuKxqxnA-3cyLhQjPhoh86k',
-    appId: '1:793678980504:android:8937a2e73016cca10977ed',
-    messagingSenderId: '793678980504',
-    projectId: 'vitrify-c68b0',
-    storageBucket: 'vitrify-c68b0.firebasestorage.app',
+    apiKey: 'AIzaSyAO8OMTb-YWOeYBe1F-xfllhMUrkVb2o0g',
+    appId: '1:925904321302:android:52bb242a14b1949af06e37',
+    messagingSenderId: '925904321302',
+    projectId: 'vitrifyfirebase',
+    storageBucket: 'vitrifyfirebase.firebasestorage.app',
   );
-
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDs5tUx7oRVSFcrmoWJx5c7fLPrPp3K2Jw',
-    appId: '1:793678980504:ios:47856e266966b9c90977ed',
-    messagingSenderId: '793678980504',
-    projectId: 'vitrify-c68b0',
-    storageBucket: 'vitrify-c68b0.firebasestorage.app',
+    apiKey: 'AIzaSyB3uj73gB5lMpoFL0ZIc6DPtl-jPRRaKdw',
+    appId: '1:925904321302:ios:f8562244372f4bbaf06e37',
+    messagingSenderId: '925904321302',
+    projectId: 'vitrifyfirebase',
+    storageBucket: 'vitrifyfirebase.firebasestorage.app',
     iosBundleId: 'com.vitrifystudio.vitrifyApp',
   );
 }
