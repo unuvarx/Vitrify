@@ -5,6 +5,14 @@ using SixLabors.ImageSharp.Processing;
 
 namespace Vitrify.API.Services;
 
+// Gemini bazen (özellikle gerçekçi insan içeren isteklerde) görsel yerine
+// boş metin döndürüyor — güvenlik ihlali değil, modelin kendi tutarsızlığı.
+// Bu, anında tekrar denemeye değer bir durum (network hatasından farklı).
+public class GeminiNoImageException : Exception
+{
+    public GeminiNoImageException(string message) : base(message) { }
+}
+
 public class GeminiService
 {
     private readonly HttpClient _http;
@@ -35,15 +43,33 @@ public class GeminiService
         return ms.ToArray();
     }
 
-    // Base64 data URI'ye çevir
-    public string ToBase64(byte[] fileBytes)
-    {
-        return Convert.ToBase64String(fileBytes);
-    }
-
     // nano-banana (Gemini 2.5 Flash Image) ile görsel üret. Base64 döndürür.
     // imageBase64: SAF base64 (data: öneki OLMADAN)
+    // "Görsel döndürmedi" durumunda (network hatasından farklı — modelin kendi
+    // tutarsızlığı) Hangfire'ın yavaş retry'ını beklemeden anında tekrar dener.
     public async Task<string> GenerateImageAsync(
+        string prompt,
+        string imageBase64,
+        string aspectRatio,
+        int maxAttempts = 3)
+    {
+        for (int attempt = 1; attempt <= maxAttempts; attempt++)
+        {
+            try
+            {
+                return await GenerateImageOnceAsync(prompt, imageBase64, aspectRatio);
+            }
+            catch (GeminiNoImageException) when (attempt < maxAttempts)
+            {
+                // Devam et, hemen tekrar dene
+            }
+        }
+
+        // Buraya asla ulaşılmaz — son deneme kendi exception'ını fırlatır
+        throw new InvalidOperationException("Unreachable");
+    }
+
+    private async Task<string> GenerateImageOnceAsync(
         string prompt,
         string imageBase64,
         string aspectRatio)
@@ -112,6 +138,6 @@ public class GeminiService
             }
         }
 
-        throw new Exception($"Gemini cevabında görsel bulunamadı: {responseBody}");
+        throw new GeminiNoImageException($"Gemini cevabında görsel bulunamadı: {responseBody}");
     }
 }

@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:android_id/android_id.dart';
 import '../config/app_config.dart';
 
 class AuthService {
@@ -41,16 +42,17 @@ class AuthService {
 
   // Cihaza özel benzersiz kimlik üret (cihaz kilidi için)
   Future<String> getDeviceId() async {
-    final deviceInfo = DeviceInfoPlugin();
-
     if (Platform.isIOS) {
-      final iosInfo = await deviceInfo.iosInfo;
+      final iosInfo = await DeviceInfoPlugin().iosInfo;
       // identifierForVendor: cihaza özel, uygulama silinmedikçe sabit
       return iosInfo.identifierForVendor ?? 'unknown-ios';
     } else if (Platform.isAndroid) {
-      final androidInfo = await deviceInfo.androidInfo;
-      // Android ID: cihaza özel
-      return androidInfo.id;
+      // NOT: device_info_plus'ın androidInfo.id alanı Build.ID'yi (işletim
+      // sistemi build numarası) döndürür — bu cihaza özel DEĞİL, aynı Android
+      // sürümünü çalıştıran her cihazda aynı çıkar. Cihaza özel kimlik için
+      // Settings.Secure.ANDROID_ID okuyan android_id paketini kullanıyoruz.
+      final androidId = await const AndroidId().getId();
+      return androidId ?? 'unknown-android';
     }
 
     return 'unknown-device';

@@ -3,6 +3,8 @@ import 'dart:typed_data';
 import 'package:path_provider/path_provider.dart';
 import 'package:photo_manager/photo_manager.dart';
 
+enum SaveToGalleryResult { success, permissionDenied, saveFailed }
+
 class GalleryService {
   static const String _folderName = 'vitrify_gallery';
 
@@ -39,20 +41,30 @@ class GalleryService {
     }
   }
 
-  // Cihazın asıl fotoğraf galerisine kaydeder (sadece "ekleme" izni ister)
-  Future<bool> saveToDeviceGallery(File file) async {
+  // Cihazın asıl fotoğraf galerisine kaydeder (sadece "ekleme" izni ister).
+  // saveImageWithPath (dosya yolu bazlı) yerine bilerek saveImage (byte bazlı)
+  // kullanıyoruz — path bazlı yöntem photo_manager'da native tarafta çökmelere
+  // yol açan bilinen bir sorun sınıfı, byte vermek bu native karmaşıklığı azaltıyor.
+  Future<SaveToGalleryResult> saveToDeviceGallery(File file) async {
     final state = await PhotoManager.requestPermissionExtend(
       requestOption: const PermissionRequestOption(
         iosAccessLevel: IosAccessLevel.addOnly,
       ),
     );
 
-    if (!state.isAuth) return false;
+    if (!state.isAuth) return SaveToGalleryResult.permissionDenied;
 
-    await PhotoManager.editor.saveImageWithPath(
-      file.path,
-      title: 'vitrify_${DateTime.now().millisecondsSinceEpoch}.jpg',
-    );
-    return true;
+    try {
+      final bytes = await file.readAsBytes();
+      await PhotoManager.editor.saveImage(
+        bytes,
+        filename: 'vitrify_${DateTime.now().millisecondsSinceEpoch}.jpg',
+      );
+      return SaveToGalleryResult.success;
+    } catch (_) {
+      // Native taraf (photo_manager) bir hata döndürdü — uygulamayı
+      // çökertmek yerine düzgün bir "başarısız" sonucu döndürüyoruz
+      return SaveToGalleryResult.saveFailed;
+    }
   }
 }

@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Vitrify App</string>
+	<string>Vitrify</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -46,6 +46,8 @@
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Üretilen ürün fotoğraflarını galerinize kaydedebilmemiz için izin gerekiyor.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Üretilen ürün fotoğraflarını galerinize kaydedebilmemiz için izin gerekiyor.</string>
 </dict>
 </plist>

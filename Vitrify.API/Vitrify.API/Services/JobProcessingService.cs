@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Vitrify.API.Data;
@@ -59,8 +58,6 @@ public class JobProcessingService
         await _semaphore.WaitAsync(); // sıraya gir (max 20 eşzamanlı)
         try
         {
-            var stopwatch = Stopwatch.StartNew();
-
             await _db.JobItems
                 .Where(i => i.Id == item.Id)
                 .ExecuteUpdateAsync(s => s.SetProperty(i => i.Status, "processing"));
@@ -73,21 +70,14 @@ public class JobProcessingService
                     .Where(j => j.Id == item.JobId)
                     .ExecuteUpdateAsync(s => s.SetProperty(j => j.Status, "processing"));
             }
-            _logger.LogInformation(
-                "[timing] {JobItemId}: ilk durum guncellemesi {ElapsedMs}ms",
-                item.Id, stopwatch.ElapsedMilliseconds);
 
             // Görseli üret (Gemini base64 döndürür)
             // ReplicateFileUrl = saf base64 (data: öneki olmadan) saklıyoruz
-            stopwatch.Restart();
             var outputBase64 = await _gemini.GenerateImageAsync(
                 item.Scenario,           // prompt (mekan+senaryo)
                 item.ReplicateFileUrl!,  // görselin base64'ü
                 "1:1"                    // aspect ratio (şimdilik sabit, sonra dinamik)
             );
-            _logger.LogInformation(
-                "[timing] {JobItemId}: Gemini cagrisi {ElapsedMs}ms",
-                item.Id, stopwatch.ElapsedMilliseconds);
 
             // Gemini genelde PNG (kayıpsız) döndürüyor — Storage'a yüklemeden
             // önce kaliteli JPEG'e çeviriyoruz (çözünürlüğe dokunmadan).
@@ -96,15 +86,9 @@ public class JobProcessingService
 
             // Başarılı — çıktıyı Supabase Storage'a yükle, Postgres'e sadece
             // kısa bir public URL yazacağız (büyük base64 blob yazmak yerine)
-            stopwatch.Restart();
             var newOutputUrl = await _storage.UploadImageAsync(
                 jpegBytes,
                 $"{item.Id}.jpg");
-            _logger.LogInformation(
-                "[timing] {JobItemId}: Storage yuklemesi {ElapsedMs}ms",
-                item.Id, stopwatch.ElapsedMilliseconds);
-
-            stopwatch.Restart();
 
             // SADECE başarılıysa kredi düş — aynı Job'un kalemleri eşzamanlı
             // işlendiği için oku-değiştir-yaz yerine atomic UPDATE kullanıyoruz
@@ -136,17 +120,9 @@ public class JobProcessingService
                 .Where(j => j.Id == item.JobId)
                 .ExecuteUpdateAsync(s => s.SetProperty(j => j.CompletedItems, j => j.CompletedItems + 1));
 
-            _logger.LogInformation(
-                "[timing] {JobItemId}: kredi dusme + JobItem/Job atomic update {ElapsedMs}ms",
-                item.Id, stopwatch.ElapsedMilliseconds);
-
-            stopwatch.Restart();
             // Bu kalemle birlikte job'daki tüm kalemler terminal duruma ulaştıysa
             // (done/failed) job'ı bitir ve item.Job.Status'ü güncelle
             var jobStatus = await FinalizeJobIfCompleteAsync(item.JobId) ?? item.Job.Status;
-            _logger.LogInformation(
-                "[timing] {JobItemId}: FinalizeJobIfCompleteAsync {ElapsedMs}ms",
-                item.Id, stopwatch.ElapsedMilliseconds);
 
             // Flutter'a ANINDA haber ver: "bu görsel hazır!"
             await _hub.Clients.Group(item.JobId.ToString()).SendAsync(
@@ -161,8 +137,10 @@ public class JobProcessingService
                     jobStatus
                 });
         }
-        catch (Exception)
+        catch (Exception ex)
         {
+            _logger.LogWarning(ex, "JobItem {JobItemId} başarısız oldu", item.Id);
+
             // Başarısız → kredi DÜŞMEZ
             await _db.JobItems
                 .Where(i => i.Id == item.Id)

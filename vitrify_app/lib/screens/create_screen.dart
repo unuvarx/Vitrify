@@ -10,6 +10,8 @@ import '../services/api_service.dart';
 import '../services/gallery_service.dart';
 import '../services/signalr_service.dart';
 import '../services/storage_service.dart';
+import '../widgets/app_alert.dart';
+import '../widgets/refreshable.dart';
 
 class CreateScreen extends StatefulWidget {
   const CreateScreen({super.key});
@@ -18,7 +20,7 @@ class CreateScreen extends StatefulWidget {
   State<CreateScreen> createState() => _CreateScreenState();
 }
 
-class _CreateScreenState extends State<CreateScreen> {
+class _CreateScreenState extends State<CreateScreen> implements Refreshable {
   final _api = ApiService();
   final _storage = StorageService();
   final _picker = ImagePicker();
@@ -38,6 +40,7 @@ class _CreateScreenState extends State<CreateScreen> {
   int _totalCount = 0;
 
   Timer? _fallbackTimer;
+  Timer? _stragglerTimer;
 
   @override
   void initState() {
@@ -45,9 +48,15 @@ class _CreateScreenState extends State<CreateScreen> {
     _loadCredits();
   }
 
+  // MainScreen bu sekmeye her geçildiğinde çağırır — sadece kredi sayısını
+  // tazeler, devam eden bir üretim varsa ona dokunmaz
+  @override
+  Future<void> refresh() => _loadCredits();
+
   @override
   void dispose() {
     _fallbackTimer?.cancel();
+    _stragglerTimer?.cancel();
     _signalR.disconnect();
     _dio.close();
     super.dispose();
@@ -164,6 +173,7 @@ class _CreateScreenState extends State<CreateScreen> {
 
     final outputUrl = data['outputUrl'] as String?;
     final jobItemId = data['jobItemId'] as String?;
+    final jobId = data['jobId'] as String?;
 
     setState(() {
       if (outputUrl != null) _generatedImages.add(outputUrl);
@@ -174,7 +184,7 @@ class _CreateScreenState extends State<CreateScreen> {
       _persistGeneratedImage(outputUrl, jobItemId);
     }
 
-    _checkIfJobFinished();
+    _checkIfJobFinished(jobId);
   }
 
   // Görseli cihaza kalıcı olarak kaydeder (Galeri sekmesinde listelenebilsin diye)
@@ -196,19 +206,20 @@ class _CreateScreenState extends State<CreateScreen> {
   void _handleImageFailed(Map<String, dynamic> data) {
     if (!mounted) return;
 
+    final jobId = data['jobId'] as String?;
     setState(() => _failedCount++);
-    _checkIfJobFinished();
+    _checkIfJobFinished(jobId);
   }
 
   // Backend başarısız kalemlerde CompletedItems'ı artırmıyor (JobProcessingService),
   // bu yüzden bitişi (başarılı + başarısız) >= toplam olarak sayıyoruz
-  void _checkIfJobFinished() {
-    if (_completedCount + _failedCount >= _totalCount) {
-      _finishJob();
+  void _checkIfJobFinished(String? jobId) {
+    if (_completedCount + _failedCount >= _totalCount && jobId != null) {
+      _finishJob(jobId);
     }
   }
 
-  Future<void> _finishJob() async {
+  Future<void> _finishJob(String jobId) async {
     _fallbackTimer?.cancel();
     await _signalR.disconnect();
 
@@ -218,7 +229,32 @@ class _CreateScreenState extends State<CreateScreen> {
 
     if (_failedCount > 0) {
       _showMessage(AppLocalizations.of(context)!.createSomeFailed(_failedCount));
+
+      // Backend (Hangfire) başarısız kalemleri arka planda otomatik tekrar
+      // dener — biz artık dinlemeyi bıraktığımız için sonradan başarılı
+      // olursa Galeri'ye hiç düşmezdi. Bir kez daha kontrol edip yakalıyoruz.
+      _scheduleStragglerCheck(jobId, List<String>.from(_generatedImages));
     }
+  }
+
+  // Hangfire'ın gecikmeli tekrar denemesi sonradan başarılı olursa
+  // (biz artık canlı dinlemiyorken) yeni görselleri yakalayıp Galeri'ye kaydeder
+  void _scheduleStragglerCheck(String jobId, List<String> knownImages) {
+    _stragglerTimer?.cancel();
+    _stragglerTimer = Timer(const Duration(minutes: 2), () async {
+      try {
+        final status = await _api.getJobStatus(jobId);
+        final images = List<String>.from(status['images'] ?? []);
+        final newImages = images.where((url) => !knownImages.contains(url));
+
+        for (final url in newImages) {
+          final itemId = Uri.parse(url).pathSegments.last.replaceAll('.jpg', '');
+          await _persistGeneratedImage(url, itemId);
+        }
+      } catch (_) {
+        // sessizce geç
+      }
+    });
   }
 
   // Güvenlik ağı: SignalR beklenenden uzun sürerse tek seferlik senkronizasyon
@@ -227,6 +263,12 @@ class _CreateScreenState extends State<CreateScreen> {
     try {
       final status = await _api.getJobStatus(jobId);
       final images = List<String>.from(status['images'] ?? []);
+      final newImages = images.where((url) => !_generatedImages.contains(url));
+
+      for (final url in newImages) {
+        final itemId = Uri.parse(url).pathSegments.last.replaceAll('.jpg', '');
+        await _persistGeneratedImage(url, itemId);
+      }
 
       if (!mounted) return;
       setState(() {
@@ -247,11 +289,11 @@ class _CreateScreenState extends State<CreateScreen> {
 
   Widget _brokenImagePlaceholder() {
     return Container(
-      color: AppColors.derinGri,
-      child: const Center(
+      color: AppColors.derinGri(context),
+      child: Center(
         child: Icon(
           Icons.broken_image_outlined,
-          color: AppColors.acikGri,
+          color: AppColors.acikGri(context),
         ),
       ),
     );
@@ -259,13 +301,7 @@ class _CreateScreenState extends State<CreateScreen> {
 
   void _showMessage(String message) {
     if (!mounted) return;
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: AppColors.derinGri,
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
+    AppAlert.show(context, message);
   }
 
   @override
@@ -275,7 +311,7 @@ class _CreateScreenState extends State<CreateScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.createAppBarTitle),
-        backgroundColor: AppColors.geceSiyahi,
+        backgroundColor: AppColors.derinGri(context),
         elevation: 0,
         actions: [
           // Kredi göstergesi
@@ -283,18 +319,18 @@ class _CreateScreenState extends State<CreateScreen> {
             margin: const EdgeInsets.only(right: 16),
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: AppColors.derinGri,
-              borderRadius: BorderRadius.circular(20),
+              color: AppColors.derinGri(context),
+              borderRadius: BorderRadius.circular(4),
             ),
             child: Row(
               children: [
-                const Icon(Icons.bolt,
-                    color: AppColors.vitrifyMavisi, size: 18),
+                Icon(Icons.bolt,
+                    color: AppColors.vitrifyMavisi(context), size: 18),
                 const SizedBox(width: 4),
                 Text(
                   '$_credits',
-                  style: const TextStyle(
-                    color: AppColors.safBeyaz,
+                  style: TextStyle(
+                    color: AppColors.safBeyaz(context),
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -311,10 +347,10 @@ class _CreateScreenState extends State<CreateScreen> {
             // ---- GÖRSEL SEÇME ----
             Text(
               l10n.createProductImagesTitle,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: AppColors.safBeyaz,
+                color: AppColors.safBeyaz(context),
               ),
             ),
             const SizedBox(height: 12),
@@ -330,8 +366,8 @@ class _CreateScreenState extends State<CreateScreen> {
                       : l10n.createImagesSelected(_selectedImages.length),
                 ),
                 style: OutlinedButton.styleFrom(
-                  foregroundColor: AppColors.vitrifyMavisi,
-                  side: const BorderSide(color: AppColors.vitrifyMavisi),
+                  foregroundColor: AppColors.vitrifyMavisi(context),
+                  side: BorderSide(color: AppColors.vitrifyMavisi(context)),
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -354,7 +390,7 @@ class _CreateScreenState extends State<CreateScreen> {
                       child: Stack(
                         children: [
                           ClipRRect(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(4),
                             child: Image.file(
                               _selectedImages[index],
                               width: 100,
@@ -374,10 +410,10 @@ class _CreateScreenState extends State<CreateScreen> {
                                     color: Colors.black54,
                                     shape: BoxShape.circle,
                                   ),
-                                  child: const Icon(
+                                  child: Icon(
                                     Icons.close,
                                     size: 16,
-                                    color: AppColors.safBeyaz,
+                                    color: AppColors.safBeyaz(context),
                                   ),
                                 ),
                               ),
@@ -398,12 +434,12 @@ class _CreateScreenState extends State<CreateScreen> {
               child: ElevatedButton.icon(
                 onPressed: (_isLoading || _isGenerating) ? null : _generate,
                 icon: _isLoading
-                    ? const SizedBox(
+                    ? SizedBox(
                   width: 20,
                   height: 20,
                   child: CircularProgressIndicator(
                     strokeWidth: 2,
-                    color: AppColors.safBeyaz,
+                    color: AppColors.safBeyaz(context),
                   ),
                 )
                     : const Icon(Icons.auto_awesome),
@@ -417,8 +453,8 @@ class _CreateScreenState extends State<CreateScreen> {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: AppColors.derinGri,
-                  borderRadius: BorderRadius.circular(12),
+                  color: AppColors.derinGri(context),
+                  borderRadius: BorderRadius.circular(4),
                 ),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -428,14 +464,14 @@ class _CreateScreenState extends State<CreateScreen> {
                       children: [
                         Text(
                           _isGenerating ? l10n.createGenerating : l10n.createCompleted,
-                          style: const TextStyle(
-                            color: AppColors.safBeyaz,
+                          style: TextStyle(
+                            color: AppColors.safBeyaz(context),
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                         Text(
                           '$_completedCount / $_totalCount',
-                          style: const TextStyle(color: AppColors.acikGri),
+                          style: TextStyle(color: AppColors.acikGri(context)),
                         ),
                       ],
                     ),
@@ -443,9 +479,9 @@ class _CreateScreenState extends State<CreateScreen> {
                     LinearProgressIndicator(
                       value:
                       _totalCount > 0 ? _completedCount / _totalCount : 0,
-                      backgroundColor: AppColors.geceSiyahi,
-                      valueColor: const AlwaysStoppedAnimation(
-                        AppColors.vitrifyMavisi,
+                      backgroundColor: AppColors.geceSiyahi(context),
+                      valueColor: AlwaysStoppedAnimation(
+                        AppColors.vitrifyMavisi(context),
                       ),
                     ),
                   ],
@@ -458,10 +494,10 @@ class _CreateScreenState extends State<CreateScreen> {
               const SizedBox(height: 24),
               Text(
                 l10n.createGeneratedImagesTitle,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: AppColors.safBeyaz,
+                  color: AppColors.safBeyaz(context),
                 ),
               ),
               const SizedBox(height: 12),
@@ -477,7 +513,7 @@ class _CreateScreenState extends State<CreateScreen> {
                 itemCount: _generatedImages.length,
                 itemBuilder: (context, index) {
                   return ClipRRect(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(4),
                     child: Image.network(
                       _generatedImages[index],
                       key: ValueKey(_generatedImages[index]),
@@ -485,10 +521,10 @@ class _CreateScreenState extends State<CreateScreen> {
                       loadingBuilder: (context, child, progress) {
                         if (progress == null) return child;
                         return Container(
-                          color: AppColors.derinGri,
-                          child: const Center(
+                          color: AppColors.derinGri(context),
+                          child: Center(
                             child: CircularProgressIndicator(
-                              color: AppColors.vitrifyMavisi,
+                              color: AppColors.vitrifyMavisi(context),
                             ),
                           ),
                         );

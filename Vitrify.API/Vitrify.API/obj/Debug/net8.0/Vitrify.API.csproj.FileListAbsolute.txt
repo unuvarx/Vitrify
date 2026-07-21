@@ -133,3 +133,4 @@
 /Users/unuvarx/Jetpack/Vitrify/Vitrify.API/Vitrify.API/bin/Debug/net8.0/Hangfire.NetCore.dll
 /Users/unuvarx/Jetpack/Vitrify/Vitrify.API/Vitrify.API/bin/Debug/net8.0/Hangfire.PostgreSql.dll
 /Users/unuvarx/Jetpack/Vitrify/Vitrify.API/Vitrify.API/bin/Debug/net8.0/SixLabors.ImageSharp.dll
+/Users/unuvarx/Jetpack/Vitrify/Vitrify.API/Vitrify.API/obj/Debug/net8.0/Vitrify.API.sourcelink.json

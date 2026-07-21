@@ -3,6 +3,7 @@ import '../config/app_colors.dart';
 import '../l10n/app_localizations.dart';
 import '../models/theme_settings.dart';
 import '../services/storage_service.dart';
+import '../widgets/app_alert.dart';
 
 class ThemeScreen extends StatefulWidget {
   const ThemeScreen({super.key});
@@ -108,13 +109,7 @@ class _ThemeScreenState extends State<ThemeScreen> {
   }
 
   void _showMessage(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: AppColors.derinGri,
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
+    AppAlert.show(context, message);
   }
 
   @override
@@ -124,7 +119,7 @@ class _ThemeScreenState extends State<ThemeScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.themeAppBarTitle),
-        backgroundColor: AppColors.geceSiyahi,
+        backgroundColor: AppColors.derinGri(context),
         elevation: 0,
       ),
       body: SingleChildScrollView(
@@ -141,7 +136,7 @@ class _ThemeScreenState extends State<ThemeScreen> {
               onChanged: (_) => setState(() => _isSaved = false),
               decoration: InputDecoration(
                 hintText: l10n.themeSceneHint,
-                hintStyle: const TextStyle(color: AppColors.acikGri, fontSize: 13),
+                hintStyle: TextStyle(color: AppColors.acikGri(context), fontSize: 13),
               ),
             ),
 
@@ -159,9 +154,9 @@ class _ThemeScreenState extends State<ThemeScreen> {
                 ),
                 IconButton(
                   onPressed: _addScenario,
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.add_circle,
-                    color: AppColors.vitrifyMavisi,
+                    color: AppColors.vitrifyMavisi(context),
                     size: 32,
                   ),
                 ),
@@ -180,8 +175,8 @@ class _ThemeScreenState extends State<ThemeScreen> {
                         onChanged: (_) => setState(() => _isSaved = false),
                         decoration: InputDecoration(
                           hintText: l10n.themeScenarioHint(index + 1),
-                          hintStyle: const TextStyle(
-                            color: AppColors.acikGri,
+                          hintStyle: TextStyle(
+                            color: AppColors.acikGri(context),
                             fontSize: 13,
                           ),
                         ),
@@ -190,9 +185,9 @@ class _ThemeScreenState extends State<ThemeScreen> {
                     if (_scenarioControllers.length > 1)
                       IconButton(
                         onPressed: () => _removeScenario(index),
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.remove_circle_outline,
-                          color: AppColors.acikGri,
+                          color: AppColors.acikGri(context),
                         ),
                       ),
                   ],
@@ -218,10 +213,10 @@ class _ThemeScreenState extends State<ThemeScreen> {
                       _isSaved = false;
                     });
                   },
-                  backgroundColor: AppColors.derinGri,
-                  selectedColor: AppColors.vitrifyMavisi,
+                  backgroundColor: AppColors.derinGri(context),
+                  selectedColor: AppColors.vitrifyMavisi(context),
                   labelStyle: TextStyle(
-                    color: isSelected ? AppColors.safBeyaz : AppColors.acikGri,
+                    color: isSelected ? AppColors.safBeyaz(context) : AppColors.acikGri(context),
                   ),
                   side: BorderSide.none,
                 );
@@ -239,8 +234,8 @@ class _ThemeScreenState extends State<ThemeScreen> {
                 label: Text(_isSaved ? l10n.themeSavedButton : l10n.themeSaveButton),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: _isSaved
-                      ? AppColors.basariYesili
-                      : AppColors.vitrifyMavisi,
+                      ? AppColors.basariYesili(context)
+                      : AppColors.vitrifyMavisi(context),
                 ),
               ),
             ),
@@ -258,16 +253,16 @@ class _ThemeScreenState extends State<ThemeScreen> {
       children: [
         Text(
           title,
-          style: const TextStyle(
+          style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: AppColors.safBeyaz,
+            color: AppColors.safBeyaz(context),
           ),
         ),
         const SizedBox(height: 4),
         Text(
           subtitle,
-          style: const TextStyle(fontSize: 12, color: AppColors.acikGri),
+          style: TextStyle(fontSize: 12, color: AppColors.acikGri(context)),
         ),
       ],
     );

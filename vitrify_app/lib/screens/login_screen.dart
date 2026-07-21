@@ -47,14 +47,10 @@ class _LoginScreenState extends State<LoginScreen> {
       } else {
         await _authService.signIn(email, password);
       }
-
-      final result = await _authService.loginToBackend();
-
-      if (!mounted) return;
-      setState(() {
-        _message =
-            '${result['message']}\n${l10n.loginCreditsLabel(result['credits'] as int)}';
-      });
+      // Firebase girişi tamamlanır tamamlanmaz AuthGate (main.dart) devreye
+      // girer: backend kullanıcı kaydını/kredisini o taraf tamamlar, burada
+      // ayrıca çağırmaya gerek yok — zaten AuthGate MainScreen'i göstermeden
+      // önce bunu bekliyor.
     } catch (e) {
       if (!mounted) return;
       setState(() => _message = l10n.genericErrorMessage('$e'));
@@ -79,19 +75,19 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               const SizedBox(height: 60),
 
-              const Icon(
+              Icon(
                 Icons.auto_awesome,
                 size: 64,
-                color: AppColors.vitrifyMavisi,
+                color: AppColors.vitrifyMavisi(context),
               ),
               const SizedBox(height: 16),
-              const Text(
+              Text(
                 'Vitrify',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
-                  color: AppColors.safBeyaz,
+                  color: AppColors.safBeyaz(context),
                 ),
               ),
               const SizedBox(height: 48),
@@ -119,12 +115,12 @@ class _LoginScreenState extends State<LoginScreen> {
               ElevatedButton(
                 onPressed: _isLoading ? null : _submit,
                 child: _isLoading
-                    ? const SizedBox(
+                    ? SizedBox(
                   height: 20,
                   width: 20,
                   child: CircularProgressIndicator(
                     strokeWidth: 2,
-                    color: AppColors.safBeyaz,
+                    color: AppColors.safBeyaz(context),
                   ),
                 )
                     : Text(_isSignUpMode
@@ -144,7 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   _isSignUpMode
                       ? l10n.loginSwitchToSignIn
                       : l10n.loginSwitchToSignUp,
-                  style: const TextStyle(color: AppColors.acikGri),
+                  style: TextStyle(color: AppColors.acikGri(context)),
                 ),
               ),
 
@@ -153,12 +149,12 @@ class _LoginScreenState extends State<LoginScreen> {
                 Container(
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: AppColors.derinGri,
-                    borderRadius: BorderRadius.circular(12),
+                    color: AppColors.derinGri(context),
+                    borderRadius: BorderRadius.circular(4),
                   ),
                   child: Text(
                     _message!,
-                    style: const TextStyle(color: AppColors.safBeyaz),
+                    style: TextStyle(color: AppColors.safBeyaz(context)),
                     textAlign: TextAlign.center,
                   ),
                 ),

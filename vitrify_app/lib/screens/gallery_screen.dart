@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../config/app_colors.dart';
 import '../l10n/app_localizations.dart';
 import '../services/gallery_service.dart';
+import '../widgets/app_alert.dart';
+import '../widgets/refreshable.dart';
 
 class GalleryScreen extends StatefulWidget {
   const GalleryScreen({super.key});
@@ -11,7 +13,7 @@ class GalleryScreen extends StatefulWidget {
   State<GalleryScreen> createState() => _GalleryScreenState();
 }
 
-class _GalleryScreenState extends State<GalleryScreen> {
+class _GalleryScreenState extends State<GalleryScreen> implements Refreshable {
   final _gallery = GalleryService();
 
   List<File> _images = [];
@@ -22,6 +24,11 @@ class _GalleryScreenState extends State<GalleryScreen> {
     super.initState();
     _loadImages();
   }
+
+  // MainScreen bu sekmeye her geçildiğinde çağırır (IndexedStack initState'i
+  // tekrar çalıştırmadığı için başka sekmede üretilen görseller görünmezdi)
+  @override
+  Future<void> refresh() => _loadImages();
 
   Future<void> _loadImages() async {
     setState(() => _isLoading = true);
@@ -40,14 +47,14 @@ class _GalleryScreenState extends State<GalleryScreen> {
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
-        backgroundColor: AppColors.derinGri,
+        backgroundColor: AppColors.derinGri(context),
         title: Text(
           l10n.galleryDeleteTitle,
-          style: const TextStyle(color: AppColors.safBeyaz),
+          style: TextStyle(color: AppColors.safBeyaz(context)),
         ),
         content: Text(
           l10n.galleryDeleteContent,
-          style: const TextStyle(color: AppColors.acikGri),
+          style: TextStyle(color: AppColors.acikGri(context)),
         ),
         actions: [
           TextButton(
@@ -58,7 +65,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
             onPressed: () => Navigator.pop(context, true),
             child: Text(
               l10n.galleryDelete,
-              style: const TextStyle(color: AppColors.hataKirmizi),
+              style: TextStyle(color: AppColors.hataKirmizi(context)),
             ),
           ),
         ],
@@ -74,22 +81,19 @@ class _GalleryScreenState extends State<GalleryScreen> {
 
   Future<void> _saveToDevice(File file) async {
     final l10n = AppLocalizations.of(context)!;
-    final success = await _gallery.saveToDeviceGallery(file);
+    final result = await _gallery.saveToDeviceGallery(file);
     if (!mounted) return;
 
-    _showMessage(
-      success ? l10n.gallerySavedToDevice : l10n.galleryPermissionDenied,
-    );
+    final message = switch (result) {
+      SaveToGalleryResult.success => l10n.gallerySavedToDevice,
+      SaveToGalleryResult.permissionDenied => l10n.galleryPermissionDenied,
+      SaveToGalleryResult.saveFailed => l10n.galleryDeviceSaveFailed,
+    };
+    _showMessage(message);
   }
 
   void _showMessage(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(message),
-        backgroundColor: AppColors.derinGri,
-        behavior: SnackBarBehavior.floating,
-      ),
-    );
+    AppAlert.show(context, message);
   }
 
   @override
@@ -99,7 +103,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.galleryAppBarTitle),
-        backgroundColor: AppColors.geceSiyahi,
+        backgroundColor: AppColors.derinGri(context),
         elevation: 0,
         actions: [
           IconButton(
@@ -109,15 +113,15 @@ class _GalleryScreenState extends State<GalleryScreen> {
         ],
       ),
       body: _isLoading
-          ? const Center(
+          ? Center(
               child:
-                  CircularProgressIndicator(color: AppColors.vitrifyMavisi),
+                  CircularProgressIndicator(color: AppColors.vitrifyMavisi(context)),
             )
           : _images.isEmpty
               ? Center(
                   child: Text(
                     l10n.galleryEmpty,
-                    style: const TextStyle(color: AppColors.acikGri),
+                    style: TextStyle(color: AppColors.acikGri(context)),
                   ),
                 )
               : GridView.builder(
@@ -132,7 +136,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
                   itemBuilder: (context, index) {
                     final file = _images[index];
                     return ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(4),
                       child: Stack(
                         fit: StackFit.expand,
                         children: [
@@ -141,7 +145,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
                             top: 4,
                             right: 4,
                             child: _iconButton(
-                              icon: Icons.delete_outline,
+                              icon: Icons.delete,
                               onTap: () => _confirmDelete(file),
                             ),
                           ),
@@ -149,7 +153,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
                             bottom: 4,
                             right: 4,
                             child: _iconButton(
-                              icon: Icons.download_outlined,
+                              icon: Icons.download,
                               onTap: () => _saveToDevice(file),
                             ),
                           ),
@@ -161,6 +165,10 @@ class _GalleryScreenState extends State<GalleryScreen> {
     );
   }
 
+  // Not: bu ikonlar her zaman fotoğrafın üstünde, sabit yarı-saydam siyah bir
+  // daire üzerinde duruyor — tema (açık/koyu) burada uygulanmaz, ikon rengi
+  // sabit beyaz olmalı (yoksa açık modda ikon arka planla neredeyse aynı
+  // renk olup görünmez oluyordu).
   Widget _iconButton({required IconData icon, required VoidCallback onTap}) {
     return GestureDetector(
       onTap: onTap,
@@ -170,7 +178,7 @@ class _GalleryScreenState extends State<GalleryScreen> {
           color: Colors.black54,
           shape: BoxShape.circle,
         ),
-        child: Icon(icon, size: 18, color: AppColors.safBeyaz),
+        child: Icon(icon, size: 18, color: Colors.white),
       ),
     );
   }

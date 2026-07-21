@@ -2,6 +2,7 @@
   "@@locale": "tr",
 
   "genericErrorMessage": "Hata: {error}",
+  "commonOk": "Tamam",
 
   "loginEmailPasswordRequired": "E-posta ve şifre gerekli.",
   "loginEmailHint": "E-posta",
@@ -16,6 +17,7 @@
   "navCreate": "Oluştur",
   "navGallery": "Galeri",
   "navProfile": "Profil",
+  "navPrompts": "Öneriler",
 
   "themeAppBarTitle": "Tema",
   "themeSceneTitle": "Mekan",
@@ -54,6 +56,7 @@
   "galleryDelete": "Sil",
   "gallerySavedToDevice": "Görsel cihaz galerisine kaydedildi.",
   "galleryPermissionDenied": "Galeri izni verilmedi.",
+  "galleryDeviceSaveFailed": "Görsel cihaza kaydedilemedi.",
   "galleryEmpty": "Henüz üretilmiş görsel yok.",
 
   "profileAppBarTitle": "Profil",
@@ -66,5 +69,122 @@
   "profilePurchaseCompletedButCreditsFailed": "Satın alma tamamlandı ama kredi eklenemedi: {error}",
   "profilePurchaseFailed": "Satın alma başarısız.",
   "profileCreditsSuffix": "{credits} kredi",
-  "profileSignOut": "Çıkış Yap"
+  "profileSignOut": "Çıkış Yap",
+  "profileThemeTitle": "Görünüm",
+  "profileThemeLight": "Açık",
+  "profileThemeDark": "Koyu",
+  "profileThemeSystem": "Sistem",
+
+  "onboardingSkip": "Geç",
+  "onboardingNext": "İleri",
+  "onboardingGetStarted": "Başla",
+  "onboardingPage1Title": "Vitrify'a Hoş Geldin",
+  "onboardingPage1Body": "Yapay zeka ile ürün fotoğraflarını saniyeler içinde profesyonel sahnelere dönüştür.",
+  "onboardingPage2Title": "1. Tema Oluştur",
+  "onboardingPage2Body": "Ürünlerinin sergileneceği mekanı ve senaryoları tanımla — bu ayarlar cihazında saklanır.",
+  "onboardingPage3Title": "2. Üret",
+  "onboardingPage3Body": "Ürün fotoğraflarını yükle, kredini kullanarak yapay zeka senin için görseller üretsin.",
+  "onboardingPage4Title": "3. Görüntüle ve Yönet",
+  "onboardingPage4Body": "Üretilen görselleri Galeri'de gör ya da cihazına kaydet, Profil'de kredini takip et.",
+
+  "promptsAppBarTitle": "Öneri Promptlar",
+  "promptsCopied": "Kopyalandı ✓",
+  "promptsSceneLabel": "Mekan",
+  "promptsScenarioLabel": "Senaryolar",
+
+  "promptCatJewelryName": "Takılar",
+  "promptCatJewelryScene": "Kadife dokulu bir zeminde, yumuşak ve sıcak stüdyo ışığıyla aydınlatılmış şık bir mücevher sergisi",
+  "promptCatJewelryScenario1": "bir kadının bileğinde, zarif bir el pozuyla",
+  "promptCatJewelryScenario2": "açık bir mücevher kutusunun içinde, kutunun kadife astarı üzerinde",
+  "promptCatJewelryScenario3": "parlak bir mermer zemin üzerinde, yandan gelen yumuşak bir ışıkla",
+
+  "promptCatWatchName": "Saatler",
+  "promptCatWatchScene": "Koyu ahşap bir masa üzerinde, minimalist ve erkeksi bir stüdyo ortamı, keskin ama yumuşak ışık",
+  "promptCatWatchScenario1": "bir erkeğin bileğinde, gömlek koluyla birlikte",
+  "promptCatWatchScenario2": "bir saat kutusunun içinde, kutunun yumuşak astarı üzerinde sergileniyor",
+  "promptCatWatchScenario3": "deri bir defterin yanında, masa üzeri düzenlemesinde",
+
+  "promptCatGlassesName": "Gözlükler",
+  "promptCatGlassesScene": "Güneşli bir kafe terasında, doğal gün ışığı ve hafif bulanık bir şehir manzarası arka planda",
+  "promptCatGlassesScenario1": "bir kişinin yüzünde, gülümserken",
+  "promptCatGlassesScenario2": "masanın üzerinde katlanmış şekilde, yanında açık bir kitapla",
+  "promptCatGlassesScenario3": "bir elin içinde tutuluyor, arka planda açık gökyüzüyle",
+
+  "promptCatTshirtName": "Tişört & Üst Giyim",
+  "promptCatTshirtScene": "Minimalist bir stüdyo, düz pastel tonlu bir arka plan ve yumuşak, dengeli stüdyo ışığı",
+  "promptCatTshirtScenario1": "bir manken üzerinde, önden düz bir çekimle",
+  "promptCatTshirtScenario2": "gündelik bir sokak ortamında yürüyen bir kişinin üzerinde",
+  "promptCatTshirtScenario3": "ahşap bir askıda, doğal pencere ışığıyla asılı şekilde",
+
+  "promptCatPantsName": "Pantolonlar",
+  "promptCatPantsScene": "Modern bir giyinme odası, sıcak ahşap zemin ve yumuşak yandan gelen ışık",
+  "promptCatPantsScenario1": "bir kişinin üzerinde, rahat bir ayakta duruş pozuyla",
+  "promptCatPantsScenario2": "özenle katlanmış şekilde bir sandalyenin üzerinde",
+  "promptCatPantsScenario3": "bir mağaza vitrininde diğer kıyafetlerle birlikte sergileniyor",
+
+  "promptCatJacketName": "Ceket & Mont",
+  "promptCatJacketScene": "Şehir sokağında sonbahar atmosferi, dökülen yapraklar ve yumuşak gündüz ışığı",
+  "promptCatJacketScenario1": "bir kişinin üzerinde, yürürken yakalanmış doğal bir poz",
+  "promptCatJacketScenario2": "ahşap bir askıya asılı, mağaza içi bir ortamda",
+  "promptCatJacketScenario3": "omuzdan tek elle tutulan, gündelik bir poz",
+
+  "promptCatBagName": "Çantalar",
+  "promptCatBagScene": "Şık bir kafe masası düzenlemesi, yanında bir fincan kahve ve bir dergiyle, yumuşak doğal ışık",
+  "promptCatBagScenario1": "bir kadının omzunda taşınıyor, gündelik bir yürüyüş pozunda",
+  "promptCatBagScenario2": "bir sandalyenin üzerinde rahatça bırakılmış şekilde",
+  "promptCatBagScenario3": "elde tutulan, şehir içinde yürüme anında",
+
+  "promptCatShoesName": "Ayakkabılar",
+  "promptCatShoesScene": "Beton dokulu bir zeminde sokak stili bir sahne, sert ama sıcak gün ışığı",
+  "promptCatShoesScenario1": "bir kişinin ayağında, yürüme anında yakalanmış",
+  "promptCatShoesScenario2": "kutusunun yanında, düzenli bir sergileme şeklinde",
+  "promptCatShoesScenario3": "merdiven basamağında, yandan gelen ışıkla çekilmiş",
+
+  "promptCatCosmeticsName": "Kozmetik & Cilt Bakımı",
+  "promptCatCosmeticsScene": "Beyaz mermer bir tezgah üzerinde, yumuşak ve temiz bir banyo/spa atmosferi, doğal ışıkla aydınlatılmış",
+  "promptCatCosmeticsScenario1": "yanında yeşil yapraklar ve bir havluyla düzenlenmiş",
+  "promptCatCosmeticsScenario2": "bir kadının elinde, cilde uygulanırken",
+  "promptCatCosmeticsScenario3": "su damlacıklarıyla, ürünün üzerine ışık vurarak",
+
+  "promptCatPerfumeName": "Parfüm",
+  "promptCatPerfumeScene": "Zarif bir tuvalet masası üzerinde, altın detaylı bir ayna önünde, akşam ışığıyla aydınlatılmış",
+  "promptCatPerfumeScenario1": "ipek bir kumaşın üzerinde, yanında taze çiçeklerle",
+  "promptCatPerfumeScenario2": "bir kadının elinde, kendine sıkarken",
+  "promptCatPerfumeScenario3": "karanlık bir zemin üzerinde, dramatik bir ışıkla vurgulanmış",
+
+  "promptCatElectronicsName": "Elektronik",
+  "promptCatElectronicsScene": "Modern bir çalışma masası, minimalist dekor, düzenli kablolar ve yumuşak ofis ışığı",
+  "promptCatElectronicsScenario1": "bir kişinin elinde tutuluyor, kullanılırken",
+  "promptCatElectronicsScenario2": "masanın üzerinde, dizüstü bilgisayar ve bir kahve fincanıyla birlikte",
+  "promptCatElectronicsScenario3": "kutusunun yanında, açılmış paketleme ile sergileniyor",
+
+  "promptCatFurnitureName": "Mobilya",
+  "promptCatFurnitureScene": "Sıcak ışıklı, modern bir oturma odası, büyük bir pencereden gelen doğal ışıkla",
+  "promptCatFurnitureScenario1": "odanın merkezinde, diğer dekorasyon parçalarıyla uyumlu şekilde",
+  "promptCatFurnitureScenario2": "üzerine bir kitap ve bir bitki konmuş şekilde",
+  "promptCatFurnitureScenario3": "akşam ışığında, sıcak bir atmosferde",
+
+  "promptCatHomeDecorName": "Ev Dekorasyonu",
+  "promptCatHomeDecorScene": "Minimalist bir raf düzenlemesi, doğal dokular (ahşap, keten) ve yumuşak gündüz ışığı",
+  "promptCatHomeDecorScenario1": "bir rafın üzerinde, kitaplar ve bir mumla birlikte",
+  "promptCatHomeDecorScenario2": "bir masanın ortasında, çiçek düzenlemesiyle",
+  "promptCatHomeDecorScenario3": "duvara yakın, gölge oyunlarıyla dramatik bir ışıklandırmayla",
+
+  "promptCatKitchenName": "Mutfak Eşyaları",
+  "promptCatKitchenScene": "Modern bir mutfak tezgahı, mermer yüzey ve pencereden gelen doğal sabah ışığı",
+  "promptCatKitchenScenario1": "taze malzemelerle (sebze, meyve) birlikte düzenlenmiş",
+  "promptCatKitchenScenario2": "kullanılırken, bir elin içinde",
+  "promptCatKitchenScenario3": "diğer mutfak eşyalarıyla bir arada, düzenli bir raf üzerinde",
+
+  "promptCatBabyName": "Bebek & Çocuk",
+  "promptCatBabyScene": "Yumuşak pastel tonlarda bir çocuk odası, oyuncaklar ve sıcak, güven veren bir ışıkla",
+  "promptCatBabyScenario1": "bir bebeğin yanında, beşiğin içinde",
+  "promptCatBabyScenario2": "bir çocuğun elinde, oynarken",
+  "promptCatBabyScenario3": "diğer oyuncaklarla birlikte, halının üzerinde düzenlenmiş",
+
+  "promptCatSportsName": "Spor & Fitness",
+  "promptCatSportsScene": "Modern bir spor salonu ya da açık hava antrenman alanı, enerjik ve dinamik bir ışıkla",
+  "promptCatSportsScenario1": "bir kişi antrenman yaparken kullanılıyor",
+  "promptCatSportsScenario2": "bir yoga matının üzerinde, düzenli şekilde yerleştirilmiş",
+  "promptCatSportsScenario3": "spor çantasının yanında, antrenman öncesi düzenlemesinde"
 }

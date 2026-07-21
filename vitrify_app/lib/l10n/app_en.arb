@@ -5,6 +5,7 @@
   "@genericErrorMessage": {
     "placeholders": { "error": { "type": "String" } }
   },
+  "commonOk": "OK",
 
   "loginEmailPasswordRequired": "Email and password are required.",
   "loginEmailHint": "Email",
@@ -22,6 +23,7 @@
   "navCreate": "Create",
   "navGallery": "Gallery",
   "navProfile": "Profile",
+  "navPrompts": "Tips",
 
   "themeAppBarTitle": "Theme",
   "themeSceneTitle": "Scene",
@@ -75,6 +77,7 @@
   "galleryDelete": "Delete",
   "gallerySavedToDevice": "Image saved to device gallery.",
   "galleryPermissionDenied": "Gallery permission was denied.",
+  "galleryDeviceSaveFailed": "Could not save the image to your device.",
   "galleryEmpty": "No generated images yet.",
 
   "profileAppBarTitle": "Profile",
@@ -96,5 +99,122 @@
   "@profileCreditsSuffix": {
     "placeholders": { "credits": { "type": "int" } }
   },
-  "profileSignOut": "Sign Out"
+  "profileSignOut": "Sign Out",
+  "profileThemeTitle": "Appearance",
+  "profileThemeLight": "Light",
+  "profileThemeDark": "Dark",
+  "profileThemeSystem": "System",
+
+  "onboardingSkip": "Skip",
+  "onboardingNext": "Next",
+  "onboardingGetStarted": "Get Started",
+  "onboardingPage1Title": "Welcome to Vitrify",
+  "onboardingPage1Body": "Turn product photos into professional scenes in seconds with AI.",
+  "onboardingPage2Title": "1. Create a Theme",
+  "onboardingPage2Body": "Describe the scene and scenarios your products will be shown in — saved on your device.",
+  "onboardingPage3Title": "2. Generate",
+  "onboardingPage3Body": "Upload your product photos and let AI generate images using your credits.",
+  "onboardingPage4Title": "3. View & Manage",
+  "onboardingPage4Body": "View or save generated images in Gallery, and track your credits in Profile.",
+
+  "promptsAppBarTitle": "Suggested Prompts",
+  "promptsCopied": "Copied ✓",
+  "promptsSceneLabel": "Scene",
+  "promptsScenarioLabel": "Scenarios",
+
+  "promptCatJewelryName": "Jewelry",
+  "promptCatJewelryScene": "An elegant jewelry display on a velvet-textured surface, lit with soft, warm studio lighting",
+  "promptCatJewelryScenario1": "on a woman's wrist, in an elegant hand pose",
+  "promptCatJewelryScenario2": "inside an open jewelry box, resting on its velvet lining",
+  "promptCatJewelryScenario3": "on a glossy marble surface, lit with soft side lighting",
+
+  "promptCatWatchName": "Watches",
+  "promptCatWatchScene": "A minimalist, masculine studio setting on a dark wooden table, with sharp yet soft lighting",
+  "promptCatWatchScenario1": "on a man's wrist, alongside a shirt sleeve",
+  "promptCatWatchScenario2": "displayed inside a watch box, resting on its soft lining",
+  "promptCatWatchScenario3": "next to a leather notebook, in a desk-top flat lay",
+
+  "promptCatGlassesName": "Glasses",
+  "promptCatGlassesScene": "On a sunny café terrace, with natural daylight and a softly blurred city view in the background",
+  "promptCatGlassesScenario1": "on a person's face, while smiling",
+  "promptCatGlassesScenario2": "folded on a table, next to an open book",
+  "promptCatGlassesScenario3": "held in a hand, with an open sky in the background",
+
+  "promptCatTshirtName": "T-Shirts & Tops",
+  "promptCatTshirtScene": "A minimalist studio with a flat pastel-toned background and soft, balanced studio lighting",
+  "promptCatTshirtScenario1": "on a mannequin, in a straight-on front shot",
+  "promptCatTshirtScenario2": "worn by a person walking in a casual street setting",
+  "promptCatTshirtScenario3": "hanging on a wooden hanger, lit by natural window light",
+
+  "promptCatPantsName": "Pants",
+  "promptCatPantsScene": "A modern dressing room with warm wooden flooring and soft side lighting",
+  "promptCatPantsScenario1": "worn by a person, in a relaxed standing pose",
+  "promptCatPantsScenario2": "neatly folded on top of a chair",
+  "promptCatPantsScenario3": "displayed in a store window alongside other garments",
+
+  "promptCatJacketName": "Jackets & Coats",
+  "promptCatJacketScene": "An autumn atmosphere on a city street, with falling leaves and soft daylight",
+  "promptCatJacketScenario1": "worn by a person, in a natural pose captured mid-walk",
+  "promptCatJacketScenario2": "hanging on a wooden hanger in a store interior",
+  "promptCatJacketScenario3": "held over the shoulder with one hand, in a casual pose",
+
+  "promptCatBagName": "Bags",
+  "promptCatBagScene": "A stylish café table flat lay, with a cup of coffee and a magazine, in soft natural light",
+  "promptCatBagScenario1": "carried on a woman's shoulder, in a casual walking pose",
+  "promptCatBagScenario2": "casually placed on top of a chair",
+  "promptCatBagScenario3": "held by hand, captured while walking in the city",
+
+  "promptCatShoesName": "Shoes",
+  "promptCatShoesScene": "A street-style scene on a textured concrete surface, with hard yet warm daylight",
+  "promptCatShoesScenario1": "worn on a person's foot, captured mid-step",
+  "promptCatShoesScenario2": "displayed neatly next to its box",
+  "promptCatShoesScenario3": "on a staircase step, photographed with side lighting",
+
+  "promptCatCosmeticsName": "Cosmetics & Skincare",
+  "promptCatCosmeticsScene": "On a white marble countertop, in a soft and clean bathroom/spa atmosphere, lit with natural light",
+  "promptCatCosmeticsScenario1": "arranged next to green leaves and a towel",
+  "promptCatCosmeticsScenario2": "held in a woman's hand, while being applied to skin",
+  "promptCatCosmeticsScenario3": "with water droplets, light reflecting off the product",
+
+  "promptCatPerfumeName": "Perfume",
+  "promptCatPerfumeScene": "On an elegant vanity table, in front of a gold-detailed mirror, lit with evening light",
+  "promptCatPerfumeScenario1": "on a silk fabric, next to fresh flowers",
+  "promptCatPerfumeScenario2": "held in a woman's hand, while spraying it on",
+  "promptCatPerfumeScenario3": "on a dark surface, dramatically highlighted with directional light",
+
+  "promptCatElectronicsName": "Electronics",
+  "promptCatElectronicsScene": "A modern desk setup, minimalist décor, tidy cables, and soft office lighting",
+  "promptCatElectronicsScenario1": "held in a person's hand, while in use",
+  "promptCatElectronicsScenario2": "on a desk, alongside a laptop and a cup of coffee",
+  "promptCatElectronicsScenario3": "displayed next to its box, with unboxed packaging",
+
+  "promptCatFurnitureName": "Furniture",
+  "promptCatFurnitureScene": "A warmly lit, modern living room, with natural light streaming through a large window",
+  "promptCatFurnitureScenario1": "in the center of the room, harmonizing with other décor pieces",
+  "promptCatFurnitureScenario2": "with a book and a plant placed on top",
+  "promptCatFurnitureScenario3": "in evening light, within a warm atmosphere",
+
+  "promptCatHomeDecorName": "Home Decor",
+  "promptCatHomeDecorScene": "A minimalist shelf arrangement, natural textures (wood, linen), and soft daylight",
+  "promptCatHomeDecorScenario1": "on a shelf, alongside books and a candle",
+  "promptCatHomeDecorScenario2": "at the center of a table, with a floral arrangement",
+  "promptCatHomeDecorScenario3": "near a wall, with dramatic lighting and shadow play",
+
+  "promptCatKitchenName": "Kitchenware",
+  "promptCatKitchenScene": "A modern kitchen counter, marble surface, with natural morning light from a window",
+  "promptCatKitchenScenario1": "arranged together with fresh ingredients (vegetables, fruit)",
+  "promptCatKitchenScenario2": "in use, held in a hand",
+  "promptCatKitchenScenario3": "alongside other kitchenware, on a tidy shelf",
+
+  "promptCatBabyName": "Baby & Kids",
+  "promptCatBabyScene": "A soft pastel-toned nursery, with toys and warm, comforting light",
+  "promptCatBabyScenario1": "next to a baby, inside a crib",
+  "promptCatBabyScenario2": "in a child's hand, while playing",
+  "promptCatBabyScenario3": "arranged with other toys, on a rug",
+
+  "promptCatSportsName": "Sports & Fitness",
+  "promptCatSportsScene": "A modern gym or outdoor training area, with energetic, dynamic lighting",
+  "promptCatSportsScenario1": "in use while a person is working out",
+  "promptCatSportsScenario2": "neatly placed on a yoga mat",
+  "promptCatSportsScenario3": "next to a gym bag, in a pre-workout flat lay"
 }

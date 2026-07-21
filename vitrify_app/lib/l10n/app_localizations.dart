@@ -104,6 +104,12 @@ abstract class AppLocalizations {
   /// **'Error: {error}'**
   String genericErrorMessage(String error);
 
+  /// No description provided for @commonOk.
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get commonOk;
+
   /// No description provided for @loginEmailPasswordRequired.
   ///
   /// In en, this message translates to:
@@ -175,6 +181,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Profile'**
   String get navProfile;
+
+  /// No description provided for @navPrompts.
+  ///
+  /// In en, this message translates to:
+  /// **'Tips'**
+  String get navPrompts;
 
   /// No description provided for @themeAppBarTitle.
   ///
@@ -386,6 +398,12 @@ abstract class AppLocalizations {
   /// **'Gallery permission was denied.'**
   String get galleryPermissionDenied;
 
+  /// No description provided for @galleryDeviceSaveFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not save the image to your device.'**
+  String get galleryDeviceSaveFailed;
+
   /// No description provided for @galleryEmpty.
   ///
   /// In en, this message translates to:
@@ -457,6 +475,600 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sign Out'**
   String get profileSignOut;
+
+  /// No description provided for @profileThemeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Appearance'**
+  String get profileThemeTitle;
+
+  /// No description provided for @profileThemeLight.
+  ///
+  /// In en, this message translates to:
+  /// **'Light'**
+  String get profileThemeLight;
+
+  /// No description provided for @profileThemeDark.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark'**
+  String get profileThemeDark;
+
+  /// No description provided for @profileThemeSystem.
+  ///
+  /// In en, this message translates to:
+  /// **'System'**
+  String get profileThemeSystem;
+
+  /// No description provided for @onboardingSkip.
+  ///
+  /// In en, this message translates to:
+  /// **'Skip'**
+  String get onboardingSkip;
+
+  /// No description provided for @onboardingNext.
+  ///
+  /// In en, this message translates to:
+  /// **'Next'**
+  String get onboardingNext;
+
+  /// No description provided for @onboardingGetStarted.
+  ///
+  /// In en, this message translates to:
+  /// **'Get Started'**
+  String get onboardingGetStarted;
+
+  /// No description provided for @onboardingPage1Title.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Vitrify'**
+  String get onboardingPage1Title;
+
+  /// No description provided for @onboardingPage1Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Turn product photos into professional scenes in seconds with AI.'**
+  String get onboardingPage1Body;
+
+  /// No description provided for @onboardingPage2Title.
+  ///
+  /// In en, this message translates to:
+  /// **'1. Create a Theme'**
+  String get onboardingPage2Title;
+
+  /// No description provided for @onboardingPage2Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Describe the scene and scenarios your products will be shown in — saved on your device.'**
+  String get onboardingPage2Body;
+
+  /// No description provided for @onboardingPage3Title.
+  ///
+  /// In en, this message translates to:
+  /// **'2. Generate'**
+  String get onboardingPage3Title;
+
+  /// No description provided for @onboardingPage3Body.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload your product photos and let AI generate images using your credits.'**
+  String get onboardingPage3Body;
+
+  /// No description provided for @onboardingPage4Title.
+  ///
+  /// In en, this message translates to:
+  /// **'3. View & Manage'**
+  String get onboardingPage4Title;
+
+  /// No description provided for @onboardingPage4Body.
+  ///
+  /// In en, this message translates to:
+  /// **'View or save generated images in Gallery, and track your credits in Profile.'**
+  String get onboardingPage4Body;
+
+  /// No description provided for @promptsAppBarTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Suggested Prompts'**
+  String get promptsAppBarTitle;
+
+  /// No description provided for @promptsCopied.
+  ///
+  /// In en, this message translates to:
+  /// **'Copied ✓'**
+  String get promptsCopied;
+
+  /// No description provided for @promptsSceneLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Scene'**
+  String get promptsSceneLabel;
+
+  /// No description provided for @promptsScenarioLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Scenarios'**
+  String get promptsScenarioLabel;
+
+  /// No description provided for @promptCatJewelryName.
+  ///
+  /// In en, this message translates to:
+  /// **'Jewelry'**
+  String get promptCatJewelryName;
+
+  /// No description provided for @promptCatJewelryScene.
+  ///
+  /// In en, this message translates to:
+  /// **'An elegant jewelry display on a velvet-textured surface, lit with soft, warm studio lighting'**
+  String get promptCatJewelryScene;
+
+  /// No description provided for @promptCatJewelryScenario1.
+  ///
+  /// In en, this message translates to:
+  /// **'on a woman\'s wrist, in an elegant hand pose'**
+  String get promptCatJewelryScenario1;
+
+  /// No description provided for @promptCatJewelryScenario2.
+  ///
+  /// In en, this message translates to:
+  /// **'inside an open jewelry box, resting on its velvet lining'**
+  String get promptCatJewelryScenario2;
+
+  /// No description provided for @promptCatJewelryScenario3.
+  ///
+  /// In en, this message translates to:
+  /// **'on a glossy marble surface, lit with soft side lighting'**
+  String get promptCatJewelryScenario3;
+
+  /// No description provided for @promptCatWatchName.
+  ///
+  /// In en, this message translates to:
+  /// **'Watches'**
+  String get promptCatWatchName;
+
+  /// No description provided for @promptCatWatchScene.
+  ///
+  /// In en, this message translates to:
+  /// **'A minimalist, masculine studio setting on a dark wooden table, with sharp yet soft lighting'**
+  String get promptCatWatchScene;
+
+  /// No description provided for @promptCatWatchScenario1.
+  ///
+  /// In en, this message translates to:
+  /// **'on a man\'s wrist, alongside a shirt sleeve'**
+  String get promptCatWatchScenario1;
+
+  /// No description provided for @promptCatWatchScenario2.
+  ///
+  /// In en, this message translates to:
+  /// **'displayed inside a watch box, resting on its soft lining'**
+  String get promptCatWatchScenario2;
+
+  /// No description provided for @promptCatWatchScenario3.
+  ///
+  /// In en, this message translates to:
+  /// **'next to a leather notebook, in a desk-top flat lay'**
+  String get promptCatWatchScenario3;
+
+  /// No description provided for @promptCatGlassesName.
+  ///
+  /// In en, this message translates to:
+  /// **'Glasses'**
+  String get promptCatGlassesName;
+
+  /// No description provided for @promptCatGlassesScene.
+  ///
+  /// In en, this message translates to:
+  /// **'On a sunny café terrace, with natural daylight and a softly blurred city view in the background'**
+  String get promptCatGlassesScene;
+
+  /// No description provided for @promptCatGlassesScenario1.
+  ///
+  /// In en, this message translates to:
+  /// **'on a person\'s face, while smiling'**
+  String get promptCatGlassesScenario1;
+
+  /// No description provided for @promptCatGlassesScenario2.
+  ///
+  /// In en, this message translates to:
+  /// **'folded on a table, next to an open book'**
+  String get promptCatGlassesScenario2;
+
+  /// No description provided for @promptCatGlassesScenario3.
+  ///
+  /// In en, this message translates to:
+  /// **'held in a hand, with an open sky in the background'**
+  String get promptCatGlassesScenario3;
+
+  /// No description provided for @promptCatTshirtName.
+  ///
+  /// In en, this message translates to:
+  /// **'T-Shirts & Tops'**
+  String get promptCatTshirtName;
+
+  /// No description provided for @promptCatTshirtScene.
+  ///
+  /// In en, this message translates to:
+  /// **'A minimalist studio with a flat pastel-toned background and soft, balanced studio lighting'**
+  String get promptCatTshirtScene;
+
+  /// No description provided for @promptCatTshirtScenario1.
+  ///
+  /// In en, this message translates to:
+  /// **'on a mannequin, in a straight-on front shot'**
+  String get promptCatTshirtScenario1;
+
+  /// No description provided for @promptCatTshirtScenario2.
+  ///
+  /// In en, this message translates to:
+  /// **'worn by a person walking in a casual street setting'**
+  String get promptCatTshirtScenario2;
+
+  /// No description provided for @promptCatTshirtScenario3.
+  ///
+  /// In en, this message translates to:
+  /// **'hanging on a wooden hanger, lit by natural window light'**
+  String get promptCatTshirtScenario3;
+
+  /// No description provided for @promptCatPantsName.
+  ///
+  /// In en, this message translates to:
+  /// **'Pants'**
+  String get promptCatPantsName;
+
+  /// No description provided for @promptCatPantsScene.
+  ///
+  /// In en, this message translates to:
+  /// **'A modern dressing room with warm wooden flooring and soft side lighting'**
+  String get promptCatPantsScene;
+
+  /// No description provided for @promptCatPantsScenario1.
+  ///
+  /// In en, this message translates to:
+  /// **'worn by a person, in a relaxed standing pose'**
+  String get promptCatPantsScenario1;
+
+  /// No description provided for @promptCatPantsScenario2.
+  ///
+  /// In en, this message translates to:
+  /// **'neatly folded on top of a chair'**
+  String get promptCatPantsScenario2;
+
+  /// No description provided for @promptCatPantsScenario3.
+  ///
+  /// In en, this message translates to:
+  /// **'displayed in a store window alongside other garments'**
+  String get promptCatPantsScenario3;
+
+  /// No description provided for @promptCatJacketName.
+  ///
+  /// In en, this message translates to:
+  /// **'Jackets & Coats'**
+  String get promptCatJacketName;
+
+  /// No description provided for @promptCatJacketScene.
+  ///
+  /// In en, this message translates to:
+  /// **'An autumn atmosphere on a city street, with falling leaves and soft daylight'**
+  String get promptCatJacketScene;
+
+  /// No description provided for @promptCatJacketScenario1.
+  ///
+  /// In en, this message translates to:
+  /// **'worn by a person, in a natural pose captured mid-walk'**
+  String get promptCatJacketScenario1;
+
+  /// No description provided for @promptCatJacketScenario2.
+  ///
+  /// In en, this message translates to:
+  /// **'hanging on a wooden hanger in a store interior'**
+  String get promptCatJacketScenario2;
+
+  /// No description provided for @promptCatJacketScenario3.
+  ///
+  /// In en, this message translates to:
+  /// **'held over the shoulder with one hand, in a casual pose'**
+  String get promptCatJacketScenario3;
+
+  /// No description provided for @promptCatBagName.
+  ///
+  /// In en, this message translates to:
+  /// **'Bags'**
+  String get promptCatBagName;
+
+  /// No description provided for @promptCatBagScene.
+  ///
+  /// In en, this message translates to:
+  /// **'A stylish café table flat lay, with a cup of coffee and a magazine, in soft natural light'**
+  String get promptCatBagScene;
+
+  /// No description provided for @promptCatBagScenario1.
+  ///
+  /// In en, this message translates to:
+  /// **'carried on a woman\'s shoulder, in a casual walking pose'**
+  String get promptCatBagScenario1;
+
+  /// No description provided for @promptCatBagScenario2.
+  ///
+  /// In en, this message translates to:
+  /// **'casually placed on top of a chair'**
+  String get promptCatBagScenario2;
+
+  /// No description provided for @promptCatBagScenario3.
+  ///
+  /// In en, this message translates to:
+  /// **'held by hand, captured while walking in the city'**
+  String get promptCatBagScenario3;
+
+  /// No description provided for @promptCatShoesName.
+  ///
+  /// In en, this message translates to:
+  /// **'Shoes'**
+  String get promptCatShoesName;
+
+  /// No description provided for @promptCatShoesScene.
+  ///
+  /// In en, this message translates to:
+  /// **'A street-style scene on a textured concrete surface, with hard yet warm daylight'**
+  String get promptCatShoesScene;
+
+  /// No description provided for @promptCatShoesScenario1.
+  ///
+  /// In en, this message translates to:
+  /// **'worn on a person\'s foot, captured mid-step'**
+  String get promptCatShoesScenario1;
+
+  /// No description provided for @promptCatShoesScenario2.
+  ///
+  /// In en, this message translates to:
+  /// **'displayed neatly next to its box'**
+  String get promptCatShoesScenario2;
+
+  /// No description provided for @promptCatShoesScenario3.
+  ///
+  /// In en, this message translates to:
+  /// **'on a staircase step, photographed with side lighting'**
+  String get promptCatShoesScenario3;
+
+  /// No description provided for @promptCatCosmeticsName.
+  ///
+  /// In en, this message translates to:
+  /// **'Cosmetics & Skincare'**
+  String get promptCatCosmeticsName;
+
+  /// No description provided for @promptCatCosmeticsScene.
+  ///
+  /// In en, this message translates to:
+  /// **'On a white marble countertop, in a soft and clean bathroom/spa atmosphere, lit with natural light'**
+  String get promptCatCosmeticsScene;
+
+  /// No description provided for @promptCatCosmeticsScenario1.
+  ///
+  /// In en, this message translates to:
+  /// **'arranged next to green leaves and a towel'**
+  String get promptCatCosmeticsScenario1;
+
+  /// No description provided for @promptCatCosmeticsScenario2.
+  ///
+  /// In en, this message translates to:
+  /// **'held in a woman\'s hand, while being applied to skin'**
+  String get promptCatCosmeticsScenario2;
+
+  /// No description provided for @promptCatCosmeticsScenario3.
+  ///
+  /// In en, this message translates to:
+  /// **'with water droplets, light reflecting off the product'**
+  String get promptCatCosmeticsScenario3;
+
+  /// No description provided for @promptCatPerfumeName.
+  ///
+  /// In en, this message translates to:
+  /// **'Perfume'**
+  String get promptCatPerfumeName;
+
+  /// No description provided for @promptCatPerfumeScene.
+  ///
+  /// In en, this message translates to:
+  /// **'On an elegant vanity table, in front of a gold-detailed mirror, lit with evening light'**
+  String get promptCatPerfumeScene;
+
+  /// No description provided for @promptCatPerfumeScenario1.
+  ///
+  /// In en, this message translates to:
+  /// **'on a silk fabric, next to fresh flowers'**
+  String get promptCatPerfumeScenario1;
+
+  /// No description provided for @promptCatPerfumeScenario2.
+  ///
+  /// In en, this message translates to:
+  /// **'held in a woman\'s hand, while spraying it on'**
+  String get promptCatPerfumeScenario2;
+
+  /// No description provided for @promptCatPerfumeScenario3.
+  ///
+  /// In en, this message translates to:
+  /// **'on a dark surface, dramatically highlighted with directional light'**
+  String get promptCatPerfumeScenario3;
+
+  /// No description provided for @promptCatElectronicsName.
+  ///
+  /// In en, this message translates to:
+  /// **'Electronics'**
+  String get promptCatElectronicsName;
+
+  /// No description provided for @promptCatElectronicsScene.
+  ///
+  /// In en, this message translates to:
+  /// **'A modern desk setup, minimalist décor, tidy cables, and soft office lighting'**
+  String get promptCatElectronicsScene;
+
+  /// No description provided for @promptCatElectronicsScenario1.
+  ///
+  /// In en, this message translates to:
+  /// **'held in a person\'s hand, while in use'**
+  String get promptCatElectronicsScenario1;
+
+  /// No description provided for @promptCatElectronicsScenario2.
+  ///
+  /// In en, this message translates to:
+  /// **'on a desk, alongside a laptop and a cup of coffee'**
+  String get promptCatElectronicsScenario2;
+
+  /// No description provided for @promptCatElectronicsScenario3.
+  ///
+  /// In en, this message translates to:
+  /// **'displayed next to its box, with unboxed packaging'**
+  String get promptCatElectronicsScenario3;
+
+  /// No description provided for @promptCatFurnitureName.
+  ///
+  /// In en, this message translates to:
+  /// **'Furniture'**
+  String get promptCatFurnitureName;
+
+  /// No description provided for @promptCatFurnitureScene.
+  ///
+  /// In en, this message translates to:
+  /// **'A warmly lit, modern living room, with natural light streaming through a large window'**
+  String get promptCatFurnitureScene;
+
+  /// No description provided for @promptCatFurnitureScenario1.
+  ///
+  /// In en, this message translates to:
+  /// **'in the center of the room, harmonizing with other décor pieces'**
+  String get promptCatFurnitureScenario1;
+
+  /// No description provided for @promptCatFurnitureScenario2.
+  ///
+  /// In en, this message translates to:
+  /// **'with a book and a plant placed on top'**
+  String get promptCatFurnitureScenario2;
+
+  /// No description provided for @promptCatFurnitureScenario3.
+  ///
+  /// In en, this message translates to:
+  /// **'in evening light, within a warm atmosphere'**
+  String get promptCatFurnitureScenario3;
+
+  /// No description provided for @promptCatHomeDecorName.
+  ///
+  /// In en, this message translates to:
+  /// **'Home Decor'**
+  String get promptCatHomeDecorName;
+
+  /// No description provided for @promptCatHomeDecorScene.
+  ///
+  /// In en, this message translates to:
+  /// **'A minimalist shelf arrangement, natural textures (wood, linen), and soft daylight'**
+  String get promptCatHomeDecorScene;
+
+  /// No description provided for @promptCatHomeDecorScenario1.
+  ///
+  /// In en, this message translates to:
+  /// **'on a shelf, alongside books and a candle'**
+  String get promptCatHomeDecorScenario1;
+
+  /// No description provided for @promptCatHomeDecorScenario2.
+  ///
+  /// In en, this message translates to:
+  /// **'at the center of a table, with a floral arrangement'**
+  String get promptCatHomeDecorScenario2;
+
+  /// No description provided for @promptCatHomeDecorScenario3.
+  ///
+  /// In en, this message translates to:
+  /// **'near a wall, with dramatic lighting and shadow play'**
+  String get promptCatHomeDecorScenario3;
+
+  /// No description provided for @promptCatKitchenName.
+  ///
+  /// In en, this message translates to:
+  /// **'Kitchenware'**
+  String get promptCatKitchenName;
+
+  /// No description provided for @promptCatKitchenScene.
+  ///
+  /// In en, this message translates to:
+  /// **'A modern kitchen counter, marble surface, with natural morning light from a window'**
+  String get promptCatKitchenScene;
+
+  /// No description provided for @promptCatKitchenScenario1.
+  ///
+  /// In en, this message translates to:
+  /// **'arranged together with fresh ingredients (vegetables, fruit)'**
+  String get promptCatKitchenScenario1;
+
+  /// No description provided for @promptCatKitchenScenario2.
+  ///
+  /// In en, this message translates to:
+  /// **'in use, held in a hand'**
+  String get promptCatKitchenScenario2;
+
+  /// No description provided for @promptCatKitchenScenario3.
+  ///
+  /// In en, this message translates to:
+  /// **'alongside other kitchenware, on a tidy shelf'**
+  String get promptCatKitchenScenario3;
+
+  /// No description provided for @promptCatBabyName.
+  ///
+  /// In en, this message translates to:
+  /// **'Baby & Kids'**
+  String get promptCatBabyName;
+
+  /// No description provided for @promptCatBabyScene.
+  ///
+  /// In en, this message translates to:
+  /// **'A soft pastel-toned nursery, with toys and warm, comforting light'**
+  String get promptCatBabyScene;
+
+  /// No description provided for @promptCatBabyScenario1.
+  ///
+  /// In en, this message translates to:
+  /// **'next to a baby, inside a crib'**
+  String get promptCatBabyScenario1;
+
+  /// No description provided for @promptCatBabyScenario2.
+  ///
+  /// In en, this message translates to:
+  /// **'in a child\'s hand, while playing'**
+  String get promptCatBabyScenario2;
+
+  /// No description provided for @promptCatBabyScenario3.
+  ///
+  /// In en, this message translates to:
+  /// **'arranged with other toys, on a rug'**
+  String get promptCatBabyScenario3;
+
+  /// No description provided for @promptCatSportsName.
+  ///
+  /// In en, this message translates to:
+  /// **'Sports & Fitness'**
+  String get promptCatSportsName;
+
+  /// No description provided for @promptCatSportsScene.
+  ///
+  /// In en, this message translates to:
+  /// **'A modern gym or outdoor training area, with energetic, dynamic lighting'**
+  String get promptCatSportsScene;
+
+  /// No description provided for @promptCatSportsScenario1.
+  ///
+  /// In en, this message translates to:
+  /// **'in use while a person is working out'**
+  String get promptCatSportsScenario1;
+
+  /// No description provided for @promptCatSportsScenario2.
+  ///
+  /// In en, this message translates to:
+  /// **'neatly placed on a yoga mat'**
+  String get promptCatSportsScenario2;
+
+  /// No description provided for @promptCatSportsScenario3.
+  ///
+  /// In en, this message translates to:
+  /// **'next to a gym bag, in a pre-workout flat lay'**
+  String get promptCatSportsScenario3;
 }
 
 class _AppLocalizationsDelegate

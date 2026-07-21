@@ -10,14 +10,26 @@ using Vitrify.API.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Railway gibi platformlar dinlenecek portu PORT ortam değişkeniyle bildirir
+var railwayPort = Environment.GetEnvironmentVariable("PORT");
+if (!string.IsNullOrEmpty(railwayPort))
+{
+    builder.WebHost.UseUrls($"http://0.0.0.0:{railwayPort}");
+}
+
 // ========================================
 // SERVİSLER (builder.Build()'den ÖNCE)
 // ========================================
 
-// Firebase Admin SDK başlat
+// Firebase Admin SDK başlat — Railway gibi ortamlarda dosya yerine ortam
+// değişkeni üzerinden JSON verilir; yerelde geliştirirken eskisi gibi
+// firebase-key.json dosyası kullanılmaya devam eder.
+var firebaseServiceAccountJson = Environment.GetEnvironmentVariable("FIREBASE_SERVICE_ACCOUNT_JSON");
 FirebaseApp.Create(new AppOptions
 {
-    Credential = GoogleCredential.FromFile("firebase-key.json")
+    Credential = string.IsNullOrEmpty(firebaseServiceAccountJson)
+        ? GoogleCredential.FromFile("firebase-key.json")
+        : GoogleCredential.FromJson(firebaseServiceAccountJson)
 });
 
 // Controllers + Swagger
