@@ -131,7 +131,9 @@ public class JobsController : BaseApiController
         return $"{scenario}, {scenePrompt}, " +
                "ultra-realistic commercial product photography, " +
                "professional studio lighting, high resolution, sharp focus, photorealistic. " +
-               "Keep the product identical to the original image, do not change the product itself.";
+               "Keep the product identical to the original image, do not change the product itself. " +
+               "Preserve all text, logos, and brand names on the product exactly as shown in the " +
+               "original image, pixel-accurate — do not alter, distort, blur, or misspell any lettering.";
     }
 
     // Flutter "data:image/jpeg;base64,..." formatında gönderiyor —
