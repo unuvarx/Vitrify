@@ -128,19 +128,23 @@ public class JobsController : BaseApiController
     // Prompt oluşturucu: senaryo + mekan + kalite
     private string BuildPrompt(string scenePrompt, string scenario)
     {
-        return "CRITICAL, NON-NEGOTIABLE REQUIREMENT: the product's brand name, logo, and any " +
-               "printed or engraved text must be reproduced pixel-for-pixel identical to the " +
-               "original source image — exact same letters, exact same layout, exact same font, " +
-               "exact same proportions. Do not redesign, restyle, reinterpret, translate, resize, " +
-               "or approximate the logo or text in any way. If you are not fully certain of a " +
-               "letterform, copy it exactly as it visually appears in the source image rather than " +
-               "guessing. Brand accuracy is more important than anything else in this task, including " +
-               "the scene or creative styling below. " +
+        return "This is a BACKGROUND-REPLACEMENT AND RELIGHTING EDIT of the attached photo — you are " +
+               "NOT creating or re-imagining the product from scratch. Treat the attached image as a " +
+               "fixed, locked reference: the product region (including every letter of its brand name, " +
+               "logo, model text, dial text, and any other printed or engraved text) must be copied " +
+               "pixel-for-pixel exactly as it appears in the source photo, with zero changes to the " +
+               "letters, layout, font, spacing, or proportions. Do not redesign, restyle, reinterpret, " +
+               "translate, resize, sharpen, or approximate any text or logo. If a letterform is unclear " +
+               "or you are not 100% certain of it, copy its exact visual shape from the source image " +
+               "rather than guessing a plausible word. Brand and text accuracy is the single most " +
+               "important requirement of this task — more important than the scene, styling, or " +
+               "lighting described below. Only the background, surroundings, and lighting/environment " +
+               "around the product may be changed. " +
                $"{scenario}, {scenePrompt}, " +
                "ultra-realistic commercial product photography, " +
                "professional studio lighting, high resolution, sharp focus, photorealistic. " +
-               "Keep the product 100% identical to the original image — same shape, colors, " +
-               "materials, and textures. Do not change the product itself.";
+               "Keep the product itself 100% identical to the original image — same shape, colors, " +
+               "materials, and textures, with no alterations.";
     }
 
     // Flutter "data:image/jpeg;base64,..." formatında gönderiyor —
