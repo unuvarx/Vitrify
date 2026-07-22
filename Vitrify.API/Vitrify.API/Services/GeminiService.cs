@@ -43,10 +43,12 @@ public class GeminiService
         return ms.ToArray();
     }
 
-    // nano-banana (Gemini 2.5 Flash Image) ile görsel üret. Base64 döndürür.
+    // Nano Banana Pro (Gemini 3 Pro Image) ile görsel üret. Base64 döndürür.
     // imageBase64: SAF base64 (data: öneki OLMADAN)
-    // "Görsel döndürmedi" durumunda (network hatasından farklı — modelin kendi
-    // tutarsızlığı) Hangfire'ın yavaş retry'ını beklemeden anında tekrar dener.
+    // Herhangi bir geçici hatada (görsel dönmemesi, ağ/HTTP hatası vb.)
+    // Hangfire'ın yavaş (dakikalarca sürebilen) retry backoff'unu beklemeden
+    // anında tekrar dener — böylece kullanıcı arayüzü açıkken çoğu geçici
+    // hata bu seviyede kendi kendine düzelir.
     public async Task<string> GenerateImageAsync(
         string prompt,
         string imageBase64,
@@ -59,9 +61,9 @@ public class GeminiService
             {
                 return await GenerateImageOnceAsync(prompt, imageBase64, aspectRatio);
             }
-            catch (GeminiNoImageException) when (attempt < maxAttempts)
+            catch (Exception) when (attempt < maxAttempts)
             {
-                // Devam et, hemen tekrar dene
+                await Task.Delay(1000 * attempt);
             }
         }
 
@@ -100,7 +102,7 @@ public class GeminiService
 
         var request = new HttpRequestMessage(
             HttpMethod.Post,
-            "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent");
+            "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-pro-image-preview:generateContent");
         request.Headers.Add("x-goog-api-key", _apiKey);
         request.Content = new StringContent(json, Encoding.UTF8, "application/json");
 

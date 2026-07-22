@@ -237,22 +237,37 @@ class _CreateScreenState extends State<CreateScreen> implements Refreshable {
     }
   }
 
-  // Hangfire'ın gecikmeli tekrar denemesi sonradan başarılı olursa
-  // (biz artık canlı dinlemiyorken) yeni görselleri yakalayıp Galeri'ye kaydeder
+  // Hangfire'ın gecikmeli tekrar denemesi (backoff dakikalarca sürebiliyor)
+  // sonradan başarılı olursa (biz artık canlı dinlemiyorken) yeni görselleri
+  // yakalayıp hem Galeri'ye kaydeder hem de ekrandaki gride ekler. Tek seferlik
+  // kontrol yerine, tekrar denemenin geç gelme ihtimaline karşı belirli
+  // aralıklarla birkaç kez kontrol eder.
   void _scheduleStragglerCheck(String jobId, List<String> knownImages) {
     _stragglerTimer?.cancel();
-    _stragglerTimer = Timer(const Duration(minutes: 2), () async {
+    var attempts = 0;
+    const maxAttempts = 20; // ~10 dakika boyunca 30 saniyede bir kontrol
+    _stragglerTimer = Timer.periodic(const Duration(seconds: 30), (timer) async {
+      attempts++;
       try {
         final status = await _api.getJobStatus(jobId);
         final images = List<String>.from(status['images'] ?? []);
-        final newImages = images.where((url) => !knownImages.contains(url));
+        final newImages = images.where((url) => !knownImages.contains(url)).toList();
 
         for (final url in newImages) {
           final itemId = Uri.parse(url).pathSegments.last.replaceAll('.jpg', '');
           await _persistGeneratedImage(url, itemId);
+          knownImages.add(url);
+        }
+
+        if (newImages.isNotEmpty && mounted) {
+          setState(() => _generatedImages.addAll(newImages));
+        }
+
+        if (status['status'] == 'done' || attempts >= maxAttempts) {
+          timer.cancel();
         }
       } catch (_) {
-        // sessizce geç
+        if (attempts >= maxAttempts) timer.cancel();
       }
     });
   }

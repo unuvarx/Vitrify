@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../config/app_colors.dart';
 import '../l10n/app_localizations.dart';
+import '../models/theme_settings.dart';
+import '../services/storage_service.dart';
 import '../widgets/app_alert.dart';
 
 class SuggestedPromptsScreen extends StatelessWidget {
@@ -10,6 +12,19 @@ class SuggestedPromptsScreen extends StatelessWidget {
   void _copy(BuildContext context, String text) {
     Clipboard.setData(ClipboardData(text: text));
     AppAlert.show(context, AppLocalizations.of(context)!.promptsCopied);
+  }
+
+  // Mekan + seçilen senaryoyu kopyala-yapıştıra gerek kalmadan doğrudan
+  // Tema ayarlarına kaydeder — Oluştur sekmesi bu ayarları kullanır
+  void _use(BuildContext context, String scene, String scenario) {
+    final storage = StorageService();
+    final current = storage.getThemeSettings();
+    storage.saveThemeSettings(ThemeSettings(
+      scenePrompt: scene,
+      scenarios: [scenario],
+      aspectRatio: current.aspectRatio,
+    ));
+    AppAlert.show(context, AppLocalizations.of(context)!.promptsApplied);
   }
 
   @override
@@ -177,6 +192,22 @@ class SuggestedPromptsScreen extends StatelessWidget {
           l10n.promptCatSportsScenario3,
         ],
       ),
+      _CategoryPrompts(
+        icon: Icons.directions_car_outlined,
+        name: l10n.promptCatCarsName,
+        scene: l10n.promptCatCarsScene,
+        scenarios: [
+          l10n.promptCatCarsScenario1,
+          l10n.promptCatCarsScenario2,
+          l10n.promptCatCarsScenario3,
+          l10n.promptCatCarsScenario4,
+          l10n.promptCatCarsScenario5,
+          l10n.promptCatCarsScenario6,
+          l10n.promptCatCarsScenario7,
+          l10n.promptCatCarsScenario8,
+          l10n.promptCatCarsScenario9,
+        ],
+      ),
     ];
 
     return Scaffold(
@@ -189,7 +220,7 @@ class SuggestedPromptsScreen extends StatelessWidget {
         padding: const EdgeInsets.all(20),
         itemCount: categories.length,
         itemBuilder: (context, index) =>
-            _CategoryCard(data: categories[index], onCopy: _copy),
+            _CategoryCard(data: categories[index], onCopy: _copy, onUse: _use),
       ),
     );
   }
@@ -212,8 +243,9 @@ class _CategoryPrompts {
 class _CategoryCard extends StatelessWidget {
   final _CategoryPrompts data;
   final void Function(BuildContext, String) onCopy;
+  final void Function(BuildContext, String scene, String scenario) onUse;
 
-  const _CategoryCard({required this.data, required this.onCopy});
+  const _CategoryCard({required this.data, required this.onCopy, required this.onUse});
 
   @override
   Widget build(BuildContext context) {
@@ -267,7 +299,11 @@ class _CategoryCard extends StatelessWidget {
           ...data.scenarios.map(
             (s) => Padding(
               padding: const EdgeInsets.only(top: 4),
-              child: _PromptRow(text: s, onTap: () => onCopy(context, s)),
+              child: _PromptRow(
+                text: s,
+                onTap: () => onCopy(context, s),
+                onUse: () => onUse(context, data.scene, s),
+              ),
             ),
           ),
         ],
@@ -279,8 +315,9 @@ class _CategoryCard extends StatelessWidget {
 class _PromptRow extends StatelessWidget {
   final String text;
   final VoidCallback onTap;
+  final VoidCallback? onUse;
 
-  const _PromptRow({required this.text, required this.onTap});
+  const _PromptRow({required this.text, required this.onTap, this.onUse});
 
   @override
   Widget build(BuildContext context) {
@@ -298,7 +335,22 @@ class _PromptRow extends StatelessWidget {
               style: TextStyle(color: AppColors.safBeyaz(context), fontSize: 13),
             ),
           ),
-          const SizedBox(width: 8),
+          if (onUse != null) ...[
+            InkWell(
+              onTap: onUse,
+              borderRadius: BorderRadius.circular(8),
+              child: Padding(
+                padding: const EdgeInsets.all(4),
+                child: Icon(
+                  Icons.check_circle_outline,
+                  size: 18,
+                  color: AppColors.basariYesili(context),
+                ),
+              ),
+            ),
+            const SizedBox(width: 4),
+          ],
+          const SizedBox(width: 4),
           InkWell(
             onTap: onTap,
             borderRadius: BorderRadius.circular(8),

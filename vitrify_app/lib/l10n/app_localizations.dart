@@ -578,6 +578,12 @@ abstract class AppLocalizations {
   /// **'Copied ✓'**
   String get promptsCopied;
 
+  /// No description provided for @promptsApplied.
+  ///
+  /// In en, this message translates to:
+  /// **'Applied! You can use it from the Create tab.'**
+  String get promptsApplied;
+
   /// No description provided for @promptsSceneLabel.
   ///
   /// In en, this message translates to:
@@ -1069,6 +1075,72 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'next to a gym bag, in a pre-workout flat lay'**
   String get promptCatSportsScenario3;
+
+  /// No description provided for @promptCatCarsName.
+  ///
+  /// In en, this message translates to:
+  /// **'Cars'**
+  String get promptCatCarsName;
+
+  /// No description provided for @promptCatCarsScene.
+  ///
+  /// In en, this message translates to:
+  /// **'A realistic, clean vehicle presentation suited for a used-car/dealership listing, with balanced, natural lighting'**
+  String get promptCatCarsScene;
+
+  /// No description provided for @promptCatCarsScenario1.
+  ///
+  /// In en, this message translates to:
+  /// **'in a modern showroom, on a glossy, clean floor'**
+  String get promptCatCarsScenario1;
+
+  /// No description provided for @promptCatCarsScenario2.
+  ///
+  /// In en, this message translates to:
+  /// **'in a wide, empty paved lot outside the city, in daylight'**
+  String get promptCatCarsScenario2;
+
+  /// No description provided for @promptCatCarsScenario3.
+  ///
+  /// In en, this message translates to:
+  /// **'in front of a modern building\'s glass facade, in daylight'**
+  String get promptCatCarsScenario3;
+
+  /// No description provided for @promptCatCarsScenario4.
+  ///
+  /// In en, this message translates to:
+  /// **'in an indoor/underground parking garage, with even lighting'**
+  String get promptCatCarsScenario4;
+
+  /// No description provided for @promptCatCarsScenario5.
+  ///
+  /// In en, this message translates to:
+  /// **'at a car wash, freshly washed with a glistening body'**
+  String get promptCatCarsScenario5;
+
+  /// No description provided for @promptCatCarsScenario6.
+  ///
+  /// In en, this message translates to:
+  /// **'against a plain gray studio background, with soft, balanced studio lighting'**
+  String get promptCatCarsScenario6;
+
+  /// No description provided for @promptCatCarsScenario7.
+  ///
+  /// In en, this message translates to:
+  /// **'on a home\'s paved driveway, in daylight'**
+  String get promptCatCarsScenario7;
+
+  /// No description provided for @promptCatCarsScenario8.
+  ///
+  /// In en, this message translates to:
+  /// **'in a dealership\'s display area, with other cars gently blurred in the background'**
+  String get promptCatCarsScenario8;
+
+  /// No description provided for @promptCatCarsScenario9.
+  ///
+  /// In en, this message translates to:
+  /// **'on a quiet, empty road at sunset, in warm, soft light'**
+  String get promptCatCarsScenario9;
 }
 
 class _AppLocalizationsDelegate

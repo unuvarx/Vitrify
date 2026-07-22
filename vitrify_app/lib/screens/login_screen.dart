@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../config/app_colors.dart';
 import '../l10n/app_localizations.dart';
 import '../services/auth_service.dart';
+import '../widgets/app_alert.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -17,7 +18,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool _isLoading = false;
   bool _isSignUpMode = false;
-  String? _message;
 
   @override
   void dispose() {
@@ -32,14 +32,11 @@ class _LoginScreenState extends State<LoginScreen> {
     final password = _passwordController.text.trim();
 
     if (email.isEmpty || password.isEmpty) {
-      setState(() => _message = l10n.loginEmailPasswordRequired);
+      AppAlert.show(context, l10n.loginEmailPasswordRequired);
       return;
     }
 
-    setState(() {
-      _isLoading = true;
-      _message = null;
-    });
+    setState(() => _isLoading = true);
 
     try {
       if (_isSignUpMode) {
@@ -53,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
       // önce bunu bekliyor.
     } catch (e) {
       if (!mounted) return;
-      setState(() => _message = l10n.genericErrorMessage('$e'));
+      AppAlert.show(context, l10n.genericErrorMessage('$e'));
     } finally {
       if (mounted) {
         setState(() => _isLoading = false);
@@ -132,10 +129,7 @@ class _LoginScreenState extends State<LoginScreen> {
               TextButton(
                 onPressed: _isLoading
                     ? null
-                    : () => setState(() {
-                  _isSignUpMode = !_isSignUpMode;
-                  _message = null;
-                }),
+                    : () => setState(() => _isSignUpMode = !_isSignUpMode),
                 child: Text(
                   _isSignUpMode
                       ? l10n.loginSwitchToSignIn
@@ -143,22 +137,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   style: TextStyle(color: AppColors.acikGri(context)),
                 ),
               ),
-
-              if (_message != null) ...[
-                const SizedBox(height: 24),
-                Container(
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: AppColors.derinGri(context),
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: Text(
-                    _message!,
-                    style: TextStyle(color: AppColors.safBeyaz(context)),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ],
 
               const SizedBox(height: 40),
             ],
