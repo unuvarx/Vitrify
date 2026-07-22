@@ -102,7 +102,7 @@ public class GeminiService
 
         var request = new HttpRequestMessage(
             HttpMethod.Post,
-            "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-pro-image-preview:generateContent");
+            "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-pro-image:generateContent");
         request.Headers.Add("x-goog-api-key", _apiKey);
         request.Content = new StringContent(json, Encoding.UTF8, "application/json");
 

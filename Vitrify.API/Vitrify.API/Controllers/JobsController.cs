@@ -128,12 +128,19 @@ public class JobsController : BaseApiController
     // Prompt oluşturucu: senaryo + mekan + kalite
     private string BuildPrompt(string scenePrompt, string scenario)
     {
-        return $"{scenario}, {scenePrompt}, " +
+        return "CRITICAL, NON-NEGOTIABLE REQUIREMENT: the product's brand name, logo, and any " +
+               "printed or engraved text must be reproduced pixel-for-pixel identical to the " +
+               "original source image — exact same letters, exact same layout, exact same font, " +
+               "exact same proportions. Do not redesign, restyle, reinterpret, translate, resize, " +
+               "or approximate the logo or text in any way. If you are not fully certain of a " +
+               "letterform, copy it exactly as it visually appears in the source image rather than " +
+               "guessing. Brand accuracy is more important than anything else in this task, including " +
+               "the scene or creative styling below. " +
+               $"{scenario}, {scenePrompt}, " +
                "ultra-realistic commercial product photography, " +
                "professional studio lighting, high resolution, sharp focus, photorealistic. " +
-               "Keep the product identical to the original image, do not change the product itself. " +
-               "Preserve all text, logos, and brand names on the product exactly as shown in the " +
-               "original image, pixel-accurate — do not alter, distort, blur, or misspell any lettering.";
+               "Keep the product 100% identical to the original image — same shape, colors, " +
+               "materials, and textures. Do not change the product itself.";
     }
 
     // Flutter "data:image/jpeg;base64,..." formatında gönderiyor —
