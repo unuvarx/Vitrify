@@ -14,14 +14,15 @@ class SuggestedPromptsScreen extends StatelessWidget {
     AppAlert.show(context, AppLocalizations.of(context)!.promptsCopied);
   }
 
-  // Mekan + seçilen senaryoyu kopyala-yapıştıra gerek kalmadan doğrudan
-  // Tema ayarlarına kaydeder — Oluştur sekmesi bu ayarları kullanır
-  void _use(BuildContext context, String scene, String scenario) {
+  // Kategorinin mekanını ve TÜM senaryolarını kopyala-yapıştıra gerek
+  // kalmadan doğrudan Tema ayarlarına kaydeder — Oluştur sekmesi bu
+  // ayarları kullanır
+  void _useCategory(BuildContext context, _CategoryPrompts data) {
     final storage = StorageService();
     final current = storage.getThemeSettings();
     storage.saveThemeSettings(ThemeSettings(
-      scenePrompt: scene,
-      scenarios: [scenario],
+      scenePrompt: data.scene,
+      scenarios: data.scenarios,
       aspectRatio: current.aspectRatio,
     ));
     AppAlert.show(context, AppLocalizations.of(context)!.promptsApplied);
@@ -192,22 +193,6 @@ class SuggestedPromptsScreen extends StatelessWidget {
           l10n.promptCatSportsScenario3,
         ],
       ),
-      _CategoryPrompts(
-        icon: Icons.directions_car_outlined,
-        name: l10n.promptCatCarsName,
-        scene: l10n.promptCatCarsScene,
-        scenarios: [
-          l10n.promptCatCarsScenario1,
-          l10n.promptCatCarsScenario2,
-          l10n.promptCatCarsScenario3,
-          l10n.promptCatCarsScenario4,
-          l10n.promptCatCarsScenario5,
-          l10n.promptCatCarsScenario6,
-          l10n.promptCatCarsScenario7,
-          l10n.promptCatCarsScenario8,
-          l10n.promptCatCarsScenario9,
-        ],
-      ),
     ];
 
     return Scaffold(
@@ -219,8 +204,11 @@ class SuggestedPromptsScreen extends StatelessWidget {
       body: ListView.builder(
         padding: const EdgeInsets.all(20),
         itemCount: categories.length,
-        itemBuilder: (context, index) =>
-            _CategoryCard(data: categories[index], onCopy: _copy, onUse: _use),
+        itemBuilder: (context, index) => _CategoryCard(
+          data: categories[index],
+          onCopy: _copy,
+          onUseCategory: _useCategory,
+        ),
       ),
     );
   }
@@ -243,9 +231,13 @@ class _CategoryPrompts {
 class _CategoryCard extends StatelessWidget {
   final _CategoryPrompts data;
   final void Function(BuildContext, String) onCopy;
-  final void Function(BuildContext, String scene, String scenario) onUse;
+  final void Function(BuildContext, _CategoryPrompts) onUseCategory;
 
-  const _CategoryCard({required this.data, required this.onCopy, required this.onUse});
+  const _CategoryCard({
+    required this.data,
+    required this.onCopy,
+    required this.onUseCategory,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -265,12 +257,26 @@ class _CategoryCard extends StatelessWidget {
             children: [
               Icon(data.icon, color: AppColors.vitrifyMavisi(context), size: 22),
               const SizedBox(width: 8),
-              Text(
-                data.name,
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.safBeyaz(context),
+              Expanded(
+                child: Text(
+                  data.name,
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.safBeyaz(context),
+                  ),
+                ),
+              ),
+              InkWell(
+                onTap: () => onUseCategory(context, data),
+                borderRadius: BorderRadius.circular(8),
+                child: Padding(
+                  padding: const EdgeInsets.all(4),
+                  child: Icon(
+                    Icons.check_circle_outline,
+                    size: 22,
+                    color: AppColors.basariYesili(context),
+                  ),
                 ),
               ),
             ],
@@ -299,11 +305,7 @@ class _CategoryCard extends StatelessWidget {
           ...data.scenarios.map(
             (s) => Padding(
               padding: const EdgeInsets.only(top: 4),
-              child: _PromptRow(
-                text: s,
-                onTap: () => onCopy(context, s),
-                onUse: () => onUse(context, data.scene, s),
-              ),
+              child: _PromptRow(text: s, onTap: () => onCopy(context, s)),
             ),
           ),
         ],
@@ -315,9 +317,8 @@ class _CategoryCard extends StatelessWidget {
 class _PromptRow extends StatelessWidget {
   final String text;
   final VoidCallback onTap;
-  final VoidCallback? onUse;
 
-  const _PromptRow({required this.text, required this.onTap, this.onUse});
+  const _PromptRow({required this.text, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -335,21 +336,6 @@ class _PromptRow extends StatelessWidget {
               style: TextStyle(color: AppColors.safBeyaz(context), fontSize: 13),
             ),
           ),
-          if (onUse != null) ...[
-            InkWell(
-              onTap: onUse,
-              borderRadius: BorderRadius.circular(8),
-              child: Padding(
-                padding: const EdgeInsets.all(4),
-                child: Icon(
-                  Icons.check_circle_outline,
-                  size: 18,
-                  color: AppColors.basariYesili(context),
-                ),
-              ),
-            ),
-            const SizedBox(width: 4),
-          ],
           const SizedBox(width: 4),
           InkWell(
             onTap: onTap,

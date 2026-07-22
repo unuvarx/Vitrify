@@ -217,17 +217,5 @@
   "promptCatSportsScene": "A modern gym or outdoor training area, with energetic, dynamic lighting",
   "promptCatSportsScenario1": "in use while a person is working out",
   "promptCatSportsScenario2": "neatly placed on a yoga mat",
-  "promptCatSportsScenario3": "next to a gym bag, in a pre-workout flat lay",
-
-  "promptCatCarsName": "Cars",
-  "promptCatCarsScene": "A realistic, clean vehicle presentation suited for a used-car/dealership listing, with balanced, natural lighting",
-  "promptCatCarsScenario1": "in a modern showroom, on a glossy, clean floor",
-  "promptCatCarsScenario2": "in a wide, empty paved lot outside the city, in daylight",
-  "promptCatCarsScenario3": "in front of a modern building's glass facade, in daylight",
-  "promptCatCarsScenario4": "in an indoor/underground parking garage, with even lighting",
-  "promptCatCarsScenario5": "at a car wash, freshly washed with a glistening body",
-  "promptCatCarsScenario6": "against a plain gray studio background, with soft, balanced studio lighting",
-  "promptCatCarsScenario7": "on a home's paved driveway, in daylight",
-  "promptCatCarsScenario8": "in a dealership's display area, with other cars gently blurred in the background",
-  "promptCatCarsScenario9": "on a quiet, empty road at sunset, in warm, soft light"
+  "promptCatSportsScenario3": "next to a gym bag, in a pre-workout flat lay"
 }

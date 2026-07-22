@@ -585,47 +585,4 @@ class AppLocalizationsTr extends AppLocalizations {
   @override
   String get promptCatSportsScenario3 =>
       'spor çantasının yanında, antrenman öncesi düzenlemesinde';
-
-  @override
-  String get promptCatCarsName => 'Arabalar';
-
-  @override
-  String get promptCatCarsScene =>
-      'İkinci el/galeri satış ilanına uygun, gerçekçi ve temiz bir araç sunumu, dengeli ve doğal ışıkla';
-
-  @override
-  String get promptCatCarsScenario1 =>
-      'modern bir galeri showroomunda, parlak ve düzgün bir zemin üzerinde';
-
-  @override
-  String get promptCatCarsScenario2 =>
-      'şehir dışında geniş, boş bir asfalt alanda, gündüz doğal ışığıyla';
-
-  @override
-  String get promptCatCarsScenario3 =>
-      'modern bir binanın cam cephesi önünde, gündüz ışığıyla';
-
-  @override
-  String get promptCatCarsScenario4 =>
-      'kapalı bir otopark/yeraltı garajında, düzenli ve eşit aydınlatmayla';
-
-  @override
-  String get promptCatCarsScenario5 =>
-      'bir oto yıkama merkezinde, yeni yıkanmış ve parlayan bir gövdeyle';
-
-  @override
-  String get promptCatCarsScenario6 =>
-      'sade gri bir stüdyo fonunda, yumuşak ve dengeli stüdyo ışığıyla';
-
-  @override
-  String get promptCatCarsScenario7 =>
-      'bir evin düzgün taş kaplı araba yolunda, gündüz ışığıyla';
-
-  @override
-  String get promptCatCarsScenario8 =>
-      'bir galeri önündeki düzenli teşhir alanında, arka planda hafifçe bulanık diğer araçlarla';
-
-  @override
-  String get promptCatCarsScenario9 =>
-      'gün batımında sakin ve boş bir yolda, sıcak ve yumuşak ışıkla';
 }

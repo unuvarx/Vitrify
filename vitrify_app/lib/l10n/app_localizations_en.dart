@@ -580,47 +580,4 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get promptCatSportsScenario3 =>
       'next to a gym bag, in a pre-workout flat lay';
-
-  @override
-  String get promptCatCarsName => 'Cars';
-
-  @override
-  String get promptCatCarsScene =>
-      'A realistic, clean vehicle presentation suited for a used-car/dealership listing, with balanced, natural lighting';
-
-  @override
-  String get promptCatCarsScenario1 =>
-      'in a modern showroom, on a glossy, clean floor';
-
-  @override
-  String get promptCatCarsScenario2 =>
-      'in a wide, empty paved lot outside the city, in daylight';
-
-  @override
-  String get promptCatCarsScenario3 =>
-      'in front of a modern building\'s glass facade, in daylight';
-
-  @override
-  String get promptCatCarsScenario4 =>
-      'in an indoor/underground parking garage, with even lighting';
-
-  @override
-  String get promptCatCarsScenario5 =>
-      'at a car wash, freshly washed with a glistening body';
-
-  @override
-  String get promptCatCarsScenario6 =>
-      'against a plain gray studio background, with soft, balanced studio lighting';
-
-  @override
-  String get promptCatCarsScenario7 =>
-      'on a home\'s paved driveway, in daylight';
-
-  @override
-  String get promptCatCarsScenario8 =>
-      'in a dealership\'s display area, with other cars gently blurred in the background';
-
-  @override
-  String get promptCatCarsScenario9 =>
-      'on a quiet, empty road at sunset, in warm, soft light';
 }
