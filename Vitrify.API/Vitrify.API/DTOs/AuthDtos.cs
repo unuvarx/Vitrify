@@ -5,6 +5,7 @@ public class LoginRequest
 {
     public string DeviceId { get; set; } = string.Empty;
     public string DevicePlatform { get; set; } = string.Empty; // "ios" / "android"
+    public string? FcmToken { get; set; }
 }
 
 // Backend → Flutter (giriş cevabı)

@@ -44,6 +44,13 @@ public class AuthController : BaseApiController
 
         if (user != null)
         {
+            // FCM token değişmiş olabilir (yeniden yükleme, cihaz değişikliği vb.)
+            if (!string.IsNullOrEmpty(request.FcmToken) && user.FcmToken != request.FcmToken)
+            {
+                user.FcmToken = request.FcmToken;
+                await _db.SaveChangesAsync();
+            }
+
             // Mevcut kullanıcı → normal giriş
             return Ok(new LoginResponse
             {
@@ -66,7 +73,8 @@ public class AuthController : BaseApiController
             FirebaseUid = firebaseUid,
             DeviceId = request.DeviceId,
             DevicePlatform = request.DevicePlatform,
-            Credits = startingCredits
+            Credits = startingCredits,
+            FcmToken = request.FcmToken
         };
         _db.Users.Add(user);
         await _db.SaveChangesAsync();
