@@ -1,14 +1,13 @@
 class RevenueCatConfig {
-  // TODO: RevenueCat dashboard > Project Settings > API Keys içindeki
-  // public SDK anahtarlarını buraya gir (gizli/secret key DEĞİL).
-  static const String iosApiKey = 'REVENUECAT_IOS_API_KEY_BURAYA';
+  static const String iosApiKey = 'appl_DcziQFjzwBVlUiQsZHMzOFhRGqb';
+
+  // TODO: Play Console kimlik doğrulaması ve Android IAP ürünleri hazır
+  // olunca RevenueCat'te Android app'i kurup buraya public key'i gir.
   static const String androidApiKey = 'REVENUECAT_ANDROID_API_KEY_BURAYA';
 
-  // TODO: RevenueCat dashboard'da tanımladığın paketlerin identifier'ını
-  // (Offering > Package > Identifier) kaç krediye denk geldiğiyle eşle.
-  // Örnek: App Store Connect / Play Console'da "credits_10" adlı ürünü
-  // 10 kredilik bir pakete bağladıysan:
-  //   'credits_10': 10,
-  //   'credits_50': 50,
-  static const Map<String, int> packageCredits = {};
+  static const Map<String, int> packageCredits = {
+    'credits_50': 50,
+    'credits_120': 120,
+    'credits_250': 250,
+  };
 }
