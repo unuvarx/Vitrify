@@ -67,7 +67,9 @@ class _ProfileScreenState extends State<ProfileScreen> implements Refreshable {
 
     try {
       final offerings = await _purchases.getOfferings();
-      final packages = offerings.current?.availablePackages ?? [];
+      final packages = [...offerings.current?.availablePackages ?? []]
+        ..sort((a, b) =>
+            _purchases.creditsFor(a).compareTo(_purchases.creditsFor(b)));
 
       if (!mounted) return;
       setState(() {
