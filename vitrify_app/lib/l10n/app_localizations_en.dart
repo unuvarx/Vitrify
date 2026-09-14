@@ -41,6 +41,22 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String get loginForgotPassword => 'Forgot password?';
+
+  @override
+  String get loginEnterEmailFirst => 'Enter your email address first.';
+
+  @override
+  String get loginPasswordResetSent =>
+      'A password reset link has been sent to your email.';
+
+  @override
+  String get loginOrDivider => 'or';
+
+  @override
+  String get loginGoogleSignIn => 'Sign in with Google';
+
+  @override
   String get navTheme => 'Theme';
 
   @override
@@ -260,7 +276,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get onboardingPage3Body =>
-      'Upload your product photos and let AI generate images using your credits.';
+      'Upload your product photos and let AI generate images using your credits. Note: AI generation can introduce small differences in brand logos/text — we recommend reviewing generated images before use.';
 
   @override
   String get onboardingPage4Title => '3. View & Manage';

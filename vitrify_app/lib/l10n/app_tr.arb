@@ -12,6 +12,11 @@
   "loginSwitchToSignIn": "Zaten hesabın var mı? Giriş yap",
   "loginSwitchToSignUp": "Hesabın yok mu? Kayıt ol",
   "loginCreditsLabel": "Kredi: {credits}",
+  "loginForgotPassword": "Şifremi unuttum?",
+  "loginEnterEmailFirst": "Önce e-posta adresini gir.",
+  "loginPasswordResetSent": "Şifre sıfırlama bağlantısı e-postana gönderildi.",
+  "loginOrDivider": "veya",
+  "loginGoogleSignIn": "Google ile Giriş Yap",
 
   "navTheme": "Tema",
   "navCreate": "Oluştur",
@@ -83,7 +88,7 @@
   "onboardingPage2Title": "1. Tema Oluştur",
   "onboardingPage2Body": "Ürünlerinin sergileneceği mekanı ve senaryoları tanımla — bu ayarlar cihazında saklanır.",
   "onboardingPage3Title": "2. Üret",
-  "onboardingPage3Body": "Ürün fotoğraflarını yükle, kredini kullanarak yapay zeka senin için görseller üretsin.",
+  "onboardingPage3Body": "Ürün fotoğraflarını yükle, kredini kullanarak yapay zeka senin için görseller üretsin. Not: yapay zeka üretimi marka logolarında/metinlerinde küçük farklılıklara yol açabilir, üretilen görselleri kullanmadan önce gözden geçirmeni öneririz.",
   "onboardingPage4Title": "3. Görüntüle ve Yönet",
   "onboardingPage4Body": "Üretilen görselleri Galeri'de gör ya da cihazına kaydet, Profil'de kredini takip et.",
 

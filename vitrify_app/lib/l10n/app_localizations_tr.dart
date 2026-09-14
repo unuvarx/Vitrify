@@ -42,6 +42,22 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
+  String get loginForgotPassword => 'Şifremi unuttum?';
+
+  @override
+  String get loginEnterEmailFirst => 'Önce e-posta adresini gir.';
+
+  @override
+  String get loginPasswordResetSent =>
+      'Şifre sıfırlama bağlantısı e-postana gönderildi.';
+
+  @override
+  String get loginOrDivider => 'veya';
+
+  @override
+  String get loginGoogleSignIn => 'Google ile Giriş Yap';
+
+  @override
   String get navTheme => 'Tema';
 
   @override
@@ -259,7 +275,7 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get onboardingPage3Body =>
-      'Ürün fotoğraflarını yükle, kredini kullanarak yapay zeka senin için görseller üretsin.';
+      'Ürün fotoğraflarını yükle, kredini kullanarak yapay zeka senin için görseller üretsin. Not: yapay zeka üretimi marka logolarında/metinlerinde küçük farklılıklara yol açabilir, üretilen görselleri kullanmadan önce gözden geçirmeni öneririz.';
 
   @override
   String get onboardingPage4Title => '3. Görüntüle ve Yönet';

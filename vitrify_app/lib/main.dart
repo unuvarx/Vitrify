@@ -183,12 +183,12 @@ class _AuthGateState extends State<AuthGate> {
     _pendingUid = uid;
     try {
       await _authService.loginToBackend();
-    } catch (e) {
-      // Geçici olarak hatayı görünür yapıyoruz — sessizce yutulursa kullanıcı
-      // satırı hiç oluşmaz ve kredi her zaman 0 görünür, sebebi anlaşılmaz.
+    } catch (_) {
+      // Sessizce yutmuyoruz: kullanıcıya dostane bir mesaj gösteriyoruz —
+      // aksi halde kullanıcı satırı hiç oluşmaz, kredi her zaman 0 görünür.
       if (mounted) {
         // ignore: use_build_context_synchronously
-        AppAlert.show(context, 'Backend login hatası: $e');
+        AppAlert.show(context, AppLocalizations.of(context)!.genericErrorMessage);
       }
     }
     if (!mounted) return;

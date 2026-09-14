@@ -58,6 +58,42 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  Future<void> _forgotPassword() async {
+    final l10n = AppLocalizations.of(context)!;
+    final email = _emailController.text.trim();
+
+    if (email.isEmpty) {
+      AppAlert.show(context, l10n.loginEnterEmailFirst);
+      return;
+    }
+
+    try {
+      await _authService.sendPasswordResetEmail(email);
+      if (!mounted) return;
+      AppAlert.show(context, l10n.loginPasswordResetSent);
+    } catch (_) {
+      if (!mounted) return;
+      AppAlert.show(context, l10n.genericErrorMessage);
+    }
+  }
+
+  Future<void> _signInWithGoogle() async {
+    final l10n = AppLocalizations.of(context)!;
+    setState(() => _isLoading = true);
+
+    try {
+      await _authService.signInWithGoogle();
+      // Firebase girişi tamamlanır tamamlanmaz AuthGate devreye girer.
+    } catch (e) {
+      if (!mounted) return;
+      AppAlert.show(context, l10n.genericErrorMessage);
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -107,7 +143,17 @@ class _LoginScreenState extends State<LoginScreen> {
                   prefixIcon: const Icon(Icons.lock_outline),
                 ),
               ),
-              const SizedBox(height: 24),
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: _isLoading ? null : _forgotPassword,
+                  child: Text(
+                    l10n.loginForgotPassword,
+                    style: TextStyle(color: AppColors.acikGri(context)),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 8),
 
               ElevatedButton(
                 onPressed: _isLoading ? null : _submit,
@@ -136,6 +182,35 @@ class _LoginScreenState extends State<LoginScreen> {
                       : l10n.loginSwitchToSignUp,
                   style: TextStyle(color: AppColors.acikGri(context)),
                 ),
+              ),
+
+              const SizedBox(height: 24),
+              Row(
+                children: [
+                  Expanded(child: Divider(color: AppColors.acikGri(context))),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: Text(
+                      l10n.loginOrDivider,
+                      style: TextStyle(color: AppColors.acikGri(context)),
+                    ),
+                  ),
+                  Expanded(child: Divider(color: AppColors.acikGri(context))),
+                ],
+              ),
+              const SizedBox(height: 24),
+
+              OutlinedButton(
+                onPressed: _isLoading ? null : _signInWithGoogle,
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: AppColors.safBeyaz(context),
+                  side: BorderSide(color: AppColors.acikGri(context)),
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: Text(l10n.loginGoogleSignIn),
               ),
 
               const SizedBox(height: 40),

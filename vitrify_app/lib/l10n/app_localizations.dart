@@ -158,6 +158,36 @@ abstract class AppLocalizations {
   /// **'Credits: {credits}'**
   String loginCreditsLabel(int credits);
 
+  /// No description provided for @loginForgotPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Forgot password?'**
+  String get loginForgotPassword;
+
+  /// No description provided for @loginEnterEmailFirst.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter your email address first.'**
+  String get loginEnterEmailFirst;
+
+  /// No description provided for @loginPasswordResetSent.
+  ///
+  /// In en, this message translates to:
+  /// **'A password reset link has been sent to your email.'**
+  String get loginPasswordResetSent;
+
+  /// No description provided for @loginOrDivider.
+  ///
+  /// In en, this message translates to:
+  /// **'or'**
+  String get loginOrDivider;
+
+  /// No description provided for @loginGoogleSignIn.
+  ///
+  /// In en, this message translates to:
+  /// **'Sign in with Google'**
+  String get loginGoogleSignIn;
+
   /// No description provided for @navTheme.
   ///
   /// In en, this message translates to:
@@ -551,7 +581,7 @@ abstract class AppLocalizations {
   /// No description provided for @onboardingPage3Body.
   ///
   /// In en, this message translates to:
-  /// **'Upload your product photos and let AI generate images using your credits.'**
+  /// **'Upload your product photos and let AI generate images using your credits. Note: AI generation can introduce small differences in brand logos/text — we recommend reviewing generated images before use.'**
   String get onboardingPage3Body;
 
   /// No description provided for @onboardingPage4Title.

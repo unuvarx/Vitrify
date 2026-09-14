@@ -1,12 +1,15 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:android_id/android_id.dart';
 import '../config/app_config.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
   final Dio _dio = Dio(BaseOptions(baseUrl: AppConfig.apiBaseUrl));
 
   // Mevcut kullanıcı
@@ -30,9 +33,45 @@ class AuthService {
     return result.user;
   }
 
+  // Google ile giriş yap
+  Future<User?> signInWithGoogle() async {
+    final googleUser = await _googleSignIn.signIn();
+    if (googleUser == null) return null; // kullanıcı iptal etti
+
+    final googleAuth = await googleUser.authentication;
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    final result = await _auth.signInWithCredential(credential);
+    return result.user;
+  }
+
+  // Şifremi unuttum — Firebase'in şifre sıfırlama e-postasını gönderir
+  Future<void> sendPasswordResetEmail(String email) async {
+    await _auth.sendPasswordResetEmail(email: email);
+  }
+
   // Çıkış yap
   Future<void> signOut() async {
+    await _googleSignIn.signOut();
     await _auth.signOut();
+  }
+
+  // Bildirim izni iste + FCM token'ı al (izin verilmediyse ya da alınamazsa
+  // null döner — uygulama push olmadan da çalışabilmeli)
+  Future<String?> _getFcmToken() async {
+    try {
+      final messaging = FirebaseMessaging.instance;
+      final settings = await messaging.requestPermission();
+      if (settings.authorizationStatus == AuthorizationStatus.denied) {
+        return null;
+      }
+      return await messaging.getToken();
+    } catch (_) {
+      return null;
+    }
   }
 
   // Firebase token'ını al (backend'e göndereceğiz)
@@ -72,12 +111,14 @@ class AuthService {
 
     final deviceId = await getDeviceId();
     final platform = getPlatform();
+    final fcmToken = await _getFcmToken();
 
     final response = await _dio.post(
       '/api/auth/login',
       data: {
         'deviceId': deviceId,
         'devicePlatform': platform,
+        'fcmToken': ?fcmToken,
       },
       options: Options(
         headers: {'Authorization': 'Bearer $token'},

@@ -15,6 +15,11 @@
   "@loginCreditsLabel": {
     "placeholders": { "credits": { "type": "int" } }
   },
+  "loginForgotPassword": "Forgot password?",
+  "loginEnterEmailFirst": "Enter your email address first.",
+  "loginPasswordResetSent": "A password reset link has been sent to your email.",
+  "loginOrDivider": "or",
+  "loginGoogleSignIn": "Sign in with Google",
 
   "navTheme": "Theme",
   "navCreate": "Create",
@@ -107,7 +112,7 @@
   "onboardingPage2Title": "1. Create a Theme",
   "onboardingPage2Body": "Describe the scene and scenarios your products will be shown in — saved on your device.",
   "onboardingPage3Title": "2. Generate",
-  "onboardingPage3Body": "Upload your product photos and let AI generate images using your credits.",
+  "onboardingPage3Body": "Upload your product photos and let AI generate images using your credits. Note: AI generation can introduce small differences in brand logos/text — we recommend reviewing generated images before use.",
   "onboardingPage4Title": "3. View & Manage",
   "onboardingPage4Body": "View or save generated images in Gallery, and track your credits in Profile.",
 
