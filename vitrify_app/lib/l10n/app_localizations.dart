@@ -101,8 +101,8 @@ abstract class AppLocalizations {
   /// No description provided for @genericErrorMessage.
   ///
   /// In en, this message translates to:
-  /// **'Error: {error}'**
-  String genericErrorMessage(String error);
+  /// **'Something went wrong. Please try again.'**
+  String get genericErrorMessage;
 
   /// No description provided for @commonOk.
   ///
@@ -455,8 +455,8 @@ abstract class AppLocalizations {
   /// No description provided for @profilePurchaseCompletedButCreditsFailed.
   ///
   /// In en, this message translates to:
-  /// **'Purchase completed but credits could not be added: {error}'**
-  String profilePurchaseCompletedButCreditsFailed(String error);
+  /// **'Purchase completed but credits could not be added. Please contact support.'**
+  String get profilePurchaseCompletedButCreditsFailed;
 
   /// No description provided for @profilePurchaseFailed.
   ///

@@ -50,7 +50,7 @@ class _LoginScreenState extends State<LoginScreen> {
       // önce bunu bekliyor.
     } catch (e) {
       if (!mounted) return;
-      AppAlert.show(context, l10n.genericErrorMessage('$e'));
+      AppAlert.show(context, l10n.genericErrorMessage);
     } finally {
       if (mounted) {
         setState(() => _isLoading = false);

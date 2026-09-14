@@ -4,6 +4,7 @@ import '../l10n/app_localizations.dart';
 import '../models/theme_settings.dart';
 import '../services/storage_service.dart';
 import '../widgets/app_alert.dart';
+import '../widgets/refreshable.dart';
 
 class ThemeScreen extends StatefulWidget {
   const ThemeScreen({super.key});
@@ -12,7 +13,7 @@ class ThemeScreen extends StatefulWidget {
   State<ThemeScreen> createState() => _ThemeScreenState();
 }
 
-class _ThemeScreenState extends State<ThemeScreen> {
+class _ThemeScreenState extends State<ThemeScreen> implements Refreshable {
   final _storage = StorageService();
 
   final _scenePromptController = TextEditingController();
@@ -26,6 +27,14 @@ class _ThemeScreenState extends State<ThemeScreen> {
   @override
   void initState() {
     super.initState();
+    _loadSettings();
+  }
+
+  // MainScreen bu sekmeye her geçildiğinde çağırır — Öneriler sekmesinden
+  // bir kategori uygulanmış olabilir, storage'daki güncel ayarları tazeler
+  @override
+  Future<void> refresh() async {
+    if (!mounted) return;
     _loadSettings();
   }
 
@@ -45,7 +54,11 @@ class _ThemeScreenState extends State<ThemeScreen> {
     _scenePromptController.text = settings.scenePrompt;
     _aspectRatio = settings.aspectRatio;
 
-    // Senaryo kontrolcülerini oluştur
+    // Senaryo kontrolcülerini oluştur (eskilerini önce dispose et — refresh()
+    // bu fonksiyonu sekmeye her dönüşte tekrar çağırabiliyor)
+    for (final c in _scenarioControllers) {
+      c.dispose();
+    }
     _scenarioControllers.clear();
     for (final scenario in settings.scenarios) {
       _scenarioControllers.add(TextEditingController(text: scenario));

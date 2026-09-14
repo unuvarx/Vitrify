@@ -1,10 +1,7 @@
 {
   "@@locale": "en",
 
-  "genericErrorMessage": "Error: {error}",
-  "@genericErrorMessage": {
-    "placeholders": { "error": { "type": "String" } }
-  },
+  "genericErrorMessage": "Something went wrong. Please try again.",
   "commonOk": "OK",
 
   "loginEmailPasswordRequired": "Email and password are required.",
@@ -90,10 +87,7 @@
   "@profileCreditsAdded": {
     "placeholders": { "credits": { "type": "int" } }
   },
-  "profilePurchaseCompletedButCreditsFailed": "Purchase completed but credits could not be added: {error}",
-  "@profilePurchaseCompletedButCreditsFailed": {
-    "placeholders": { "error": { "type": "String" } }
-  },
+  "profilePurchaseCompletedButCreditsFailed": "Purchase completed but credits could not be added. Please contact support.",
   "profilePurchaseFailed": "Purchase failed.",
   "profileCreditsSuffix": "{credits} credits",
   "@profileCreditsSuffix": {

@@ -24,25 +24,28 @@ class _MainScreenState extends State<MainScreen> {
 
   int _currentIndex = 0;
 
+  final _themeKey = GlobalKey<State<ThemeScreen>>();
   final _createKey = GlobalKey<State<CreateScreen>>();
   final _galleryKey = GlobalKey<State<GalleryScreen>>();
   final _profileKey = GlobalKey<State<ProfileScreen>>();
 
   late final List<Widget> _screens = [
-    const ThemeScreen(),
+    ThemeScreen(key: _themeKey),
     GalleryScreen(key: _galleryKey),
     CreateScreen(key: _createKey),
     ProfileScreen(key: _profileKey),
     const SuggestedPromptsScreen(),
   ];
 
-  // Tema ve Öneriler sekmelerine dokunmuyoruz (sunucu verisi yok). Diğerlerinin
-  // canlı sunucu verisi olduğu için her seçildiğinde tazeliyoruz — Oluştur'da
-  // bu sadece kredi sayısını günceller, devam eden bir üretimi bozmaz.
+  // Öneriler sekmesine dokunmuyoruz (statik içerik, dış veriye bağlı değil).
+  // Diğerlerinin canlı sunucu verisi ya da (Tema'da) Öneriler'den uygulanmış
+  // cihaz-lokal verisi olabildiği için her seçildiğinde tazeliyoruz —
+  // Oluştur'da bu sadece kredi sayısını günceller, devam eden bir üretimi bozmaz.
   void _onTabTapped(int index) {
     setState(() => _currentIndex = index);
 
     final refreshable = switch (index) {
+      0 => _themeKey.currentState as Refreshable?,
       1 => _galleryKey.currentState as Refreshable?,
       _createIndex => _createKey.currentState as Refreshable?,
       3 => _profileKey.currentState as Refreshable?,

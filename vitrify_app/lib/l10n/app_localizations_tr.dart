@@ -9,9 +9,8 @@ class AppLocalizationsTr extends AppLocalizations {
   AppLocalizationsTr([String locale = 'tr']) : super(locale);
 
   @override
-  String genericErrorMessage(String error) {
-    return 'Hata: $error';
-  }
+  String get genericErrorMessage =>
+      'Bir şeyler ters gitti. Lütfen tekrar deneyin.';
 
   @override
   String get commonOk => 'Tamam';
@@ -206,9 +205,8 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
-  String profilePurchaseCompletedButCreditsFailed(String error) {
-    return 'Satın alma tamamlandı ama kredi eklenemedi: $error';
-  }
+  String get profilePurchaseCompletedButCreditsFailed =>
+      'Satın alma tamamlandı ama kredi eklenemedi. Lütfen destek ile iletişime geçin.';
 
   @override
   String get profilePurchaseFailed => 'Satın alma başarısız.';

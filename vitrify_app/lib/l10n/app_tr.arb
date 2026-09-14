@@ -1,7 +1,7 @@
 {
   "@@locale": "tr",
 
-  "genericErrorMessage": "Hata: {error}",
+  "genericErrorMessage": "Bir şeyler ters gitti. Lütfen tekrar deneyin.",
   "commonOk": "Tamam",
 
   "loginEmailPasswordRequired": "E-posta ve şifre gerekli.",
@@ -66,7 +66,7 @@
   "profileNoPackages": "Şu an satın alınabilir paket yok.",
   "profilePackagesLoadError": "Satın alma paketleri şu an yüklenemiyor.",
   "profileCreditsAdded": "{credits} kredi eklendi ✓",
-  "profilePurchaseCompletedButCreditsFailed": "Satın alma tamamlandı ama kredi eklenemedi: {error}",
+  "profilePurchaseCompletedButCreditsFailed": "Satın alma tamamlandı ama kredi eklenemedi. Lütfen destek ile iletişime geçin.",
   "profilePurchaseFailed": "Satın alma başarısız.",
   "profileCreditsSuffix": "{credits} kredi",
   "profileSignOut": "Çıkış Yap",

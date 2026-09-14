@@ -105,7 +105,7 @@ class _ProfileScreenState extends State<ProfileScreen> implements Refreshable {
           await _loadCredits();
           _showMessage(l10n.profileCreditsAdded(credits));
         } catch (e) {
-          _showMessage(l10n.profilePurchaseCompletedButCreditsFailed('$e'));
+          _showMessage(l10n.profilePurchaseCompletedButCreditsFailed);
         }
         break;
       case PurchaseOutcome.cancelled:

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import '../config/app_colors.dart';
 import '../l10n/app_localizations.dart';
 import '../models/theme_settings.dart';
@@ -8,11 +7,6 @@ import '../widgets/app_alert.dart';
 
 class SuggestedPromptsScreen extends StatelessWidget {
   const SuggestedPromptsScreen({super.key});
-
-  void _copy(BuildContext context, String text) {
-    Clipboard.setData(ClipboardData(text: text));
-    AppAlert.show(context, AppLocalizations.of(context)!.promptsCopied);
-  }
 
   // Kategorinin mekanını ve TÜM senaryolarını kopyala-yapıştıra gerek
   // kalmadan doğrudan Tema ayarlarına kaydeder — Oluştur sekmesi bu
@@ -206,7 +200,6 @@ class SuggestedPromptsScreen extends StatelessWidget {
         itemCount: categories.length,
         itemBuilder: (context, index) => _CategoryCard(
           data: categories[index],
-          onCopy: _copy,
           onUseCategory: _useCategory,
         ),
       ),
@@ -230,12 +223,10 @@ class _CategoryPrompts {
 
 class _CategoryCard extends StatelessWidget {
   final _CategoryPrompts data;
-  final void Function(BuildContext, String) onCopy;
   final void Function(BuildContext, _CategoryPrompts) onUseCategory;
 
   const _CategoryCard({
     required this.data,
-    required this.onCopy,
     required this.onUseCategory,
   });
 
@@ -273,9 +264,9 @@ class _CategoryCard extends StatelessWidget {
                 child: Padding(
                   padding: const EdgeInsets.all(4),
                   child: Icon(
-                    Icons.check_circle_outline,
+                    Icons.copy_all_outlined,
                     size: 22,
-                    color: AppColors.basariYesili(context),
+                    color: AppColors.vitrifyMavisi(context),
                   ),
                 ),
               ),
@@ -291,7 +282,7 @@ class _CategoryCard extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 4),
-          _PromptRow(text: data.scene, onTap: () => onCopy(context, data.scene)),
+          _PromptRow(text: data.scene),
           const SizedBox(height: 12),
           Text(
             l10n.promptsScenarioLabel,
@@ -305,7 +296,7 @@ class _CategoryCard extends StatelessWidget {
           ...data.scenarios.map(
             (s) => Padding(
               padding: const EdgeInsets.only(top: 4),
-              child: _PromptRow(text: s, onTap: () => onCopy(context, s)),
+              child: _PromptRow(text: s),
             ),
           ),
         ],
@@ -316,9 +307,8 @@ class _CategoryCard extends StatelessWidget {
 
 class _PromptRow extends StatelessWidget {
   final String text;
-  final VoidCallback onTap;
 
-  const _PromptRow({required this.text, required this.onTap});
+  const _PromptRow({required this.text});
 
   @override
   Widget build(BuildContext context) {
@@ -328,28 +318,9 @@ class _PromptRow extends StatelessWidget {
         color: AppColors.geceSiyahi(context),
         borderRadius: BorderRadius.circular(4),
       ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Text(
-              text,
-              style: TextStyle(color: AppColors.safBeyaz(context), fontSize: 13),
-            ),
-          ),
-          const SizedBox(width: 4),
-          InkWell(
-            onTap: onTap,
-            borderRadius: BorderRadius.circular(8),
-            child: Padding(
-              padding: const EdgeInsets.all(4),
-              child: Icon(
-                Icons.copy_outlined,
-                size: 18,
-                color: AppColors.vitrifyMavisi(context),
-              ),
-            ),
-          ),
-        ],
+      child: Text(
+        text,
+        style: TextStyle(color: AppColors.safBeyaz(context), fontSize: 13),
       ),
     );
   }

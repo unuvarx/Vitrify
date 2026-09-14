@@ -147,7 +147,7 @@ class _CreateScreenState extends State<CreateScreen> implements Refreshable {
         _isLoading = false;
         _isGenerating = false;
       });
-      _showMessage(l10n.genericErrorMessage('$e'));
+      _showMessage(l10n.genericErrorMessage);
     }
   }
 

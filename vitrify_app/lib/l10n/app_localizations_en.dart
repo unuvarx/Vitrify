@@ -9,9 +9,7 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String genericErrorMessage(String error) {
-    return 'Error: $error';
-  }
+  String get genericErrorMessage => 'Something went wrong. Please try again.';
 
   @override
   String get commonOk => 'OK';
@@ -208,9 +206,8 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String profilePurchaseCompletedButCreditsFailed(String error) {
-    return 'Purchase completed but credits could not be added: $error';
-  }
+  String get profilePurchaseCompletedButCreditsFailed =>
+      'Purchase completed but credits could not be added. Please contact support.';
 
   @override
   String get profilePurchaseFailed => 'Purchase failed.';
