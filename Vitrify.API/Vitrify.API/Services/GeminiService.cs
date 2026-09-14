@@ -43,7 +43,7 @@ public class GeminiService
         return ms.ToArray();
     }
 
-    // Nano Banana Pro (Gemini 3 Pro Image) ile görsel üret. Base64 döndürür.
+    // Nano Banana 2 (Gemini 3.1 Flash Image) ile görsel üret. Base64 döndürür.
     // imageBase64: SAF base64 (data: öneki OLMADAN)
     // Herhangi bir geçici hatada (görsel dönmemesi, ağ/HTTP hatası vb.)
     // Hangfire'ın yavaş (dakikalarca sürebilen) retry backoff'unu beklemeden
@@ -102,7 +102,7 @@ public class GeminiService
 
         var request = new HttpRequestMessage(
             HttpMethod.Post,
-            "https://generativelanguage.googleapis.com/v1beta/models/gemini-3-pro-image:generateContent");
+            "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.1-flash-image:generateContent");
         request.Headers.Add("x-goog-api-key", _apiKey);
         request.Content = new StringContent(json, Encoding.UTF8, "application/json");
 
