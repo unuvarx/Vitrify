@@ -27,7 +27,8 @@ public class NotificationService
 
         try
         {
-            await FirebaseMessaging.DefaultInstance.SendAsync(message);
+            var messageId = await FirebaseMessaging.DefaultInstance.SendAsync(message);
+            Console.WriteLine($"[FCM] Bildirim gönderildi: {messageId}");
         }
         catch (Exception ex)
         {

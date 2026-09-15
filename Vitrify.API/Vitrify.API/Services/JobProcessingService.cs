@@ -191,7 +191,11 @@ public class JobProcessingService
         if (job == null) return "done";
 
         var jobUser = await _db.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == job.UserId);
-        if (jobUser?.FcmToken != null)
+        if (jobUser?.FcmToken == null)
+        {
+            Console.WriteLine($"[FCM] Job {jobId}: kullanıcının FcmToken'ı yok, bildirim atlanıyor.");
+        }
+        else
         {
             await _notification.SendNotificationAsync(
                 jobUser.FcmToken,
