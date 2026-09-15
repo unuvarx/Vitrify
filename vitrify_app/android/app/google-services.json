@@ -12,7 +12,20 @@
           "package_name": "com.vitrifystudio.vitrify_app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "925904321302-6qqenr4tbvh68b66utvg5g288jr7jaj7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.vitrifystudio.vitrify_app",
+            "certificate_hash": "e0d9c012ae6a5617f70eafb8e50dd0fefbcceaae"
+          }
+        },
+        {
+          "client_id": "925904321302-amlchf8v92rgjsi2tmjumfa22ht4jqga.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAO8OMTb-YWOeYBe1F-xfllhMUrkVb2o0g"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "925904321302-amlchf8v92rgjsi2tmjumfa22ht4jqga.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "925904321302-67fvfq6i8i17uljmi6rpcin1ei5pqnnr.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.vitrifystudio.vitrifyApp"
+              }
+            }
+          ]
         }
       }
     }
