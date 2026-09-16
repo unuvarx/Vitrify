@@ -9,6 +9,7 @@ class StorageService {
   static const String _appSettingsBoxName = 'app_settings';
   static const String _onboardingSeenKey = 'onboarding_seen';
   static const String _themeModeKey = 'theme_mode';
+  static const String _pendingJobIdKey = 'pending_job_id';
 
   // Uygulama açılışında Hive'ı başlat
   static Future<void> init() async {
@@ -78,5 +79,24 @@ class StorageService {
   bool hasThemeSettings() {
     final box = Hive.box(_themeBoxName);
     return box.containsKey(_themeKey);
+  }
+
+  // Devam eden (tamamlanıp tamamlanmadığı doğrulanmamış) job — SignalR
+  // kopsa, uygulama kapansa/arkaya alınsa bile job'u kaybetmemek için
+  // cihazda kalıcı olarak tutuyoruz; her açılışta/sekmeye dönüşte kontrol
+  // edilip sonuç alınana kadar burada kalır
+  Future<void> savePendingJob(String jobId) async {
+    final box = Hive.box(_appSettingsBoxName);
+    await box.put(_pendingJobIdKey, jobId);
+  }
+
+  String? getPendingJobId() {
+    final box = Hive.box(_appSettingsBoxName);
+    return box.get(_pendingJobIdKey) as String?;
+  }
+
+  Future<void> clearPendingJob() async {
+    final box = Hive.box(_appSettingsBoxName);
+    await box.delete(_pendingJobIdKey);
   }
 }

@@ -46,12 +46,64 @@ class _CreateScreenState extends State<CreateScreen> implements Refreshable {
   void initState() {
     super.initState();
     _loadCredits();
+    // Uygulama kapatılıp yeniden açılmış olabilir — SignalR/timer gibi
+    // bellek-içi mekanizmalar bu sırada kaybolur, bu yüzden yarım kalmış
+    // (sonucu hiç görülmemiş) bir job var mı diye cihazda kalıcı olarak
+    // sakladığımız kayda bakıyoruz
+    _resumePendingJobIfAny();
   }
 
-  // MainScreen bu sekmeye her geçildiğinde çağırır — sadece kredi sayısını
-  // tazeler, devam eden bir üretim varsa ona dokunmaz
+  // MainScreen bu sekmeye her geçildiğinde çağırır — kredi sayısını tazeler
+  // ve (aktif olarak takip etmiyorsak) yarım kalmış bir job olup olmadığını
+  // kontrol eder — SignalR kopmuş/hiç bağlanamamış olsa bile sonucu kaçırmayız
   @override
-  Future<void> refresh() => _loadCredits();
+  Future<void> refresh() async {
+    await _loadCredits();
+    if (!_isGenerating) {
+      await _resumePendingJobIfAny();
+    }
+  }
+
+  Future<void> _resumePendingJobIfAny() async {
+    final pendingJobId = _storage.getPendingJobId();
+    if (pendingJobId == null) return;
+    await _reconcilePendingJob(pendingJobId);
+  }
+
+  // SignalR'a hiç güvenmeyen, sadece backend'e soran bağımsız senkronizasyon.
+  // Uygulama önceki oturumda kapansa/çökse/arkada SignalR bağlantısı kopsa
+  // bile bu, job'un gerçek sonucunu er ya da geç yakalar.
+  Future<void> _reconcilePendingJob(String jobId) async {
+    try {
+      final status = await _api.getJobStatus(jobId);
+      final images = List<String>.from(status['images'] ?? []);
+
+      for (final url in images) {
+        if (_generatedImages.contains(url)) continue;
+        final itemId = Uri.parse(url).pathSegments.last.replaceAll('.jpg', '');
+        await _persistGeneratedImage(url, itemId);
+      }
+
+      if (!mounted) return;
+
+      final isDone = status['status'] == 'done';
+      setState(() {
+        _generatedImages = images;
+        _completedCount = images.length;
+        _totalCount = (status['totalItems'] as num?)?.toInt() ?? images.length;
+        if (isDone) _isGenerating = false;
+      });
+
+      if (isDone) {
+        await _storage.clearPendingJob();
+        _loadCredits();
+      }
+      // Henüz bitmediyse kaydı silmiyoruz — bir sonraki açılışta/sekme
+      // dönüşünde tekrar kontrol edilecek
+    } catch (_) {
+      // sessizce geç — bağlantı yoksa bir sonraki fırsatta tekrar denenecek
+    }
+  }
 
   @override
   void dispose() {
@@ -133,15 +185,26 @@ class _CreateScreenState extends State<CreateScreen> implements Refreshable {
 
       final jobId = result['jobId'] as String;
 
+      // Job backend'de oluşturuldu — buradan sonra ne olursa olsun (SignalR
+      // kopsa, uygulama kapansa) bu kaydı cihazda tutuyoruz; bir sonraki
+      // açılışta/sekme dönüşünde gerçek sonucu backend'den sorup buluruz.
+      // Bu noktadan sonraki bir hata artık "işlem hiç olmadı" demek DEĞİL.
+      await _storage.savePendingJob(jobId);
+
       if (!mounted) return;
       setState(() {
         _isLoading = false;
         _isGenerating = true;
       });
 
-      // SignalR ile ANLIK takip (birincil); polling sadece güvenlik ağı
+      // SignalR ile ANLIK takip (birincil, best-effort); bağlanamazsa
+      // _trackJob içindeki fallback timer ve pending job kaydı sonucu
+      // yine de yakalar
       await _trackJob(jobId);
     } catch (e) {
+      // Bu yalnızca createJob() başarısız olduğunda (job hiç oluşmadıysa)
+      // tetiklenir — bu noktada gerçekten hiçbir şey olmamıştır, kredi de
+      // düşmemiştir
       if (!mounted) return;
       setState(() {
         _isLoading = false;
@@ -151,15 +214,23 @@ class _CreateScreenState extends State<CreateScreen> implements Refreshable {
     }
   }
 
-  // SignalR aboneliğini başlat + beklenmedik uzamalar için güvenlik ağı kur
+  // SignalR aboneliğini başlat + beklenmedik uzamalar için güvenlik ağı kur.
+  // SignalR bağlanamazsa (arkaya alınmış, ağ kopmuş vb.) burada asla
+  // fırlatmıyoruz — pending job kaydı zaten job'u güvenceye almış durumda,
+  // bu yalnızca canlı güncelleme için "best-effort" bir katman.
   Future<void> _trackJob(String jobId) async {
     _fallbackTimer?.cancel();
 
-    await _signalR.connectAndSubscribe(
-      jobId,
-      onReady: (data) => _handleImageReady(data),
-      onFailed: (data) => _handleImageFailed(data),
-    );
+    try {
+      await _signalR.connectAndSubscribe(
+        jobId,
+        onReady: (data) => _handleImageReady(data),
+        onFailed: (data) => _handleImageFailed(data),
+      );
+    } catch (_) {
+      // sessizce geç — aşağıdaki fallback timer ve pending job kaydı
+      // sonucu er ya da geç yakalayacak
+    }
 
     _fallbackTimer = Timer(const Duration(minutes: 5), () {
       if (mounted && _isGenerating) {
@@ -222,6 +293,7 @@ class _CreateScreenState extends State<CreateScreen> implements Refreshable {
   Future<void> _finishJob(String jobId) async {
     _fallbackTimer?.cancel();
     await _signalR.disconnect();
+    await _storage.clearPendingJob();
 
     if (!mounted) return;
     setState(() => _isGenerating = false);
@@ -273,32 +345,17 @@ class _CreateScreenState extends State<CreateScreen> implements Refreshable {
   }
 
   // Güvenlik ağı: SignalR beklenenden uzun sürerse tek seferlik senkronizasyon
-  // (birincil mekanizma DEĞİL — sadece son çare)
+  // (birincil mekanizma DEĞİL — sadece son çare). Gerçek işi zaten
+  // _reconcilePendingJob yapıyor; job hâlâ bitmediyse kaydı SİLMİYORUZ —
+  // arka planda bitince push bildirimi gelecek, sekmeye dönünce de otomatik
+  // yakalanacak, kullanıcıya sadece "bekleme uzadı" diye haber veriyoruz.
   Future<void> _reconcileViaPolling(String jobId) async {
-    try {
-      final status = await _api.getJobStatus(jobId);
-      final images = List<String>.from(status['images'] ?? []);
-      final newImages = images.where((url) => !_generatedImages.contains(url));
-
-      for (final url in newImages) {
-        final itemId = Uri.parse(url).pathSegments.last.replaceAll('.jpg', '');
-        await _persistGeneratedImage(url, itemId);
-      }
-
-      if (!mounted) return;
-      setState(() {
-        _generatedImages = images;
-        _completedCount = images.length;
-      });
-    } catch (_) {
-      // sessizce geç
-    }
-
+    await _reconcilePendingJob(jobId);
     await _signalR.disconnect();
 
-    if (!mounted) return;
+    if (!mounted || !_isGenerating) return;
+
     setState(() => _isGenerating = false);
-    _loadCredits();
     _showMessage(AppLocalizations.of(context)!.createTimeout);
   }
 
