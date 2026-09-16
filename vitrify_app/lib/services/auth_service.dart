@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -66,10 +67,32 @@ class AuthService {
       final messaging = FirebaseMessaging.instance;
       final settings = await messaging.requestPermission();
       if (settings.authorizationStatus == AuthorizationStatus.denied) {
+        debugPrint('[FCM] Bildirim izni reddedildi.');
         return null;
       }
-      return await messaging.getToken();
-    } catch (_) {
+
+      // iOS'ta APNs cihaz token'ı native tarafta hazır olmadan getToken()
+      // çağrılırsa sessizce başarısız olabiliyor (bilinen bir race condition)
+      // — hazır olana kadar kısa aralıklarla birkaç kez deniyoruz
+      if (Platform.isIOS) {
+        String? apnsToken;
+        for (var i = 0; i < 6 && apnsToken == null; i++) {
+          apnsToken = await messaging.getAPNSToken();
+          if (apnsToken == null) {
+            await Future.delayed(const Duration(seconds: 1));
+          }
+        }
+        if (apnsToken == null) {
+          debugPrint('[FCM] APNs token zaman aşımına uğradı, getToken() denenmeyecek.');
+          return null;
+        }
+      }
+
+      final token = await messaging.getToken();
+      debugPrint('[FCM] Token alındı mı: ${token != null}');
+      return token;
+    } catch (e) {
+      debugPrint('[FCM] Token alınamadı: $e');
       return null;
     }
   }
