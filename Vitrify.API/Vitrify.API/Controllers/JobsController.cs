@@ -72,7 +72,12 @@ public class JobsController : BaseApiController
             {
                 JobId = job.Id,
                 Index = i,
-                Base64Data = StripDataUriPrefix(request.Images[i])
+                Base64Data = StripDataUriPrefix(request.Images[i]),
+                // Flutter, cihazda arka planı kaldırabildiyse şeffaf bir PNG
+                // gönderiyor ("data:image/png;..."), yoksa orijinal JPEG'i
+                // olduğu gibi ("data:image/jpeg;..."). Mime tipinden ayırt
+                // ediyoruz — bkz. JobProcessingService compositing dalı.
+                IsCutout = request.Images[i].StartsWith("data:image/png")
             });
         }
         _db.JobImages.AddRange(jobImages);

@@ -15,4 +15,12 @@ public class JobImage
 
     // Saf base64 (data: öneki olmadan, Gemini'ye gönderilir)
     public string Base64Data { get; set; } = string.Empty;
+
+    // true: bu, telefonda ML Kit ile arka planı kaldırılmış (şeffaf PNG)
+    // bir ürün kesimi — bu durumda Gemini'ye ürünü hiç göstermeden sadece
+    // sahneyi ürettirip kesimi üzerine biz yapıştırıyoruz (logo/marka
+    // bozulmasını önlemek için, bkz. JobProcessingService).
+    // false: eski akış — orijinal fotoğraf olduğu gibi Gemini'ye gönderilir
+    // (cihaz kesim özelliğini desteklemiyorsa/başarısız olduysa fallback).
+    public bool IsCutout { get; set; }
 }

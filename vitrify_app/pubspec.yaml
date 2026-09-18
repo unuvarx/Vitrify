@@ -55,6 +55,7 @@ dependencies:
   # Görsel İşleme
   image_picker: ^1.1.2
   flutter_image_compress: ^2.3.0
+  native_cutout: ^0.2.0
   photo_manager: ^3.6.1
 
   # State Management
