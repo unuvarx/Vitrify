@@ -25,6 +25,8 @@ public class JobsController : BaseApiController
     [HttpPost("create")]
     public async Task<IActionResult> Create([FromBody] CreateJobRequest request)
     {
+        var sw = System.Diagnostics.Stopwatch.StartNew();
+
         var firebaseUid = GetFirebaseUid();
         if (string.IsNullOrEmpty(firebaseUid))
             return Unauthorized();
@@ -32,6 +34,7 @@ public class JobsController : BaseApiController
         var user = await _db.Users.FirstOrDefaultAsync(u => u.FirebaseUid == firebaseUid);
         if (user == null)
             return NotFound(new { message = "Kullanıcı bulunamadı." });
+        Console.WriteLine($"[PERF] Kullanıcı sorgusu: {sw.ElapsedMilliseconds}ms");
 
         if (request.Images.Count == 0)
             return BadRequest(new { message = "En az bir görsel gerekli." });
@@ -92,12 +95,14 @@ public class JobsController : BaseApiController
         }
         _db.JobItems.AddRange(jobItems);
         await _db.SaveChangesAsync();
+        Console.WriteLine($"[PERF] SaveChangesAsync (Job+JobImages+JobItems insert): {sw.ElapsedMilliseconds}ms");
 
         foreach (var item in jobItems)
         {
             BackgroundJob.Enqueue<JobProcessingService>(
                 svc => svc.ProcessJobItemAsync(item.Id));
         }
+        Console.WriteLine($"[PERF] Hangfire Enqueue ({jobItems.Count} kalem): {sw.ElapsedMilliseconds}ms, response gönderiliyor.");
 
         return Ok(new CreateJobResponse
         {
