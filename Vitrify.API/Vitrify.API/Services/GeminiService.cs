@@ -95,6 +95,14 @@ public class GeminiService
                         }
                     }
                 }
+            },
+            generationConfig = new
+            {
+                imageConfig = new
+                {
+                    aspectRatio,
+                    imageSize = "1k"
+                }
             }
         };
 
