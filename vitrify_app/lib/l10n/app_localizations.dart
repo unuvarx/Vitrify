@@ -338,6 +338,12 @@ abstract class AppLocalizations {
   /// **'The process took too long. Please try again.'**
   String get createTimeout;
 
+  /// No description provided for @createSafeToCloseApp.
+  ///
+  /// In en, this message translates to:
+  /// **'Generation has started. You can close the app now — we\'ll notify you when your images are ready.'**
+  String get createSafeToCloseApp;
+
   /// No description provided for @createProductImagesTitle.
   ///
   /// In en, this message translates to:

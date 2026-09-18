@@ -60,6 +60,7 @@
     "placeholders": { "count": { "type": "int" } }
   },
   "createTimeout": "The process took too long. Please try again.",
+  "createSafeToCloseApp": "Generation has started. You can close the app now — we'll notify you when your images are ready.",
   "createProductImagesTitle": "Product Images",
   "createSelectImages": "Select Images",
   "createImagesSelected": "{count} image(s) selected",

@@ -196,6 +196,7 @@ class _CreateScreenState extends State<CreateScreen> implements Refreshable {
         _isLoading = false;
         _isGenerating = true;
       });
+      _showMessage(l10n.createSafeToCloseApp);
 
       // SignalR ile ANLIK takip (birincil, best-effort); bağlanamazsa
       // _trackJob içindeki fallback timer ve pending job kaydı sonucu

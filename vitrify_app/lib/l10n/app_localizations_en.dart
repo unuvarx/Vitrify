@@ -142,6 +142,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get createTimeout => 'The process took too long. Please try again.';
 
   @override
+  String get createSafeToCloseApp =>
+      'Generation has started. You can close the app now — we\'ll notify you when your images are ready.';
+
+  @override
   String get createProductImagesTitle => 'Product Images';
 
   @override

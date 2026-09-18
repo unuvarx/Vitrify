@@ -142,6 +142,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get createTimeout => 'İşlem uzun sürdü. Lütfen tekrar deneyin.';
 
   @override
+  String get createSafeToCloseApp =>
+      'Üretim başladı. Uygulamayı kapatabilirsiniz — görselleriniz hazır olduğunda size bildirim göndereceğiz.';
+
+  @override
   String get createProductImagesTitle => 'Ürün Görselleri';
 
   @override
