@@ -64,9 +64,6 @@ namespace Vitrify.API.Migrations
                     b.Property<int>("Index")
                         .HasColumnType("integer");
 
-                    b.Property<bool>("IsCutout")
-                        .HasColumnType("boolean");
-
                     b.Property<Guid>("JobId")
                         .HasColumnType("uuid");
 

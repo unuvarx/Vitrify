@@ -94,7 +94,6 @@ builder.Services.AddScoped<Vitrify.API.Services.JobProcessingService>();
 builder.Services.AddScoped<Vitrify.API.Services.NotificationService>();
 builder.Services.AddScoped<Vitrify.API.Services.GeminiService>();
 builder.Services.AddScoped<Vitrify.API.Services.SupabaseStorageService>();
-builder.Services.AddScoped<Vitrify.API.Services.ImageCompositingService>();
 
 // ========================================
 // UYGULAMA (builder.Build()'den SONRA)

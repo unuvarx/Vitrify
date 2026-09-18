@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
-import 'package:native_cutout/native_cutout.dart';
 import '../config/app_config.dart';
 import 'auth_service.dart';
 
@@ -17,51 +16,10 @@ class ApiService {
     return Options(headers: {'Authorization': 'Bearer $token'});
   }
 
-  // Ürünü arka plandan cihaz üzerinde (ücretsiz, ML Kit ile) ayırmayı dener.
-  // Başarılı olursa backend, logoyu hiç AI'ya göstermeden (compositing ile)
-  // işler — marka/metin bozulma riski ortadan kalkar. Cihaz desteklemiyorsa
-  // (eski iOS/Android) ya da herhangi bir sebeple başarısız olursa null
-  // döner, çağıran taraf eski (fallback) akışa geçer.
-  Future<String?> _tryCutout(File imageFile) async {
-    try {
-      final result = await NativeCutout.removeBackground(
-        imageFile.absolute.path,
-        options: const CutoutOptions(cropToSubject: true, writeToCache: false),
-      );
-
-      Uint8List? pngBytes;
-      if (result is CutoutBytesSuccess) {
-        pngBytes = result.pngBytes;
-      } else if (result is CutoutFileSuccess) {
-        pngBytes = await File(result.path).readAsBytes();
-      }
-      if (pngBytes == null) return null;
-
-      // Şeffaflığı bozmadan (JPEG değil, PNG olarak) boyutu makul tut
-      final resized = await FlutterImageCompress.compressWithList(
-        pngBytes,
-        minWidth: 1024,
-        minHeight: 1024,
-        format: CompressFormat.png,
-      );
-
-      return 'data:image/png;base64,${base64Encode(resized)}';
-    } catch (_) {
-      return null;
-    }
-  }
-
   // Görseli sıkıştır + base64 data URI'ye çevir
   // (Adım 8'de öğrendik: sıkıştırma süreyi 44sn → 13sn düşürüyor!)
   Future<String> _imageToDataUri(File imageFile) async {
     final sw = Stopwatch()..start();
-
-    final cutoutDataUri = await _tryCutout(imageFile);
-    if (cutoutDataUri != null) {
-      debugPrint('[PERF] Kesim (cutout) başarılı: ${sw.elapsedMilliseconds}ms');
-      return cutoutDataUri;
-    }
-
     final originalSize = await imageFile.length();
 
     // Sıkıştır: max 1024px, kalite 85
@@ -78,7 +36,7 @@ class ApiService {
     }
 
     debugPrint(
-        '[PERF] Sıkıştırma (fallback): ${sw.elapsedMilliseconds}ms (${originalSize ~/ 1024}KB -> ${compressed.length ~/ 1024}KB)');
+        '[PERF] Sıkıştırma: ${sw.elapsedMilliseconds}ms (${originalSize ~/ 1024}KB -> ${compressed.length ~/ 1024}KB)');
 
     final base64Str = base64Encode(compressed);
     return 'data:image/jpeg;base64,$base64Str';

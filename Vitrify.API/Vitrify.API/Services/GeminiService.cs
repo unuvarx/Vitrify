@@ -55,31 +55,11 @@ public class GeminiService
         string aspectRatio,
         int maxAttempts = 3)
     {
-        return await WithRetryAsync(
-            () => GenerateOnceAsync(prompt, aspectRatio, imageBase64),
-            maxAttempts);
-    }
-
-    // Compositing akışı için: ürünü hiç göstermeden SADECE sahneyi/arka
-    // planı ürettirir — ürün fotoğrafı üzerine biz yapıştıracağımız için
-    // Gemini'nin marka/logo bozma riski bu adımda hiç devreye girmiyor.
-    public async Task<string> GenerateSceneOnlyAsync(
-        string prompt,
-        string aspectRatio,
-        int maxAttempts = 3)
-    {
-        return await WithRetryAsync(
-            () => GenerateOnceAsync(prompt, aspectRatio, imageBase64: null),
-            maxAttempts);
-    }
-
-    private async Task<string> WithRetryAsync(Func<Task<string>> action, int maxAttempts)
-    {
         for (int attempt = 1; attempt <= maxAttempts; attempt++)
         {
             try
             {
-                return await action();
+                return await GenerateImageOnceAsync(prompt, imageBase64, aspectRatio);
             }
             catch (Exception) when (attempt < maxAttempts)
             {
@@ -91,27 +71,31 @@ public class GeminiService
         throw new InvalidOperationException("Unreachable");
     }
 
-    private async Task<string> GenerateOnceAsync(
+    private async Task<string> GenerateImageOnceAsync(
         string prompt,
-        string aspectRatio,
-        string? imageBase64)
+        string imageBase64,
+        string aspectRatio)
     {
-        var requestParts = new List<object> { new { text = prompt } };
-        if (imageBase64 != null)
-        {
-            requestParts.Add(new
-            {
-                inline_data = new
-                {
-                    mime_type = "image/jpeg",
-                    data = imageBase64
-                }
-            });
-        }
-
         var requestBody = new
         {
-            contents = new[] { new { parts = requestParts } },
+            contents = new[]
+            {
+                new
+                {
+                    parts = new object[]
+                    {
+                        new { text = prompt },
+                        new
+                        {
+                            inline_data = new
+                            {
+                                mime_type = "image/jpeg",
+                                data = imageBase64
+                            }
+                        }
+                    }
+                }
+            },
             generationConfig = new
             {
                 imageConfig = new

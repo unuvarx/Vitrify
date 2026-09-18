@@ -10,7 +10,6 @@ public class JobProcessingService
     private readonly AppDbContext _db;
     private readonly GeminiService _gemini;
     private readonly SupabaseStorageService _storage;
-    private readonly ImageCompositingService _compositing;
     private readonly IHubContext<JobHub> _hub;
     private readonly NotificationService _notification;
     private readonly ILogger<JobProcessingService> _logger;
@@ -22,7 +21,6 @@ public class JobProcessingService
         AppDbContext db,
         GeminiService gemini,
         SupabaseStorageService storage,
-        ImageCompositingService compositing,
         IHubContext<JobHub> hub,
         NotificationService notification,
         ILogger<JobProcessingService> logger)
@@ -30,7 +28,6 @@ public class JobProcessingService
         _db = db;
         _gemini = gemini;
         _storage = storage;
-        _compositing = compositing;
         _hub = hub;
         _notification = notification;
         _logger = logger;
@@ -76,40 +73,26 @@ public class JobProcessingService
 
             // Girdi görselinin base64'ü — Job başına bir kez saklanan JobImage'dan
             // (JobItem'da tekrarlanmıyor, bkz. JobsController.Create)
-            var jobImage = await _db.JobImages
+            var imageBase64 = await _db.JobImages
                 .AsNoTracking()
                 .Where(img => img.JobId == item.JobId && img.Index == item.ImageIndex)
-                .Select(img => new { img.Base64Data, img.IsCutout })
+                .Select(img => img.Base64Data)
                 .FirstOrDefaultAsync();
 
-            if (jobImage == null)
+            if (imageBase64 == null)
                 throw new Exception($"JobImage bulunamadı (JobId={item.JobId}, Index={item.ImageIndex}).");
 
-            byte[] jpegBytes;
-            if (jobImage.IsCutout)
-            {
-                // Ürün cihazda (ML Kit) arka plandan zaten ayrılmış — Gemini'ye
-                // ürünü hiç göstermiyoruz, sadece boş sahneyi ürettirip kesimi
-                // üzerine biz yapıştırıyoruz. Böylece marka/logo AI'nin eline
-                // hiç geçmiyor, piksel piksel orijinal kalıyor.
-                var sceneBase64 = await _gemini.GenerateSceneOnlyAsync(item.Scenario, "1:1");
-                var sceneJpeg = _gemini.EncodeAsJpeg(Convert.FromBase64String(sceneBase64));
-                var cutoutPng = Convert.FromBase64String(jobImage.Base64Data);
-                jpegBytes = _compositing.Composite(cutoutPng, sceneJpeg);
-            }
-            else
-            {
-                // Eski akış (fallback): cihaz kesim yapamadıysa orijinal fotoğrafı
-                // olduğu gibi Gemini'ye gönderiyoruz, Gemini sahneyi+ürünü birlikte
-                // yeniden çiziyor (logo bozulma riski burada hâlâ var).
-                var outputBase64 = await _gemini.GenerateImageAsync(
-                    item.Scenario,
-                    jobImage.Base64Data,
-                    "1:1");
-                // Gemini genelde PNG (kayıpsız) döndürüyor — Storage'a yüklemeden
-                // önce kaliteli JPEG'e çeviriyoruz (çözünürlüğe dokunmadan).
-                jpegBytes = _gemini.EncodeAsJpeg(Convert.FromBase64String(outputBase64));
-            }
+            // Görseli üret (Gemini base64 döndürür)
+            var outputBase64 = await _gemini.GenerateImageAsync(
+                item.Scenario,   // prompt (mekan+senaryo)
+                imageBase64,     // görselin base64'ü
+                "1:1"            // aspect ratio (şimdilik sabit, sonra dinamik)
+            );
+
+            // Gemini genelde PNG (kayıpsız) döndürüyor — Storage'a yüklemeden
+            // önce kaliteli JPEG'e çeviriyoruz (çözünürlüğe dokunmadan).
+            // Görünür kalite kaybı yaratmadan dosya boyutunu ~%80 küçültüyor.
+            var jpegBytes = _gemini.EncodeAsJpeg(Convert.FromBase64String(outputBase64));
 
             // Başarılı — çıktıyı Supabase Storage'a yükle, Postgres'e sadece
             // kısa bir public URL yazacağız (büyük base64 blob yazmak yerine)
