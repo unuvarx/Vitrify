@@ -309,290 +309,302 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get promptCatJewelryScene =>
-      'Saf beyaz bir stüdyo zemininde, yumuşak ve eşit dağılan profesyonel ışıkla aydınlatılmış, gölgesi minimal sade bir mücevher sergisi';
+      'Sade ve şık bir stüdyo ortamı, açık nötr tonlarda, ince bir kumaş örtü ve minimal bir mücevher standı bulunan, yumuşak profesyonel ışıkla aydınlatılmış bir sergi düzeni';
 
   @override
   String get promptCatJewelryScenario1 =>
-      'beyaz bir platform üzerinde, ortalanmış ve simetrik şekilde';
+      'beyaz bir mücevher standı üzerinde, ürünün tamamı kadrajda, yakın çekim olmadan';
 
   @override
   String get promptCatJewelryScenario2 =>
-      'hafif yükseltilmiş şeffaf bir stant üzerinde sergileniyor';
+      'yanında sade bir mücevher kutusuyla, geniş bir masaüstü düzenlemesinde';
 
   @override
   String get promptCatJewelryScenario3 =>
-      'yumuşak, yandan gelen ışıkla vurgulanmış, ince bir gölgeyle';
+      'yumuşak yandan ışıkla, yanında ince bir dekoratif objeyle, ürün bütünüyle görünür şekilde';
 
   @override
   String get promptCatWatchName => 'Saatler';
 
   @override
   String get promptCatWatchScene =>
-      'Nötr beyaz-gri tonlarında minimalist bir stüdyo zemini, yumuşak ve dengeli profesyonel ışıkla aydınlatılmış';
+      'Şık ve sade bir stüdyo masası düzeni, açık gri-beyaz tonlarda, yanında ince bir saat standı ve minimal bir dekor öğesi bulunan, yumuşak profesyonel ışıkla aydınlatılmış';
 
   @override
   String get promptCatWatchScenario1 =>
-      'beyaz bir küp platform üzerinde, kadranı öne bakacak şekilde';
+      'bir saat standı üzerinde, kadranı öne bakacak şekilde, ürünün tamamı kadrajda';
 
   @override
   String get promptCatWatchScenario2 =>
-      'hafif eğik bir açıyla, kayışı kıvrımlı şekilde yerleştirilmiş';
+      'masa üzerinde hafif eğik açıyla, yanında sade bir defterle, yakın çekim olmadan';
 
   @override
   String get promptCatWatchScenario3 =>
-      'ince şeffaf bir stant üzerinde dik duruşta';
+      'ince bir vitrin kutusu içinde sergileniyor, geniş kadrajda';
 
   @override
   String get promptCatGlassesName => 'Gözlükler';
 
   @override
   String get promptCatGlassesScene =>
-      'Saf beyaz bir zemin üzerinde, yumuşak ve gölgesiz stüdyo ışığıyla aydınlatılmış sade bir ürün sergisi';
+      'Sade ve modern bir stüdyo masası düzeni, açık nötr tonlarda, yanında ince bir kitap ve minimal bir dekor öğesi bulunan, yumuşak ışıkla aydınlatılmış';
 
   @override
   String get promptCatGlassesScenario1 =>
-      'katlanmış halde, düzgün ve simetrik yerleştirilmiş';
+      'katlanmış halde, yanında sade bir kitapla, ürünün tamamı geniş kadrajda';
 
   @override
   String get promptCatGlassesScenario2 =>
-      'hafif açık şekilde, yandan görünümde';
+      'ince bir gözlük standı üzerinde dik durur şekilde, yakın çekim olmadan';
 
   @override
   String get promptCatGlassesScenario3 =>
-      'ince bir stant üzerinde dik durur şekilde';
+      'masa üzerinde hafif açık şekilde, yandan görünümde, ürün bütünüyle görünür';
 
   @override
   String get promptCatTshirtName => 'Tişört & Üst Giyim';
 
   @override
   String get promptCatTshirtScene =>
-      'Düz beyaz arka planlı minimalist bir stüdyo, yumuşak ve dengeli profesyonel ışıkla aydınlatılmış';
+      'Sade ve modern bir stüdyo ortamı, açık nötr tonlu bir arka plan, yumuşak profesyonel ışıkla aydınlatılmış';
 
   @override
   String get promptCatTshirtScenario1 =>
-      'görünmez bir manken üzerinde, önden düz ve simetrik görünüm';
+      'bir manken üzerinde, önden düz görünüm, ürünün tamamı kadrajda';
 
   @override
   String get promptCatTshirtScenario2 =>
-      'özenle katlanmış şekilde, düzenli bir yığın halinde';
+      'ahşap bir askılıkta asılı, geniş kadrajda, yakın çekim olmadan';
 
   @override
   String get promptCatTshirtScenario3 =>
-      'ince bir askıda, düz ve kırışıksız şekilde asılı';
+      'özenle katlanmış şekilde, yanında sade bir dekor öğesiyle, masa üzerinde';
 
   @override
   String get promptCatPantsName => 'Pantolonlar';
 
   @override
   String get promptCatPantsScene =>
-      'Düz beyaz arka planlı minimalist bir stüdyo, yumuşak ve dengeli profesyonel ışıkla aydınlatılmış';
+      'Sade ve modern bir stüdyo ortamı, açık nötr tonlu bir arka plan, yumuşak profesyonel ışıkla aydınlatılmış';
 
   @override
   String get promptCatPantsScenario1 =>
-      'görünmez bir manken üzerinde, önden düz görünüm';
+      'bir manken üzerinde, önden düz görünüm, ürünün tamamı kadrajda';
 
   @override
   String get promptCatPantsScenario2 =>
-      'özenle katlanmış şekilde, düzenli bir yığın halinde';
+      'ahşap bir askılıkta asılı, geniş kadrajda';
 
   @override
-  String get promptCatPantsScenario3 => 'ince bir askıda düz şekilde asılı';
+  String get promptCatPantsScenario3 =>
+      'özenle katlanmış şekilde, sade bir masa üzerinde';
 
   @override
   String get promptCatJacketName => 'Ceket & Mont';
 
   @override
   String get promptCatJacketScene =>
-      'Düz beyaz arka planlı minimalist bir stüdyo, yumuşak ve dengeli profesyonel ışıkla aydınlatılmış';
+      'Sade ve modern bir stüdyo ortamı, açık nötr tonlu bir arka plan, yumuşak profesyonel ışıkla aydınlatılmış';
 
   @override
   String get promptCatJacketScenario1 =>
-      'görünmez bir manken üzerinde, önden düz görünüm';
+      'bir manken üzerinde, önden düz görünüm, ürünün tamamı kadrajda';
 
   @override
   String get promptCatJacketScenario2 =>
-      'ahşap ya da metal bir askıda, düzgün asılı şekilde';
+      'ahşap ya da metal bir askılıkta, mağaza içi sade bir düzenlemede, geniş kadrajda';
 
   @override
   String get promptCatJacketScenario3 =>
-      'hafif 3/4 açıyla, yaka ve detayları görünecek şekilde';
+      'hafif 3/4 açıyla, yaka ve detaylar görünür ama ürünün tamamı kadrajda kalacak şekilde';
 
   @override
   String get promptCatBagName => 'Çantalar';
 
   @override
   String get promptCatBagScene =>
-      'Saf beyaz bir zemin üzerinde, yumuşak stüdyo ışığıyla aydınlatılmış sade bir ürün sergisi';
+      'Sade ve şık bir stüdyo masası düzeni, açık nötr tonlarda, minimal bir dekor öğesi bulunan, yumuşak ışıkla aydınlatılmış';
 
   @override
   String get promptCatBagScenario1 =>
-      'dik duruşta, kendi tabanı üzerinde ortalanmış';
+      'dik duruşta, kendi tabanı üzerinde, ürünün tamamı geniş kadrajda';
 
   @override
-  String get promptCatBagScenario2 => 'yandan görünümde, sapı belirgin şekilde';
+  String get promptCatBagScenario2 =>
+      'yandan görünümde, sapı belirgin şekilde, yakın çekim olmadan';
 
   @override
   String get promptCatBagScenario3 =>
-      'hafif yükseltilmiş bir platform üzerinde, üstten hafif açılı görünüm';
+      'bir sandalye ya da tabure üzerinde, sade bir düzenlemede, geniş kadrajda';
 
   @override
   String get promptCatShoesName => 'Ayakkabılar';
 
   @override
   String get promptCatShoesScene =>
-      'Saf beyaz bir zemin üzerinde, yumuşak ve net stüdyo ışığıyla aydınlatılmış sade bir ürün sergisi';
+      'Sade ve modern bir stüdyo zemini, açık nötr tonlarda, yumuşak ve net profesyonel ışıkla aydınlatılmış';
 
   @override
-  String get promptCatShoesScenario1 => 'yan profilden, tek başına ortalanmış';
+  String get promptCatShoesScenario1 =>
+      'yan profilden, tek başına, ürünün tamamı kadrajda, yakın çekim olmadan';
 
   @override
   String get promptCatShoesScenario2 =>
-      'hafif açılı 3/4 görünümde, çift olarak yan yana';
+      'çift olarak yan yana, kutusunun yanında sade bir düzenlemede';
 
   @override
   String get promptCatShoesScenario3 =>
-      'üstten düz görünümde, simetrik yerleşimle';
+      'hafif açılı üstten görünümde, geniş kadrajda';
 
   @override
   String get promptCatCosmeticsName => 'Kozmetik & Cilt Bakımı';
 
   @override
   String get promptCatCosmeticsScene =>
-      'Beyaz mermer ya da mat beyaz bir yüzey üzerinde, yumuşak ve temiz stüdyo ışığıyla aydınlatılmış';
+      'Sade ve temiz bir banyo/spa tarzı düzenleme, açık nötr tonlarda, yanında ince bir havlu ve minimal bir dekor öğesi bulunan, yumuşak ışıkla aydınlatılmış';
 
   @override
   String get promptCatCosmeticsScenario1 =>
-      'dik duruşta, ortalanmış ve simetrik şekilde';
+      'dik duruşta, yanında sade bir dekor öğesiyle, ürünün tamamı kadrajda, yakın çekim olmadan';
 
   @override
   String get promptCatCosmeticsScenario2 =>
-      'hafif yandan gelen ışıkla, ince bir gölgeyle vurgulanmış';
+      'hafif yandan gelen ışıkla, geniş bir kadrajda';
 
   @override
   String get promptCatCosmeticsScenario3 =>
-      'kapağı kapalı, düzenli ve sade bir yerleşimle';
+      'kapağı kapalı, sade bir masa düzenlemesinde';
 
   @override
   String get promptCatPerfumeName => 'Parfüm';
 
   @override
   String get promptCatPerfumeScene =>
-      'Saf beyaz bir zemin üzerinde, yumuşak ve net stüdyo ışığıyla aydınlatılmış zarif bir sergileme';
+      'Zarif ve sade bir tuvalet masası düzeni, açık nötr tonlarda, yanında ince bir dekor öğesi (çiçek veya kumaş) bulunan, yumuşak ışıkla aydınlatılmış';
 
   @override
-  String get promptCatPerfumeScenario1 => 'şişe dik duruşta, tam ortalanmış';
+  String get promptCatPerfumeScenario1 =>
+      'şişe dik duruşta, ürünün tamamı geniş kadrajda, yakın çekim olmadan';
 
   @override
   String get promptCatPerfumeScenario2 =>
-      'hafif yansımalı beyaz bir zeminde, ince bir yansımayla';
+      'hafif yansımalı bir yüzeyde, yanında sade bir dekor öğesiyle';
 
   @override
   String get promptCatPerfumeScenario3 =>
-      'yandan gelen yumuşak ışıkla, cam dokusu belirginleşecek şekilde';
+      'yandan gelen yumuşak ışıkla, geniş kadrajda';
 
   @override
   String get promptCatElectronicsName => 'Elektronik';
 
   @override
   String get promptCatElectronicsScene =>
-      'Minimalist gri-beyaz bir stüdyo zemini, yumuşak ve dengeli profesyonel ışıkla aydınlatılmış';
+      'Modern ve sade bir çalışma masası düzeni, minimalist dekor, düzenli kablolar, yumuşak profesyonel ışıkla aydınlatılmış';
 
   @override
-  String get promptCatElectronicsScenario1 => 'önden düz ve simetrik görünüm';
+  String get promptCatElectronicsScenario1 =>
+      'masa üzerinde, önden düz görünüm, ürünün tamamı kadrajda';
 
   @override
-  String get promptCatElectronicsScenario2 => 'hafif açılı 3/4 görünümde';
+  String get promptCatElectronicsScenario2 =>
+      'yanında sade bir dekor öğesiyle (defter, fincan), hafif açılı görünümde';
 
   @override
   String get promptCatElectronicsScenario3 =>
-      'üstten düz görünümde, düzenli yerleşimle';
+      'kutusunun yanında sergileniyor, geniş kadrajda';
 
   @override
   String get promptCatFurnitureName => 'Mobilya';
 
   @override
   String get promptCatFurnitureScene =>
-      'Beyaz/açık gri sonsuzluk (infinity) zemin üzerinde, yumuşak ve eşit dağılan profesyonel stüdyo ışığı';
+      'Sıcak ve sade bir oda düzeni, açık nötr tonlarda, doğal ışık ve minimal dekor öğeleriyle';
 
   @override
-  String get promptCatFurnitureScenario1 => 'önden düz ve simetrik görünüm';
+  String get promptCatFurnitureScenario1 =>
+      'odanın içinde, diğer sade dekor öğeleriyle uyumlu şekilde, ürünün tamamı kadrajda';
 
   @override
-  String get promptCatFurnitureScenario2 => 'hafif açılı köşe görünümünde';
+  String get promptCatFurnitureScenario2 =>
+      'hafif açılı köşe görünümünde, geniş kadrajda';
 
   @override
   String get promptCatFurnitureScenario3 =>
-      'yandan profil görünümünde, net hatlarla';
+      'yandan profil görünümünde, sade bir düzenlemede';
 
   @override
   String get promptCatHomeDecorName => 'Ev Dekorasyonu';
 
   @override
   String get promptCatHomeDecorScene =>
-      'Sade beyaz bir raf/zemin düzenlemesi, yumuşak ve dengeli profesyonel stüdyo ışığı';
+      'Sade bir raf/masa düzenlemesi, doğal dokular (ahşap, keten) ve minimal dekor öğeleriyle, yumuşak ışıkla aydınlatılmış';
 
   @override
   String get promptCatHomeDecorScenario1 =>
-      'ortalanmış, tek başına sade bir sergileme';
+      'bir rafın üzerinde, yanında sade bir dekor öğesiyle (kitap, mum)';
 
   @override
   String get promptCatHomeDecorScenario2 =>
-      'hafif yükseltilmiş bir platform üzerinde';
+      'masa ortasında, sade bir çiçek düzenlemesiyle, geniş kadrajda';
 
   @override
   String get promptCatHomeDecorScenario3 =>
-      'yandan gelen yumuşak ışıkla, ince bir gölgeyle vurgulanmış';
+      'yandan gelen yumuşak ışıkla, ürünün tamamı kadrajda';
 
   @override
   String get promptCatKitchenName => 'Mutfak Eşyaları';
 
   @override
   String get promptCatKitchenScene =>
-      'Beyaz mermer görünümlü bir tezgah üzerinde, yumuşak ve net profesyonel stüdyo ışığı';
+      'Modern ve sade bir mutfak tezgahı düzeni, açık nötr tonlarda, doğal ışıkla aydınlatılmış';
 
   @override
-  String get promptCatKitchenScenario1 => 'dik/düz duruşta, ortalanmış şekilde';
+  String get promptCatKitchenScenario1 =>
+      'tezgah üzerinde, yanında sade malzemelerle (birkaç meyve/sebze), ürünün tamamı kadrajda';
 
   @override
-  String get promptCatKitchenScenario2 => 'hafif açılı üstten görünümde';
+  String get promptCatKitchenScenario2 =>
+      'hafif açılı üstten görünümde, geniş kadrajda';
 
   @override
   String get promptCatKitchenScenario3 =>
-      'yandan gelen ışıkla, doku ve detaylar belirginleşecek şekilde';
+      'diğer sade mutfak eşyalarıyla bir arada, düzenli bir rafta';
 
   @override
   String get promptCatBabyName => 'Bebek & Çocuk';
 
   @override
   String get promptCatBabyScene =>
-      'Yumuşak beyaz-pastel tonlarında sade bir stüdyo zemini, yumuşak ve güven veren profesyonel ışık';
+      'Yumuşak pastel tonlarda sade bir çocuk odası düzeni, oyuncaklar ve minimal dekor öğeleriyle, sıcak ve güven veren ışıkla';
 
   @override
   String get promptCatBabyScenario1 =>
-      'tek başına, ortalanmış sade bir sergileme';
+      'sade bir raf üzerinde, yanında bir-iki oyuncakla, ürünün tamamı kadrajda';
 
   @override
   String get promptCatBabyScenario2 =>
-      'hafif yükseltilmiş bir platform üzerinde';
+      'hafif yükseltilmiş bir platformda, geniş kadrajda';
 
   @override
   String get promptCatBabyScenario3 =>
-      'üstten düz görünümde, düzenli yerleşimle';
+      'halının üzerinde, düzenli ve sade bir yerleşimle';
 
   @override
   String get promptCatSportsName => 'Spor & Fitness';
 
   @override
   String get promptCatSportsScene =>
-      'Minimalist beyaz-gri bir stüdyo zemini, enerjik ama sade bir profesyonel ışıkla aydınlatılmış';
+      'Modern ve sade bir spor alanı düzeni, açık nötr tonlarda, enerjik ama temiz profesyonel ışıkla aydınlatılmış';
 
   @override
-  String get promptCatSportsScenario1 => 'önden düz ve simetrik görünüm';
+  String get promptCatSportsScenario1 =>
+      'bir yoga matının üzerinde, düzenli şekilde, ürünün tamamı kadrajda';
 
   @override
-  String get promptCatSportsScenario2 => 'hafif açılı 3/4 görünümde';
+  String get promptCatSportsScenario2 =>
+      'spor çantasının yanında, sade bir düzenlemede';
 
   @override
   String get promptCatSportsScenario3 =>
-      'üstten düz görünümde, düzenli yerleşimle';
+      'hafif açılı görünümde, geniş kadrajda';
 }

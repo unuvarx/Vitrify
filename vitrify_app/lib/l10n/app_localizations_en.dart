@@ -309,283 +309,301 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get promptCatJewelryScene =>
-      'A pure white studio backdrop, lit with soft, evenly diffused professional lighting and minimal shadow';
+      'A clean, elegant studio setting in neutral tones, with a subtle fabric drape and a minimal jewelry stand, lit with soft professional lighting';
 
   @override
   String get promptCatJewelryScenario1 =>
-      'centered symmetrically on a white platform';
+      'on a white jewelry stand, the whole product in frame, not shot too close';
 
   @override
   String get promptCatJewelryScenario2 =>
-      'displayed on a slightly raised transparent stand';
+      'next to a simple jewelry box, in a wide desktop flat lay';
 
   @override
   String get promptCatJewelryScenario3 =>
-      'highlighted with soft side lighting and a subtle shadow';
+      'highlighted with soft side lighting, next to a small decorative object, the whole product visible';
 
   @override
   String get promptCatWatchName => 'Watches';
 
   @override
   String get promptCatWatchScene =>
-      'A minimalist studio setting in neutral white-gray tones, lit with soft, balanced professional lighting';
+      'A clean, elegant studio desk setup in light gray-white tones, with a slim watch stand and a minimal decor piece, lit with soft professional lighting';
 
   @override
   String get promptCatWatchScenario1 =>
-      'on a white cube platform, dial facing forward';
+      'on a watch stand, dial facing forward, the whole product in frame';
 
   @override
   String get promptCatWatchScenario2 =>
-      'at a slight angle, strap gently curved';
+      'on a desk at a slight angle, next to a simple notebook, not shot too close';
 
   @override
   String get promptCatWatchScenario3 =>
-      'standing upright on a slim transparent stand';
+      'displayed inside a slim display case, in a wide frame';
 
   @override
   String get promptCatGlassesName => 'Glasses';
 
   @override
   String get promptCatGlassesScene =>
-      'A pure white backdrop lit with soft, shadow-free studio lighting for a clean product display';
+      'A clean, modern studio desk setup in neutral tones, with a simple book and a minimal decor piece, lit with soft lighting';
 
   @override
-  String get promptCatGlassesScenario1 => 'folded neatly and symmetrically';
+  String get promptCatGlassesScenario1 =>
+      'folded neatly, next to a simple book, the whole product in a wide frame';
 
   @override
   String get promptCatGlassesScenario2 =>
-      'slightly open, shown in side profile';
+      'standing upright on a slim display stand, not shot too close';
 
   @override
   String get promptCatGlassesScenario3 =>
-      'standing upright on a slim display stand';
+      'slightly open on a desk, shown in side profile, the whole product visible';
 
   @override
   String get promptCatTshirtName => 'T-Shirts & Tops';
 
   @override
   String get promptCatTshirtScene =>
-      'A minimalist studio with a plain white backdrop, lit with soft, balanced professional lighting';
+      'A clean, modern studio setting with a plain neutral-toned backdrop, lit with soft professional lighting';
 
   @override
   String get promptCatTshirtScenario1 =>
-      'on an invisible mannequin, straight-on symmetrical front view';
+      'on a mannequin, straight-on front view, the whole product in frame';
 
   @override
-  String get promptCatTshirtScenario2 => 'neatly folded in an orderly stack';
+  String get promptCatTshirtScenario2 =>
+      'hanging on a wooden clothing rail, in a wide frame, not shot too close';
 
   @override
   String get promptCatTshirtScenario3 =>
-      'hanging flat and wrinkle-free on a slim hanger';
+      'neatly folded next to a simple decor piece, on a table';
 
   @override
   String get promptCatPantsName => 'Pants';
 
   @override
   String get promptCatPantsScene =>
-      'A minimalist studio with a plain white backdrop, lit with soft, balanced professional lighting';
+      'A clean, modern studio setting with a plain neutral-toned backdrop, lit with soft professional lighting';
 
   @override
   String get promptCatPantsScenario1 =>
-      'on an invisible mannequin, straight-on front view';
+      'on a mannequin, straight-on front view, the whole product in frame';
 
   @override
-  String get promptCatPantsScenario2 => 'neatly folded in an orderly stack';
+  String get promptCatPantsScenario2 =>
+      'hanging on a wooden clothing rail, in a wide frame';
 
   @override
-  String get promptCatPantsScenario3 => 'hanging flat on a slim hanger';
+  String get promptCatPantsScenario3 => 'neatly folded on a simple table';
 
   @override
   String get promptCatJacketName => 'Jackets & Coats';
 
   @override
   String get promptCatJacketScene =>
-      'A minimalist studio with a plain white backdrop, lit with soft, balanced professional lighting';
+      'A clean, modern studio setting with a plain neutral-toned backdrop, lit with soft professional lighting';
 
   @override
   String get promptCatJacketScenario1 =>
-      'on an invisible mannequin, straight-on front view';
+      'on a mannequin, straight-on front view, the whole product in frame';
 
   @override
   String get promptCatJacketScenario2 =>
-      'hanging neatly on a wooden or metal hanger';
+      'hanging neatly on a wooden or metal clothing rail, in a simple store-style arrangement';
 
   @override
   String get promptCatJacketScenario3 =>
-      'at a slight 3/4 angle, showing the collar and details';
+      'at a slight 3/4 angle showing the collar and details, with the whole product still in frame';
 
   @override
   String get promptCatBagName => 'Bags';
 
   @override
   String get promptCatBagScene =>
-      'A pure white backdrop lit with soft studio lighting for a clean product display';
+      'A clean, elegant studio desk setup in neutral tones, with a minimal decor piece, lit with soft lighting';
 
   @override
   String get promptCatBagScenario1 =>
-      'standing upright, centered on its own base';
+      'standing upright, centered on its own base, the whole product in a wide frame';
 
   @override
   String get promptCatBagScenario2 =>
-      'shown in side profile with the handle clearly visible';
+      'shown in side profile with the handle clearly visible, not shot too close';
 
   @override
   String get promptCatBagScenario3 =>
-      'on a slightly raised platform, shown from a gentle overhead angle';
+      'on a chair or stool, in a simple arrangement, wide frame';
 
   @override
   String get promptCatShoesName => 'Shoes';
 
   @override
   String get promptCatShoesScene =>
-      'A pure white backdrop lit with soft, crisp studio lighting for a clean product display';
+      'A clean, modern studio backdrop in neutral tones, lit with soft, crisp professional lighting';
 
   @override
-  String get promptCatShoesScenario1 => 'single shoe in side profile, centered';
+  String get promptCatShoesScenario1 =>
+      'single shoe in side profile, the whole product in frame, not shot too close';
 
   @override
-  String get promptCatShoesScenario2 => 'as a pair, shown at a 3/4 angle';
+  String get promptCatShoesScenario2 =>
+      'as a pair, next to their box, in a simple arrangement';
 
   @override
-  String get promptCatShoesScenario3 => 'top-down view, arranged symmetrically';
+  String get promptCatShoesScenario3 =>
+      'shown from a slight overhead angle, in a wide frame';
 
   @override
   String get promptCatCosmeticsName => 'Cosmetics & Skincare';
 
   @override
   String get promptCatCosmeticsScene =>
-      'A white marble or matte white surface, lit with soft, clean studio lighting';
+      'A clean bathroom/spa-style arrangement in neutral tones, with a simple towel and a minimal decor piece, lit with soft lighting';
 
   @override
   String get promptCatCosmeticsScenario1 =>
-      'standing upright, centered and symmetrical';
+      'standing upright next to a simple decor piece, the whole product in frame, not shot too close';
 
   @override
   String get promptCatCosmeticsScenario2 =>
-      'highlighted with soft side lighting and a subtle shadow';
+      'lit with soft side lighting, in a wide frame';
 
   @override
   String get promptCatCosmeticsScenario3 =>
-      'cap closed, arranged in a clean, minimal composition';
+      'cap closed, in a simple table arrangement';
 
   @override
   String get promptCatPerfumeName => 'Perfume';
 
   @override
   String get promptCatPerfumeScene =>
-      'A pure white backdrop lit with soft, crisp studio lighting for an elegant display';
+      'An elegant, simple vanity table setup in neutral tones, with a small decor piece (flowers or fabric), lit with soft lighting';
 
   @override
-  String get promptCatPerfumeScenario1 => 'bottle upright, perfectly centered';
+  String get promptCatPerfumeScenario1 =>
+      'bottle upright, the whole product in a wide frame, not shot too close';
 
   @override
   String get promptCatPerfumeScenario2 =>
-      'on a subtly reflective white surface with a soft reflection';
+      'on a subtly reflective surface, next to a simple decor piece';
 
   @override
   String get promptCatPerfumeScenario3 =>
-      'lit with soft side lighting that reveals the glass texture';
+      'lit with soft side lighting, in a wide frame';
 
   @override
   String get promptCatElectronicsName => 'Electronics';
 
   @override
   String get promptCatElectronicsScene =>
-      'A minimalist gray-white studio backdrop, lit with soft, balanced professional lighting';
+      'A modern, clean desk setup, minimalist décor, tidy cables, lit with soft professional lighting';
 
   @override
   String get promptCatElectronicsScenario1 =>
-      'straight-on, symmetrical front view';
+      'on a desk, straight-on front view, the whole product in frame';
 
   @override
-  String get promptCatElectronicsScenario2 => 'shown at a slight 3/4 angle';
+  String get promptCatElectronicsScenario2 =>
+      'next to a simple decor piece (notebook, cup), shown at a slight angle';
 
   @override
-  String get promptCatElectronicsScenario3 => 'top-down view, neatly arranged';
+  String get promptCatElectronicsScenario3 =>
+      'displayed next to its box, in a wide frame';
 
   @override
   String get promptCatFurnitureName => 'Furniture';
 
   @override
   String get promptCatFurnitureScene =>
-      'A white/light-gray infinity backdrop, lit with soft, evenly diffused professional studio lighting';
+      'A warm, simple room setting in neutral tones, with natural light and minimal decor pieces';
 
   @override
   String get promptCatFurnitureScenario1 =>
-      'straight-on, symmetrical front view';
+      'in the room, harmonizing with other simple décor pieces, the whole product in frame';
 
   @override
-  String get promptCatFurnitureScenario2 => 'shown at a slight corner angle';
+  String get promptCatFurnitureScenario2 =>
+      'shown at a slight corner angle, in a wide frame';
 
   @override
   String get promptCatFurnitureScenario3 =>
-      'side profile view with clean, sharp lines';
+      'side profile view, in a simple arrangement';
 
   @override
   String get promptCatHomeDecorName => 'Home Decor';
 
   @override
   String get promptCatHomeDecorScene =>
-      'A clean white shelf/surface arrangement, lit with soft, balanced professional studio lighting';
+      'A simple shelf/table arrangement, natural textures (wood, linen), with minimal decor pieces, lit with soft lighting';
 
   @override
   String get promptCatHomeDecorScenario1 =>
-      'alone, centered in a clean, minimal display';
+      'on a shelf, next to a simple decor piece (book, candle)';
 
   @override
-  String get promptCatHomeDecorScenario2 => 'on a slightly raised platform';
+  String get promptCatHomeDecorScenario2 =>
+      'at the center of a table, with a simple floral arrangement, wide frame';
 
   @override
   String get promptCatHomeDecorScenario3 =>
-      'highlighted with soft side lighting and a subtle shadow';
+      'lit with soft side lighting, the whole product in frame';
 
   @override
   String get promptCatKitchenName => 'Kitchenware';
 
   @override
   String get promptCatKitchenScene =>
-      'A white marble-look countertop, lit with soft, crisp professional studio lighting';
+      'A modern, clean kitchen countertop setup in neutral tones, lit with soft natural light';
 
   @override
-  String get promptCatKitchenScenario1 => 'standing upright, centered';
+  String get promptCatKitchenScenario1 =>
+      'on the counter, next to a few simple ingredients (fruit/vegetables), the whole product in frame';
 
   @override
-  String get promptCatKitchenScenario2 => 'shown from a slight overhead angle';
+  String get promptCatKitchenScenario2 =>
+      'shown from a slight overhead angle, in a wide frame';
 
   @override
   String get promptCatKitchenScenario3 =>
-      'lit with side lighting that reveals texture and detail';
+      'alongside other simple kitchenware, on a tidy shelf';
 
   @override
   String get promptCatBabyName => 'Baby & Kids';
 
   @override
   String get promptCatBabyScene =>
-      'A soft white-pastel studio backdrop, lit with gentle, reassuring professional light';
+      'A soft pastel-toned nursery setup, with toys and minimal decor pieces, lit with warm, reassuring light';
 
   @override
   String get promptCatBabyScenario1 =>
-      'alone, centered in a clean, minimal display';
+      'on a simple shelf, next to a couple of toys, the whole product in frame';
 
   @override
-  String get promptCatBabyScenario2 => 'on a slightly raised platform';
+  String get promptCatBabyScenario2 =>
+      'on a slightly raised platform, in a wide frame';
 
   @override
-  String get promptCatBabyScenario3 => 'top-down view, neatly arranged';
+  String get promptCatBabyScenario3 =>
+      'on a rug, in a neat, simple arrangement';
 
   @override
   String get promptCatSportsName => 'Sports & Fitness';
 
   @override
   String get promptCatSportsScene =>
-      'A minimalist white-gray studio backdrop, lit with energetic yet clean professional lighting';
+      'A modern, clean training area setup in neutral tones, lit with energetic yet clean professional lighting';
 
   @override
-  String get promptCatSportsScenario1 => 'straight-on, symmetrical front view';
+  String get promptCatSportsScenario1 =>
+      'on a yoga mat, neatly arranged, the whole product in frame';
 
   @override
-  String get promptCatSportsScenario2 => 'shown at a slight 3/4 angle';
+  String get promptCatSportsScenario2 =>
+      'next to a gym bag, in a simple arrangement';
 
   @override
-  String get promptCatSportsScenario3 => 'top-down view, neatly arranged';
+  String get promptCatSportsScenario3 =>
+      'shown at a slight angle, in a wide frame';
 }
