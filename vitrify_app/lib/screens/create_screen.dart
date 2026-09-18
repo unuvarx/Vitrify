@@ -20,7 +20,9 @@ class CreateScreen extends StatefulWidget {
   State<CreateScreen> createState() => _CreateScreenState();
 }
 
-class _CreateScreenState extends State<CreateScreen> implements Refreshable {
+class _CreateScreenState extends State<CreateScreen>
+    with WidgetsBindingObserver
+    implements Refreshable {
   final _api = ApiService();
   final _storage = StorageService();
   final _picker = ImagePicker();
@@ -45,6 +47,7 @@ class _CreateScreenState extends State<CreateScreen> implements Refreshable {
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _loadCredits();
     // Uygulama kapatılıp yeniden açılmış olabilir — SignalR/timer gibi
     // bellek-içi mekanizmalar bu sırada kaybolur, bu yüzden yarım kalmış
@@ -53,15 +56,26 @@ class _CreateScreenState extends State<CreateScreen> implements Refreshable {
     _resumePendingJobIfAny();
   }
 
+  // Uygulama arka plana alınıp SÜRECİ SONLANDIRILMADAN (askıya alınmış halde)
+  // bir push bildirimine dokunulursa widget ağacı yeniden kurulmaz — initState
+  // ya da sekme değişimi hiç tetiklenmez, ekran donmuş kalır. Bu yüzden
+  // uygulama her ön plana döndüğünde de kontrol ediyoruz.
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (state == AppLifecycleState.resumed) {
+      _resumePendingJobIfAny();
+    }
+  }
+
   // MainScreen bu sekmeye her geçildiğinde çağırır — kredi sayısını tazeler
-  // ve (aktif olarak takip etmiyorsak) yarım kalmış bir job olup olmadığını
-  // kontrol eder — SignalR kopmuş/hiç bağlanamamış olsa bile sonucu kaçırmayız
+  // ve yarım kalmış bir job olup olmadığını kontrol eder. _isGenerating true
+  // olsa bile kontrol ediyoruz: SignalR kopmuş/uygulama askıya alınıp geri
+  // dönmüş olabilir, bu durumda "aktif takip ediyoruz" varsayımı yanlış olur
+  // ve sonucu asla göremeyiz.
   @override
   Future<void> refresh() async {
     await _loadCredits();
-    if (!_isGenerating) {
-      await _resumePendingJobIfAny();
-    }
+    await _resumePendingJobIfAny();
   }
 
   Future<void> _resumePendingJobIfAny() async {
@@ -107,6 +121,7 @@ class _CreateScreenState extends State<CreateScreen> implements Refreshable {
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _fallbackTimer?.cancel();
     _stragglerTimer?.cancel();
     _signalR.disconnect();
