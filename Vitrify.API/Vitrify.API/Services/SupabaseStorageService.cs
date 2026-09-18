@@ -35,7 +35,7 @@ public class SupabaseStorageService
         request.Content = new ByteArrayContent(bytes);
         request.Content.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
 
-        var response = await _http.SendAsync(request);
+        using var response = await _http.SendAsync(request);
 
         if (!response.IsSuccessStatusCode)
         {

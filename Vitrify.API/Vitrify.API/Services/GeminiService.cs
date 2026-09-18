@@ -106,7 +106,7 @@ public class GeminiService
         request.Headers.Add("x-goog-api-key", _apiKey);
         request.Content = new StringContent(json, Encoding.UTF8, "application/json");
 
-        var response = await _http.SendAsync(request);
+        using var response = await _http.SendAsync(request);
         var responseBody = await response.Content.ReadAsStringAsync();
 
         if (!response.IsSuccessStatusCode)

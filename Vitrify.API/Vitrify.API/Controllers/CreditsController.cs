@@ -38,7 +38,12 @@ public class CreditsController : BaseApiController
     // // Bu endpoint şu an ödemeyi DOĞRULAMIYOR (geliştirme aşaması).
     // // Production'da RevenueCat webhook'u ile değiştirilecek (Adım 20).
     // // O zaman ödeme RevenueCat tarafında doğrulanacak, Flutter'a güvenilmeyecek.
-   
+    // // Bu webhook gelene kadar en azından Credits'i gerçek paket
+    // // boyutlarıyla sınırlıyoruz — aksi halde herhangi bir kimliği
+    // // doğrulanmış kullanıcı, sahte bir StoreTransactionId ile dilediği
+    // // miktarda ücretsiz kredi talep edebilirdi.
+    private static readonly HashSet<int> ValidCreditPackageSizes = new() { 50, 120, 250 };
+
     [Authorize]
     [HttpPost("add")]
     public async Task<IActionResult> AddCredits([FromBody] AddCreditsRequest request)
@@ -54,7 +59,7 @@ public class CreditsController : BaseApiController
         // Doğrulama
         if (string.IsNullOrEmpty(request.StoreTransactionId))
             return BadRequest(new { message = "İşlem kimliği gerekli." });
-        if (request.Credits <= 0)
+        if (!ValidCreditPackageSizes.Contains(request.Credits))
             return BadRequest(new { message = "Geçersiz kredi miktarı." });
 
         // MÜKERRER KONTROL: bu işlem daha önce işlendi mi?
