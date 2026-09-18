@@ -7,9 +7,9 @@ public class JobItem
     public Guid JobId { get; set; }
     public Job? Job { get; set; }
 
-    // Girdi görselinin saf base64'ü (Gemini'ye gönderilir).
-    // Başarılı üretimden sonra null'lanır — tekrar gerekmiyor, yer kaplamasın.
-    public string? ReplicateFileUrl { get; set; }
+    // Girdi görseline referans — asıl base64 veri Job.Images'te (JobImage)
+    // Job başına bir kez saklanır, JobItem'da tekrarlanmaz
+    public int ImageIndex { get; set; }
 
     // Hangi senaryo ile üretildi
     public string Scenario { get; set; } = string.Empty;

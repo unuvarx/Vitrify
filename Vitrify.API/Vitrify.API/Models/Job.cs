@@ -17,4 +17,5 @@ public class Job
 
     // İlişki
     public List<JobItem> Items { get; set; } = new();
+    public List<JobImage> Images { get; set; } = new();
 }

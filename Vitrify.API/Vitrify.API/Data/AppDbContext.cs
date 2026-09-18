@@ -14,6 +14,7 @@ public class AppDbContext : DbContext
     public DbSet<User> Users => Set<User>();
     public DbSet<Job> Jobs => Set<Job>();
     public DbSet<JobItem> JobItems => Set<JobItem>();
+    public DbSet<JobImage> JobImages => Set<JobImage>();
     public DbSet<Purchase> Purchases => Set<Purchase>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -33,6 +34,13 @@ public class AppDbContext : DbContext
         // Bir Job silinince ona bağlı JobItem'lar da silinsin
         modelBuilder.Entity<Job>()
             .HasMany(j => j.Items)
+            .WithOne(i => i.Job)
+            .HasForeignKey(i => i.JobId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        // Bir Job silinince ona bağlı JobImage'lar da silinsin
+        modelBuilder.Entity<Job>()
+            .HasMany(j => j.Images)
             .WithOne(i => i.Job)
             .HasForeignKey(i => i.JobId)
             .OnDelete(DeleteBehavior.Cascade);

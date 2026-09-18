@@ -71,12 +71,22 @@ public class JobProcessingService
                     .ExecuteUpdateAsync(s => s.SetProperty(j => j.Status, "processing"));
             }
 
+            // Girdi görselinin base64'ü — Job başına bir kez saklanan JobImage'dan
+            // (JobItem'da tekrarlanmıyor, bkz. JobsController.Create)
+            var imageBase64 = await _db.JobImages
+                .AsNoTracking()
+                .Where(img => img.JobId == item.JobId && img.Index == item.ImageIndex)
+                .Select(img => img.Base64Data)
+                .FirstOrDefaultAsync();
+
+            if (imageBase64 == null)
+                throw new Exception($"JobImage bulunamadı (JobId={item.JobId}, Index={item.ImageIndex}).");
+
             // Görseli üret (Gemini base64 döndürür)
-            // ReplicateFileUrl = saf base64 (data: öneki olmadan) saklıyoruz
             var outputBase64 = await _gemini.GenerateImageAsync(
-                item.Scenario,           // prompt (mekan+senaryo)
-                item.ReplicateFileUrl!,  // görselin base64'ü
-                "1:1"                    // aspect ratio (şimdilik sabit, sonra dinamik)
+                item.Scenario,   // prompt (mekan+senaryo)
+                imageBase64,     // görselin base64'ü
+                "1:1"            // aspect ratio (şimdilik sabit, sonra dinamik)
             );
 
             // Gemini genelde PNG (kayıpsız) döndürüyor — Storage'a yüklemeden
@@ -103,17 +113,13 @@ public class JobProcessingService
                 creditDeducted = rowsAffected > 0;
             }
 
-            // JobItem'ı bağımsız atomic UPDATE ile güncelle. Girdi görseli
-            // (ReplicateFileUrl) artık gerekmiyor — Supabase'de gereksiz yer
-            // kaplamasın diye null'luyoruz (yalnızca başarı durumunda; "failed"
-            // kalemlerde Hangfire tekrar deneyeceği için dokunmuyoruz).
+            // JobItem'ı bağımsız atomic UPDATE ile güncelle
             await _db.JobItems
                 .Where(i => i.Id == item.Id)
                 .ExecuteUpdateAsync(s => s
                     .SetProperty(i => i.OutputUrl, newOutputUrl)
                     .SetProperty(i => i.Status, "done")
-                    .SetProperty(i => i.CreditDeducted, creditDeducted)
-                    .SetProperty(i => i.ReplicateFileUrl, (string?)null));
+                    .SetProperty(i => i.CreditDeducted, creditDeducted));
 
             // Job ilerleme sayacı (sadece başarılı sayımı - progress bar için)
             await _db.Jobs
@@ -186,6 +192,16 @@ public class JobProcessingService
             .ExecuteUpdateAsync(s => s.SetProperty(j => j.Status, "done"));
 
         if (rowsAffected == 0) return null; // zaten "done" idi ya da bulunamadı
+
+        // Girdi görsellerini (JobImage) yalnızca hiç "failed" kalem kalmadıysa
+        // temizliyoruz — "failed" bir kalem varsa Hangfire onu daha sonra tekrar
+        // deneyebilir ve o deneme için görsel verisine hâlâ ihtiyaç duyar.
+        var hasFailedItems = await _db.JobItems
+            .AnyAsync(i => i.JobId == jobId && i.Status == "failed");
+        if (!hasFailedItems)
+        {
+            await _db.JobImages.Where(img => img.JobId == jobId).ExecuteDeleteAsync();
+        }
 
         var job = await _db.Jobs.AsNoTracking().FirstOrDefaultAsync(j => j.Id == jobId);
         if (job == null) return "done";

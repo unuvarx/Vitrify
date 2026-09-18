@@ -59,8 +59,23 @@ public class JobsController : BaseApiController
         };
         _db.Jobs.Add(job);
 
+        // Her kaynak görselin base64'ünü Job başına TEK SEFER saklıyoruz —
+        // senaryo sayısı kadar tekrarlanırsa (eskiden öyleydi) hem yazma süresi
+        // hem veritabanı boyutu senaryo sayısıyla orantılı şişiyordu
+        var jobImages = new List<JobImage>();
+        for (var i = 0; i < request.Images.Count; i++)
+        {
+            jobImages.Add(new JobImage
+            {
+                JobId = job.Id,
+                Index = i,
+                Base64Data = StripDataUriPrefix(request.Images[i])
+            });
+        }
+        _db.JobImages.AddRange(jobImages);
+
         var jobItems = new List<JobItem>();
-        foreach (var imageDataUri in request.Images)
+        for (var i = 0; i < request.Images.Count; i++)
         {
             foreach (var scenario in request.Scenarios)
             {
@@ -68,7 +83,7 @@ public class JobsController : BaseApiController
                 jobItems.Add(new JobItem
                 {
                     JobId = job.Id,
-                    ReplicateFileUrl = StripDataUriPrefix(imageDataUri), // saf base64 (Gemini için)
+                    ImageIndex = i,
                     Scenario = fullPrompt,
                     Status = "pending",
                     CreditDeducted = false
