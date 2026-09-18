@@ -129,12 +129,15 @@ class AuthService {
 
   // Backend'e giriş bildir (cihaz kilidi + kredi kontrolü)
   Future<Map<String, dynamic>> loginToBackend() async {
+    debugPrint('[FCM] loginToBackend() başladı.');
     final token = await getIdToken();
     if (token == null) throw Exception('Token alınamadı.');
 
     final deviceId = await getDeviceId();
     final platform = getPlatform();
+    debugPrint('[FCM] _getFcmToken() çağrılıyor...');
     final fcmToken = await _getFcmToken();
+    debugPrint('[FCM] loginToBackend() gönderiyor, fcmToken null mu: ${fcmToken == null}');
 
     final response = await _dio.post(
       '/api/auth/login',
