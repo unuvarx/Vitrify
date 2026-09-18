@@ -262,12 +262,17 @@ class _CreateScreenState extends State<CreateScreen>
     final jobItemId = data['jobItemId'] as String?;
     final jobId = data['jobId'] as String?;
 
+    // Aynı görsel için SignalR bildirimi (yeniden bağlanma, reconcile ile
+    // çakışma vb. nedenlerle) birden fazla gelebilir — bu olayı idempotent
+    // (aynı url için tekrar işlense de sonucu değişmeyen) hale getiriyoruz
+    final isDuplicate = outputUrl != null && _generatedImages.contains(outputUrl);
+
     setState(() {
-      if (outputUrl != null) _generatedImages.add(outputUrl);
-      _completedCount++;
+      if (outputUrl != null && !isDuplicate) _generatedImages.add(outputUrl);
+      if (!isDuplicate) _completedCount++;
     });
 
-    if (outputUrl != null && jobItemId != null) {
+    if (outputUrl != null && jobItemId != null && !isDuplicate) {
       _persistGeneratedImage(outputUrl, jobItemId);
     }
 

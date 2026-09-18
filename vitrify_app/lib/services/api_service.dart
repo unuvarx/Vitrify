@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import '../config/app_config.dart';
 import 'auth_service.dart';
@@ -18,6 +19,9 @@ class ApiService {
   // Görseli sıkıştır + base64 data URI'ye çevir
   // (Adım 8'de öğrendik: sıkıştırma süreyi 44sn → 13sn düşürüyor!)
   Future<String> _imageToDataUri(File imageFile) async {
+    final sw = Stopwatch()..start();
+    final originalSize = await imageFile.length();
+
     // Sıkıştır: max 1024px, kalite 85
     final compressed = await FlutterImageCompress.compressWithFile(
       imageFile.absolute.path,
@@ -31,6 +35,9 @@ class ApiService {
       throw Exception('Görsel sıkıştırılamadı.');
     }
 
+    debugPrint(
+        '[PERF] Sıkıştırma: ${sw.elapsedMilliseconds}ms (${originalSize ~/ 1024}KB -> ${compressed.length ~/ 1024}KB)');
+
     final base64Str = base64Encode(compressed);
     return 'data:image/jpeg;base64,$base64Str';
   }
@@ -42,11 +49,15 @@ class ApiService {
     required List<String> scenarios,
     required String aspectRatio,
   }) async {
+    final totalSw = Stopwatch()..start();
+
     // Tüm görselleri sıkıştırıp base64'e çevir (paralel)
     final dataUris = await Future.wait(
       images.map((img) => _imageToDataUri(img)),
     );
+    debugPrint('[PERF] Tüm sıkıştırmalar bitti: ${totalSw.elapsedMilliseconds}ms');
 
+    final uploadSw = Stopwatch()..start();
     final response = await _dio.post(
       '/api/jobs/create',
       data: {
@@ -57,6 +68,7 @@ class ApiService {
       },
       options: await _authOptions(),
     );
+    debugPrint('[PERF] Backend isteği: ${uploadSw.elapsedMilliseconds}ms, toplam: ${totalSw.elapsedMilliseconds}ms');
 
     return response.data;
   }
