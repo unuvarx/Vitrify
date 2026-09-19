@@ -111,6 +111,7 @@ builder.Services.AddScoped<Vitrify.API.Services.JobProcessingService>();
 builder.Services.AddScoped<Vitrify.API.Services.NotificationService>();
 builder.Services.AddScoped<Vitrify.API.Services.GeminiService>();
 builder.Services.AddScoped<Vitrify.API.Services.SupabaseStorageService>();
+builder.Services.AddScoped<Vitrify.API.Services.DatabaseCleanupService>();
 
 // ========================================
 // UYGULAMA (builder.Build()'den SONRA)
@@ -138,5 +139,12 @@ app.MapControllers();
 
 // SignalR hub endpoint'i
 app.MapHub<JobHub>("/jobhub");
+
+// 7+ gün eski, hiç temizlenmemiş (kalıcı başarısız/takılı kalmış job'lara
+// ait) JobImage kalıntılarını her gün otomatik temizle
+RecurringJob.AddOrUpdate<Vitrify.API.Services.DatabaseCleanupService>(
+    "cleanup-stale-job-images",
+    svc => svc.CleanupStaleJobImagesAsync(),
+    Cron.Daily);
 
 app.Run();
