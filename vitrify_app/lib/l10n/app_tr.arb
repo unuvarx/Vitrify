@@ -5,6 +5,10 @@
   "commonOk": "Tamam",
 
   "loginEmailPasswordRequired": "E-posta ve şifre gerekli.",
+  "loginWrongCredentials": "E-posta veya şifre hatalı.",
+  "loginEmailInUse": "Bu e-posta zaten kullanımda.",
+  "loginWeakPassword": "Şifre çok zayıf, en az 6 karakter olmalı.",
+  "loginInvalidEmail": "Geçersiz e-posta adresi.",
   "loginEmailHint": "E-posta",
   "loginPasswordHint": "Şifre",
   "loginSignUpButton": "Kayıt Ol",

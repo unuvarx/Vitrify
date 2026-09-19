@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../config/app_colors.dart';
 import '../l10n/app_localizations.dart';
@@ -50,12 +51,32 @@ class _LoginScreenState extends State<LoginScreen> {
       // önce bunu bekliyor.
     } catch (e) {
       if (!mounted) return;
-      AppAlert.show(context, l10n.genericErrorMessage);
+      AppAlert.show(context, _messageFor(e, l10n));
     } finally {
       if (mounted) {
         setState(() => _isLoading = false);
       }
     }
+  }
+
+  // Kullanıcının düzeltebileceği hatalar (yanlış şifre, kullanımda olan
+  // email vb.) için özel mesaj döner; geri kalan her şey için genel mesaj.
+  String _messageFor(Object e, AppLocalizations l10n) {
+    if (e is FirebaseAuthException) {
+      switch (e.code) {
+        case 'wrong-password':
+        case 'user-not-found':
+        case 'invalid-credential':
+          return l10n.loginWrongCredentials;
+        case 'email-already-in-use':
+          return l10n.loginEmailInUse;
+        case 'weak-password':
+          return l10n.loginWeakPassword;
+        case 'invalid-email':
+          return l10n.loginInvalidEmail;
+      }
+    }
+    return l10n.genericErrorMessage;
   }
 
   Future<void> _forgotPassword() async {

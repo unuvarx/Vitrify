@@ -18,6 +18,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loginEmailPasswordRequired => 'Email and password are required.';
 
   @override
+  String get loginWrongCredentials => 'Incorrect email or password.';
+
+  @override
+  String get loginEmailInUse => 'This email is already in use.';
+
+  @override
+  String get loginWeakPassword =>
+      'Password is too weak, must be at least 6 characters.';
+
+  @override
+  String get loginInvalidEmail => 'Invalid email address.';
+
+  @override
   String get loginEmailHint => 'Email';
 
   @override

@@ -5,6 +5,10 @@
   "commonOk": "OK",
 
   "loginEmailPasswordRequired": "Email and password are required.",
+  "loginWrongCredentials": "Incorrect email or password.",
+  "loginEmailInUse": "This email is already in use.",
+  "loginWeakPassword": "Password is too weak, must be at least 6 characters.",
+  "loginInvalidEmail": "Invalid email address.",
   "loginEmailHint": "Email",
   "loginPasswordHint": "Password",
   "loginSignUpButton": "Sign Up",

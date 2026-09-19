@@ -19,6 +19,18 @@ class AppLocalizationsTr extends AppLocalizations {
   String get loginEmailPasswordRequired => 'E-posta ve şifre gerekli.';
 
   @override
+  String get loginWrongCredentials => 'E-posta veya şifre hatalı.';
+
+  @override
+  String get loginEmailInUse => 'Bu e-posta zaten kullanımda.';
+
+  @override
+  String get loginWeakPassword => 'Şifre çok zayıf, en az 6 karakter olmalı.';
+
+  @override
+  String get loginInvalidEmail => 'Geçersiz e-posta adresi.';
+
+  @override
   String get loginEmailHint => 'E-posta';
 
   @override

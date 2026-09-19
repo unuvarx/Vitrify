@@ -116,6 +116,30 @@ abstract class AppLocalizations {
   /// **'Email and password are required.'**
   String get loginEmailPasswordRequired;
 
+  /// No description provided for @loginWrongCredentials.
+  ///
+  /// In en, this message translates to:
+  /// **'Incorrect email or password.'**
+  String get loginWrongCredentials;
+
+  /// No description provided for @loginEmailInUse.
+  ///
+  /// In en, this message translates to:
+  /// **'This email is already in use.'**
+  String get loginEmailInUse;
+
+  /// No description provided for @loginWeakPassword.
+  ///
+  /// In en, this message translates to:
+  /// **'Password is too weak, must be at least 6 characters.'**
+  String get loginWeakPassword;
+
+  /// No description provided for @loginInvalidEmail.
+  ///
+  /// In en, this message translates to:
+  /// **'Invalid email address.'**
+  String get loginInvalidEmail;
+
   /// No description provided for @loginEmailHint.
   ///
   /// In en, this message translates to:
