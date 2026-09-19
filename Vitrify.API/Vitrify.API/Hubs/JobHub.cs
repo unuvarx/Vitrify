@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -6,10 +5,13 @@ using Vitrify.API.Data;
 
 namespace Vitrify.API.Hubs;
 
-// [Authorize] olmadan önce herkes (Firebase token'ı olmadan bile) rastgele/
-// tahmin edilmiş bir jobId ile SubscribeToJob çağırıp başka bir kullanıcının
-// üretim sonuçlarını (görsel URL'leri dahil) dinleyebiliyordu.
-[Authorize]
+// NOT [Authorize] DEĞİL — kasıtlı. App Store'da hâlâ eski bir build
+// (token göndermeyen SignalR client'ı) incelemede/kullanımda olabilir;
+// hub'ı zorunlu yetkilendirmeye çevirmek o build için bağlantıyı anında
+// reddedip 5 dakikalık polling fallback'ine düşürürdü (görünür bir kopukluk).
+// Bunun yerine: token GELDİYSE (yeni client) sahiplik doğrulanıyor, gelmediyse
+// (eski client) eski davranış korunuyor. Yeni client tamamen yayıldıktan
+// sonra [Authorize] zorunlu hale getirilip bu geriye dönük uyumluluk kaldırılabilir.
 public class JobHub : Hub
 {
     private readonly AppDbContext _db;
@@ -19,15 +21,20 @@ public class JobHub : Hub
         _db = db;
     }
 
-    // Flutter bir job'u dinlemek istediğinde bu gruba katılır — ama sadece
-    // job gerçekten bu bağlantının sahibine aitse
     public async Task SubscribeToJob(string jobId)
     {
         var firebaseUid = Context.User?.FindFirst("user_id")?.Value
                            ?? Context.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value
                            ?? Context.User?.FindFirst("sub")?.Value;
 
-        if (string.IsNullOrEmpty(firebaseUid) || !Guid.TryParse(jobId, out var jobGuid))
+        // Eski client (token yok) → sahiplik doğrulanamaz, eski davranışı koru
+        if (string.IsNullOrEmpty(firebaseUid))
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, jobId);
+            return;
+        }
+
+        if (!Guid.TryParse(jobId, out var jobGuid))
             return;
 
         var owns = await _db.Jobs
