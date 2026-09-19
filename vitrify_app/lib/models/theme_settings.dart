@@ -6,7 +6,7 @@ class ThemeSettings {
   ThemeSettings({
     this.scenePrompt = '',
     List<String>? scenarios,
-    this.aspectRatio = '1:1',
+    this.aspectRatio = '9:16',
   }) : scenarios = scenarios ?? [''];
 
   // Hive'a kaydetmek için Map'e çevir
@@ -23,7 +23,7 @@ class ThemeSettings {
     return ThemeSettings(
       scenePrompt: map['scenePrompt'] ?? '',
       scenarios: List<String>.from(map['scenarios'] ?? ['']),
-      aspectRatio: map['aspectRatio'] ?? '1:1',
+      aspectRatio: map['aspectRatio'] ?? '9:16',
     );
   }
 

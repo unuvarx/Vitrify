@@ -19,7 +19,7 @@ class _ThemeScreenState extends State<ThemeScreen> implements Refreshable {
   final _scenePromptController = TextEditingController();
   final List<TextEditingController> _scenarioControllers = [];
 
-  String _aspectRatio = '1:1';
+  String _aspectRatio = '9:16';
   bool _isSaved = false;
 
   final List<String> _aspectRatios = ['1:1', '4:5', '9:16', '16:9'];

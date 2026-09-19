@@ -344,6 +344,12 @@ abstract class AppLocalizations {
   /// **'Generation has started. You can close the app now — we\'ll notify you when your images are ready.'**
   String get createSafeToCloseApp;
 
+  /// No description provided for @createAiDisclaimerBanner.
+  ///
+  /// In en, this message translates to:
+  /// **'AI-generated images may alter text and brand logos on your product — please keep this in mind.'**
+  String get createAiDisclaimerBanner;
+
   /// No description provided for @createProductImagesTitle.
   ///
   /// In en, this message translates to:
@@ -641,25 +647,25 @@ abstract class AppLocalizations {
   /// No description provided for @promptCatJewelryScene.
   ///
   /// In en, this message translates to:
-  /// **'An elegant jewelry display on a velvet-textured surface, lit with soft, warm studio lighting'**
+  /// **'A clean, elegant studio setting in neutral tones, with a subtle fabric drape and a minimal jewelry stand, lit with soft professional lighting'**
   String get promptCatJewelryScene;
 
   /// No description provided for @promptCatJewelryScenario1.
   ///
   /// In en, this message translates to:
-  /// **'on a woman\'s wrist, in an elegant hand pose'**
+  /// **'on a white jewelry stand, the whole product in frame, not shot too close'**
   String get promptCatJewelryScenario1;
 
   /// No description provided for @promptCatJewelryScenario2.
   ///
   /// In en, this message translates to:
-  /// **'inside an open jewelry box, resting on its velvet lining'**
+  /// **'next to a simple jewelry box, in a wide desktop flat lay'**
   String get promptCatJewelryScenario2;
 
   /// No description provided for @promptCatJewelryScenario3.
   ///
   /// In en, this message translates to:
-  /// **'on a glossy marble surface, lit with soft side lighting'**
+  /// **'highlighted with soft side lighting, next to a small decorative object, the whole product visible'**
   String get promptCatJewelryScenario3;
 
   /// No description provided for @promptCatWatchName.
@@ -671,25 +677,25 @@ abstract class AppLocalizations {
   /// No description provided for @promptCatWatchScene.
   ///
   /// In en, this message translates to:
-  /// **'A minimalist, masculine studio setting on a dark wooden table, with sharp yet soft lighting'**
+  /// **'A clean, elegant studio desk setup in light gray-white tones, with a slim watch stand and a minimal decor piece, lit with soft professional lighting'**
   String get promptCatWatchScene;
 
   /// No description provided for @promptCatWatchScenario1.
   ///
   /// In en, this message translates to:
-  /// **'on a man\'s wrist, alongside a shirt sleeve'**
+  /// **'on a watch stand, dial facing forward, the whole product in frame'**
   String get promptCatWatchScenario1;
 
   /// No description provided for @promptCatWatchScenario2.
   ///
   /// In en, this message translates to:
-  /// **'displayed inside a watch box, resting on its soft lining'**
+  /// **'on a desk at a slight angle, next to a simple notebook, not shot too close'**
   String get promptCatWatchScenario2;
 
   /// No description provided for @promptCatWatchScenario3.
   ///
   /// In en, this message translates to:
-  /// **'next to a leather notebook, in a desk-top flat lay'**
+  /// **'displayed inside a slim display case, in a wide frame'**
   String get promptCatWatchScenario3;
 
   /// No description provided for @promptCatGlassesName.
@@ -701,25 +707,25 @@ abstract class AppLocalizations {
   /// No description provided for @promptCatGlassesScene.
   ///
   /// In en, this message translates to:
-  /// **'On a sunny café terrace, with natural daylight and a softly blurred city view in the background'**
+  /// **'A clean, modern studio desk setup in neutral tones, with a simple book and a minimal decor piece, lit with soft lighting'**
   String get promptCatGlassesScene;
 
   /// No description provided for @promptCatGlassesScenario1.
   ///
   /// In en, this message translates to:
-  /// **'on a person\'s face, while smiling'**
+  /// **'folded neatly, next to a simple book, the whole product in a wide frame'**
   String get promptCatGlassesScenario1;
 
   /// No description provided for @promptCatGlassesScenario2.
   ///
   /// In en, this message translates to:
-  /// **'folded on a table, next to an open book'**
+  /// **'standing upright on a slim display stand, not shot too close'**
   String get promptCatGlassesScenario2;
 
   /// No description provided for @promptCatGlassesScenario3.
   ///
   /// In en, this message translates to:
-  /// **'held in a hand, with an open sky in the background'**
+  /// **'slightly open on a desk, shown in side profile, the whole product visible'**
   String get promptCatGlassesScenario3;
 
   /// No description provided for @promptCatTshirtName.
@@ -731,25 +737,25 @@ abstract class AppLocalizations {
   /// No description provided for @promptCatTshirtScene.
   ///
   /// In en, this message translates to:
-  /// **'A minimalist studio with a flat pastel-toned background and soft, balanced studio lighting'**
+  /// **'A clean, modern studio setting with a plain neutral-toned backdrop, lit with soft professional lighting'**
   String get promptCatTshirtScene;
 
   /// No description provided for @promptCatTshirtScenario1.
   ///
   /// In en, this message translates to:
-  /// **'on a mannequin, in a straight-on front shot'**
+  /// **'on a mannequin, straight-on front view, the whole product in frame'**
   String get promptCatTshirtScenario1;
 
   /// No description provided for @promptCatTshirtScenario2.
   ///
   /// In en, this message translates to:
-  /// **'worn by a person walking in a casual street setting'**
+  /// **'hanging on a wooden clothing rail, in a wide frame, not shot too close'**
   String get promptCatTshirtScenario2;
 
   /// No description provided for @promptCatTshirtScenario3.
   ///
   /// In en, this message translates to:
-  /// **'hanging on a wooden hanger, lit by natural window light'**
+  /// **'neatly folded next to a simple decor piece, on a table'**
   String get promptCatTshirtScenario3;
 
   /// No description provided for @promptCatPantsName.
@@ -761,25 +767,25 @@ abstract class AppLocalizations {
   /// No description provided for @promptCatPantsScene.
   ///
   /// In en, this message translates to:
-  /// **'A modern dressing room with warm wooden flooring and soft side lighting'**
+  /// **'A clean, modern studio setting with a plain neutral-toned backdrop, lit with soft professional lighting'**
   String get promptCatPantsScene;
 
   /// No description provided for @promptCatPantsScenario1.
   ///
   /// In en, this message translates to:
-  /// **'worn by a person, in a relaxed standing pose'**
+  /// **'on a mannequin, straight-on front view, the whole product in frame'**
   String get promptCatPantsScenario1;
 
   /// No description provided for @promptCatPantsScenario2.
   ///
   /// In en, this message translates to:
-  /// **'neatly folded on top of a chair'**
+  /// **'hanging on a wooden clothing rail, in a wide frame'**
   String get promptCatPantsScenario2;
 
   /// No description provided for @promptCatPantsScenario3.
   ///
   /// In en, this message translates to:
-  /// **'displayed in a store window alongside other garments'**
+  /// **'neatly folded on a simple table'**
   String get promptCatPantsScenario3;
 
   /// No description provided for @promptCatJacketName.
@@ -791,25 +797,25 @@ abstract class AppLocalizations {
   /// No description provided for @promptCatJacketScene.
   ///
   /// In en, this message translates to:
-  /// **'An autumn atmosphere on a city street, with falling leaves and soft daylight'**
+  /// **'A clean, modern studio setting with a plain neutral-toned backdrop, lit with soft professional lighting'**
   String get promptCatJacketScene;
 
   /// No description provided for @promptCatJacketScenario1.
   ///
   /// In en, this message translates to:
-  /// **'worn by a person, in a natural pose captured mid-walk'**
+  /// **'on a mannequin, straight-on front view, the whole product in frame'**
   String get promptCatJacketScenario1;
 
   /// No description provided for @promptCatJacketScenario2.
   ///
   /// In en, this message translates to:
-  /// **'hanging on a wooden hanger in a store interior'**
+  /// **'hanging neatly on a wooden or metal clothing rail, in a simple store-style arrangement'**
   String get promptCatJacketScenario2;
 
   /// No description provided for @promptCatJacketScenario3.
   ///
   /// In en, this message translates to:
-  /// **'held over the shoulder with one hand, in a casual pose'**
+  /// **'at a slight 3/4 angle showing the collar and details, with the whole product still in frame'**
   String get promptCatJacketScenario3;
 
   /// No description provided for @promptCatBagName.
@@ -821,25 +827,25 @@ abstract class AppLocalizations {
   /// No description provided for @promptCatBagScene.
   ///
   /// In en, this message translates to:
-  /// **'A stylish café table flat lay, with a cup of coffee and a magazine, in soft natural light'**
+  /// **'A clean, elegant studio desk setup in neutral tones, with a minimal decor piece, lit with soft lighting'**
   String get promptCatBagScene;
 
   /// No description provided for @promptCatBagScenario1.
   ///
   /// In en, this message translates to:
-  /// **'carried on a woman\'s shoulder, in a casual walking pose'**
+  /// **'standing upright, centered on its own base, the whole product in a wide frame'**
   String get promptCatBagScenario1;
 
   /// No description provided for @promptCatBagScenario2.
   ///
   /// In en, this message translates to:
-  /// **'casually placed on top of a chair'**
+  /// **'shown in side profile with the handle clearly visible, not shot too close'**
   String get promptCatBagScenario2;
 
   /// No description provided for @promptCatBagScenario3.
   ///
   /// In en, this message translates to:
-  /// **'held by hand, captured while walking in the city'**
+  /// **'on a chair or stool, in a simple arrangement, wide frame'**
   String get promptCatBagScenario3;
 
   /// No description provided for @promptCatShoesName.
@@ -851,25 +857,25 @@ abstract class AppLocalizations {
   /// No description provided for @promptCatShoesScene.
   ///
   /// In en, this message translates to:
-  /// **'A street-style scene on a textured concrete surface, with hard yet warm daylight'**
+  /// **'A clean, modern studio backdrop in neutral tones, lit with soft, crisp professional lighting'**
   String get promptCatShoesScene;
 
   /// No description provided for @promptCatShoesScenario1.
   ///
   /// In en, this message translates to:
-  /// **'worn on a person\'s foot, captured mid-step'**
+  /// **'single shoe in side profile, the whole product in frame, not shot too close'**
   String get promptCatShoesScenario1;
 
   /// No description provided for @promptCatShoesScenario2.
   ///
   /// In en, this message translates to:
-  /// **'displayed neatly next to its box'**
+  /// **'as a pair, next to their box, in a simple arrangement'**
   String get promptCatShoesScenario2;
 
   /// No description provided for @promptCatShoesScenario3.
   ///
   /// In en, this message translates to:
-  /// **'on a staircase step, photographed with side lighting'**
+  /// **'shown from a slight overhead angle, in a wide frame'**
   String get promptCatShoesScenario3;
 
   /// No description provided for @promptCatCosmeticsName.
@@ -881,25 +887,25 @@ abstract class AppLocalizations {
   /// No description provided for @promptCatCosmeticsScene.
   ///
   /// In en, this message translates to:
-  /// **'On a white marble countertop, in a soft and clean bathroom/spa atmosphere, lit with natural light'**
+  /// **'A clean bathroom/spa-style arrangement in neutral tones, with a simple towel and a minimal decor piece, lit with soft lighting'**
   String get promptCatCosmeticsScene;
 
   /// No description provided for @promptCatCosmeticsScenario1.
   ///
   /// In en, this message translates to:
-  /// **'arranged next to green leaves and a towel'**
+  /// **'standing upright next to a simple decor piece, the whole product in frame, not shot too close'**
   String get promptCatCosmeticsScenario1;
 
   /// No description provided for @promptCatCosmeticsScenario2.
   ///
   /// In en, this message translates to:
-  /// **'held in a woman\'s hand, while being applied to skin'**
+  /// **'lit with soft side lighting, in a wide frame'**
   String get promptCatCosmeticsScenario2;
 
   /// No description provided for @promptCatCosmeticsScenario3.
   ///
   /// In en, this message translates to:
-  /// **'with water droplets, light reflecting off the product'**
+  /// **'cap closed, in a simple table arrangement'**
   String get promptCatCosmeticsScenario3;
 
   /// No description provided for @promptCatPerfumeName.
@@ -911,25 +917,25 @@ abstract class AppLocalizations {
   /// No description provided for @promptCatPerfumeScene.
   ///
   /// In en, this message translates to:
-  /// **'On an elegant vanity table, in front of a gold-detailed mirror, lit with evening light'**
+  /// **'An elegant, simple vanity table setup in neutral tones, with a small decor piece (flowers or fabric), lit with soft lighting'**
   String get promptCatPerfumeScene;
 
   /// No description provided for @promptCatPerfumeScenario1.
   ///
   /// In en, this message translates to:
-  /// **'on a silk fabric, next to fresh flowers'**
+  /// **'bottle upright, the whole product in a wide frame, not shot too close'**
   String get promptCatPerfumeScenario1;
 
   /// No description provided for @promptCatPerfumeScenario2.
   ///
   /// In en, this message translates to:
-  /// **'held in a woman\'s hand, while spraying it on'**
+  /// **'on a subtly reflective surface, next to a simple decor piece'**
   String get promptCatPerfumeScenario2;
 
   /// No description provided for @promptCatPerfumeScenario3.
   ///
   /// In en, this message translates to:
-  /// **'on a dark surface, dramatically highlighted with directional light'**
+  /// **'lit with soft side lighting, in a wide frame'**
   String get promptCatPerfumeScenario3;
 
   /// No description provided for @promptCatElectronicsName.
@@ -941,25 +947,25 @@ abstract class AppLocalizations {
   /// No description provided for @promptCatElectronicsScene.
   ///
   /// In en, this message translates to:
-  /// **'A modern desk setup, minimalist décor, tidy cables, and soft office lighting'**
+  /// **'A modern, clean desk setup, minimalist décor, tidy cables, lit with soft professional lighting'**
   String get promptCatElectronicsScene;
 
   /// No description provided for @promptCatElectronicsScenario1.
   ///
   /// In en, this message translates to:
-  /// **'held in a person\'s hand, while in use'**
+  /// **'on a desk, straight-on front view, the whole product in frame'**
   String get promptCatElectronicsScenario1;
 
   /// No description provided for @promptCatElectronicsScenario2.
   ///
   /// In en, this message translates to:
-  /// **'on a desk, alongside a laptop and a cup of coffee'**
+  /// **'next to a simple decor piece (notebook, cup), shown at a slight angle'**
   String get promptCatElectronicsScenario2;
 
   /// No description provided for @promptCatElectronicsScenario3.
   ///
   /// In en, this message translates to:
-  /// **'displayed next to its box, with unboxed packaging'**
+  /// **'displayed next to its box, in a wide frame'**
   String get promptCatElectronicsScenario3;
 
   /// No description provided for @promptCatFurnitureName.
@@ -971,25 +977,25 @@ abstract class AppLocalizations {
   /// No description provided for @promptCatFurnitureScene.
   ///
   /// In en, this message translates to:
-  /// **'A warmly lit, modern living room, with natural light streaming through a large window'**
+  /// **'A warm, simple room setting in neutral tones, with natural light and minimal decor pieces'**
   String get promptCatFurnitureScene;
 
   /// No description provided for @promptCatFurnitureScenario1.
   ///
   /// In en, this message translates to:
-  /// **'in the center of the room, harmonizing with other décor pieces'**
+  /// **'in the room, harmonizing with other simple décor pieces, the whole product in frame'**
   String get promptCatFurnitureScenario1;
 
   /// No description provided for @promptCatFurnitureScenario2.
   ///
   /// In en, this message translates to:
-  /// **'with a book and a plant placed on top'**
+  /// **'shown at a slight corner angle, in a wide frame'**
   String get promptCatFurnitureScenario2;
 
   /// No description provided for @promptCatFurnitureScenario3.
   ///
   /// In en, this message translates to:
-  /// **'in evening light, within a warm atmosphere'**
+  /// **'side profile view, in a simple arrangement'**
   String get promptCatFurnitureScenario3;
 
   /// No description provided for @promptCatHomeDecorName.
@@ -1001,25 +1007,25 @@ abstract class AppLocalizations {
   /// No description provided for @promptCatHomeDecorScene.
   ///
   /// In en, this message translates to:
-  /// **'A minimalist shelf arrangement, natural textures (wood, linen), and soft daylight'**
+  /// **'A simple shelf/table arrangement, natural textures (wood, linen), with minimal decor pieces, lit with soft lighting'**
   String get promptCatHomeDecorScene;
 
   /// No description provided for @promptCatHomeDecorScenario1.
   ///
   /// In en, this message translates to:
-  /// **'on a shelf, alongside books and a candle'**
+  /// **'on a shelf, next to a simple decor piece (book, candle)'**
   String get promptCatHomeDecorScenario1;
 
   /// No description provided for @promptCatHomeDecorScenario2.
   ///
   /// In en, this message translates to:
-  /// **'at the center of a table, with a floral arrangement'**
+  /// **'at the center of a table, with a simple floral arrangement, wide frame'**
   String get promptCatHomeDecorScenario2;
 
   /// No description provided for @promptCatHomeDecorScenario3.
   ///
   /// In en, this message translates to:
-  /// **'near a wall, with dramatic lighting and shadow play'**
+  /// **'lit with soft side lighting, the whole product in frame'**
   String get promptCatHomeDecorScenario3;
 
   /// No description provided for @promptCatKitchenName.
@@ -1031,25 +1037,25 @@ abstract class AppLocalizations {
   /// No description provided for @promptCatKitchenScene.
   ///
   /// In en, this message translates to:
-  /// **'A modern kitchen counter, marble surface, with natural morning light from a window'**
+  /// **'A modern, clean kitchen countertop setup in neutral tones, lit with soft natural light'**
   String get promptCatKitchenScene;
 
   /// No description provided for @promptCatKitchenScenario1.
   ///
   /// In en, this message translates to:
-  /// **'arranged together with fresh ingredients (vegetables, fruit)'**
+  /// **'on the counter, next to a few simple ingredients (fruit/vegetables), the whole product in frame'**
   String get promptCatKitchenScenario1;
 
   /// No description provided for @promptCatKitchenScenario2.
   ///
   /// In en, this message translates to:
-  /// **'in use, held in a hand'**
+  /// **'shown from a slight overhead angle, in a wide frame'**
   String get promptCatKitchenScenario2;
 
   /// No description provided for @promptCatKitchenScenario3.
   ///
   /// In en, this message translates to:
-  /// **'alongside other kitchenware, on a tidy shelf'**
+  /// **'alongside other simple kitchenware, on a tidy shelf'**
   String get promptCatKitchenScenario3;
 
   /// No description provided for @promptCatBabyName.
@@ -1061,25 +1067,25 @@ abstract class AppLocalizations {
   /// No description provided for @promptCatBabyScene.
   ///
   /// In en, this message translates to:
-  /// **'A soft pastel-toned nursery, with toys and warm, comforting light'**
+  /// **'A soft pastel-toned nursery setup, with toys and minimal decor pieces, lit with warm, reassuring light'**
   String get promptCatBabyScene;
 
   /// No description provided for @promptCatBabyScenario1.
   ///
   /// In en, this message translates to:
-  /// **'next to a baby, inside a crib'**
+  /// **'on a simple shelf, next to a couple of toys, the whole product in frame'**
   String get promptCatBabyScenario1;
 
   /// No description provided for @promptCatBabyScenario2.
   ///
   /// In en, this message translates to:
-  /// **'in a child\'s hand, while playing'**
+  /// **'on a slightly raised platform, in a wide frame'**
   String get promptCatBabyScenario2;
 
   /// No description provided for @promptCatBabyScenario3.
   ///
   /// In en, this message translates to:
-  /// **'arranged with other toys, on a rug'**
+  /// **'on a rug, in a neat, simple arrangement'**
   String get promptCatBabyScenario3;
 
   /// No description provided for @promptCatSportsName.
@@ -1091,25 +1097,25 @@ abstract class AppLocalizations {
   /// No description provided for @promptCatSportsScene.
   ///
   /// In en, this message translates to:
-  /// **'A modern gym or outdoor training area, with energetic, dynamic lighting'**
+  /// **'A modern, clean training area setup in neutral tones, lit with energetic yet clean professional lighting'**
   String get promptCatSportsScene;
 
   /// No description provided for @promptCatSportsScenario1.
   ///
   /// In en, this message translates to:
-  /// **'in use while a person is working out'**
+  /// **'on a yoga mat, neatly arranged, the whole product in frame'**
   String get promptCatSportsScenario1;
 
   /// No description provided for @promptCatSportsScenario2.
   ///
   /// In en, this message translates to:
-  /// **'neatly placed on a yoga mat'**
+  /// **'next to a gym bag, in a simple arrangement'**
   String get promptCatSportsScenario2;
 
   /// No description provided for @promptCatSportsScenario3.
   ///
   /// In en, this message translates to:
-  /// **'next to a gym bag, in a pre-workout flat lay'**
+  /// **'shown at a slight angle, in a wide frame'**
   String get promptCatSportsScenario3;
 }
 

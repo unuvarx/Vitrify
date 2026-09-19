@@ -146,6 +146,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Generation has started. You can close the app now — we\'ll notify you when your images are ready.';
 
   @override
+  String get createAiDisclaimerBanner =>
+      'AI-generated images may alter text and brand logos on your product — please keep this in mind.';
+
+  @override
   String get createProductImagesTitle => 'Product Images';
 
   @override

@@ -146,6 +146,10 @@ class AppLocalizationsTr extends AppLocalizations {
       'Üretim başladı. Uygulamayı kapatabilirsiniz — görselleriniz hazır olduğunda size bildirim göndereceğiz.';
 
   @override
+  String get createAiDisclaimerBanner =>
+      'Görsel üretilirken yazı ve markalar AI tarafından değiştirilebilir, lütfen göz önünde bulundurun.';
+
+  @override
   String get createProductImagesTitle => 'Ürün Görselleri';
 
   @override

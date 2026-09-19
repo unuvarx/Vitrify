@@ -61,6 +61,7 @@
   },
   "createTimeout": "The process took too long. Please try again.",
   "createSafeToCloseApp": "Generation has started. You can close the app now — we'll notify you when your images are ready.",
+  "createAiDisclaimerBanner": "AI-generated images may alter text and brand logos on your product — please keep this in mind.",
   "createProductImagesTitle": "Product Images",
   "createSelectImages": "Select Images",
   "createImagesSelected": "{count} image(s) selected",

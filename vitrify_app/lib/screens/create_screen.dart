@@ -437,6 +437,34 @@ class _CreateScreenState extends State<CreateScreen>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            // ---- AI UYARI BANNER'I ----
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                color: AppColors.derinGri(context),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: AppColors.cardBorder(context)),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Icon(Icons.info_outline, color: Colors.amber, size: 18),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      l10n.createAiDisclaimerBanner,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: AppColors.acikGri(context),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 16),
+
             // ---- GÖRSEL SEÇME ----
             Text(
               l10n.createProductImagesTitle,

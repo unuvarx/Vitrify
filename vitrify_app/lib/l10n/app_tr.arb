@@ -46,6 +46,7 @@
   "createSomeFailed": "{count} görsel başarısız oldu.",
   "createTimeout": "İşlem uzun sürdü. Lütfen tekrar deneyin.",
   "createSafeToCloseApp": "Üretim başladı. Uygulamayı kapatabilirsiniz — görselleriniz hazır olduğunda size bildirim göndereceğiz.",
+  "createAiDisclaimerBanner": "Görsel üretilirken yazı ve markalar AI tarafından değiştirilebilir, lütfen göz önünde bulundurun.",
   "createProductImagesTitle": "Ürün Görselleri",
   "createSelectImages": "Görsel Seç",
   "createImagesSelected": "{count} görsel seçildi",
