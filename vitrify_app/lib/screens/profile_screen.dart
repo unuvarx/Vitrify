@@ -96,17 +96,17 @@ class _ProfileScreenState extends State<ProfileScreen> implements Refreshable {
 
     switch (result.outcome) {
       case PurchaseOutcome.success:
-        final credits = _purchases.creditsFor(package);
         try {
-          await _api.addCredits(
-            credits: credits,
+          final status = await _api.confirmPurchase(
             storeTransactionId: result.transactionId ?? package.identifier,
-            platform: Theme.of(context).platform == TargetPlatform.iOS
-                ? 'ios'
-                : 'android',
           );
           await _loadCredits();
-          _showMessage(l10n.profileCreditsAdded(credits));
+          if (status['processed'] == true) {
+            final credits = _purchases.creditsFor(package);
+            _showMessage(l10n.profileCreditsAdded(credits));
+          } else {
+            _showMessage(l10n.profilePurchasePending);
+          }
         } catch (e) {
           _showMessage(l10n.profilePurchaseCompletedButCreditsFailed);
         }

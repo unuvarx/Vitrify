@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Vitrify.API.Data;
 using Vitrify.API.DTOs;
-using Vitrify.API.Models;
 
 namespace Vitrify.API.Controllers;
 
@@ -35,15 +34,11 @@ public class CreditsController : BaseApiController
     }
 
     // ⚠️ GÜVENLİK NOTU:
-    // // Bu endpoint şu an ödemeyi DOĞRULAMIYOR (geliştirme aşaması).
-    // // Production'da RevenueCat webhook'u ile değiştirilecek (Adım 20).
-    // // O zaman ödeme RevenueCat tarafında doğrulanacak, Flutter'a güvenilmeyecek.
-    // // Bu webhook gelene kadar en azından Credits'i gerçek paket
-    // // boyutlarıyla sınırlıyoruz — aksi halde herhangi bir kimliği
-    // // doğrulanmış kullanıcı, sahte bir StoreTransactionId ile dilediği
-    // // miktarda ücretsiz kredi talep edebilirdi.
-    private static readonly HashSet<int> ValidCreditPackageSizes = new() { 50, 120, 250 };
-
+    // Gerçek kredi ekleme artık burada DEĞİL, RevenueCatWebhookController'da
+    // yapılıyor — RevenueCat'in kendisinin doğruladığı satın alma bildirimiyle.
+    // Bu endpoint sadece Flutter'ın "satın alma tamamlandı, webhook işlemeyi
+    // bitirdi mi?" diye sorup ekranı güncelleyebilmesi için var. Client'tan
+    // gelen hiçbir veri (kredi miktarı dahil) krediyi artırmak için kullanılmıyor.
     [Authorize]
     [HttpPost("add")]
     public async Task<IActionResult> AddCredits([FromBody] AddCreditsRequest request)
@@ -56,48 +51,33 @@ public class CreditsController : BaseApiController
         if (user == null)
             return NotFound(new { message = "Kullanıcı bulunamadı." });
 
-        // Doğrulama
         if (string.IsNullOrEmpty(request.StoreTransactionId))
             return BadRequest(new { message = "İşlem kimliği gerekli." });
-        if (!ValidCreditPackageSizes.Contains(request.Credits))
-            return BadRequest(new { message = "Geçersiz kredi miktarı." });
 
-        // MÜKERRER KONTROL: bu işlem daha önce işlendi mi?
-        var alreadyProcessed = await _db.Purchases
-            .AnyAsync(p => p.StoreTransactionId == request.StoreTransactionId);
-
-        if (alreadyProcessed)
+        // RevenueCat webhook'u genelde saniyeler içinde işler ama satın alma
+        // callback'iyle eşzamanlı garanti değil — kısa bir süre bekleyip
+        // (toplam ~6sn) webhook'un işleyip işlemediğini birkaç kez kontrol ediyoruz.
+        for (var attempt = 0; attempt < 6; attempt++)
         {
-            // Bu satın alım zaten işlenmiş → tekrar kredi ekleme
-            return Ok(new
+            var processed = await _db.Purchases
+                .AsNoTracking()
+                .AnyAsync(p => p.StoreTransactionId == request.StoreTransactionId);
+
+            if (processed)
             {
-                message = "Bu işlem daha önce işlendi.",
-                credits = user.Credits,
-                alreadyProcessed = true
-            });
+                var currentCredits = await _db.Users
+                    .Where(u => u.Id == user.Id)
+                    .Select(u => u.Credits)
+                    .FirstAsync();
+
+                return Ok(new { credits = currentCredits, processed = true });
+            }
+
+            await Task.Delay(1000);
         }
 
-        // Satın alım kaydı oluştur
-        var purchase = new Purchase
-        {
-            UserId = user.Id,
-            CreditsAdded = request.Credits,
-            StoreTransactionId = request.StoreTransactionId,
-            Platform = request.Platform
-        };
-        _db.Purchases.Add(purchase);
-
-        // Krediyi ekle
-        user.Credits += request.Credits;
-
-        await _db.SaveChangesAsync();
-
-        return Ok(new
-        {
-            message = "Kredi eklendi.",
-            credits = user.Credits,
-            addedCredits = request.Credits,
-            alreadyProcessed = false
-        });
+        // Webhook henüz gelmedi — satın alma muhtemelen geçerli ama kredi
+        // birazdan görünecek, kullanıcıyı bekletmeden mevcut bakiyeyi dön
+        return Ok(new { credits = user.Credits, processed = false });
     }
 }

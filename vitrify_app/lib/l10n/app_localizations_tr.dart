@@ -233,6 +233,10 @@ class AppLocalizationsTr extends AppLocalizations {
       'Satın alma tamamlandı ama kredi eklenemedi. Lütfen destek ile iletişime geçin.';
 
   @override
+  String get profilePurchasePending =>
+      'Satın alma tamamlandı, krediler birazdan hesabınıza yansıyacak.';
+
+  @override
   String get profilePurchaseFailed => 'Satın alma başarısız.';
 
   @override

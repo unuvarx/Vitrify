@@ -500,6 +500,12 @@ abstract class AppLocalizations {
   /// **'Purchase completed but credits could not be added. Please contact support.'**
   String get profilePurchaseCompletedButCreditsFailed;
 
+  /// No description provided for @profilePurchasePending.
+  ///
+  /// In en, this message translates to:
+  /// **'Purchase completed — your credits will appear shortly.'**
+  String get profilePurchasePending;
+
   /// No description provided for @profilePurchaseFailed.
   ///
   /// In en, this message translates to:

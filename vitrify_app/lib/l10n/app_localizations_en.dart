@@ -234,6 +234,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Purchase completed but credits could not be added. Please contact support.';
 
   @override
+  String get profilePurchasePending =>
+      'Purchase completed — your credits will appear shortly.';
+
+  @override
   String get profilePurchaseFailed => 'Purchase failed.';
 
   @override

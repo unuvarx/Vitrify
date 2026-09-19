@@ -74,6 +74,7 @@
   "profilePackagesLoadError": "Satın alma paketleri şu an yüklenemiyor.",
   "profileCreditsAdded": "{credits} kredi eklendi ✓",
   "profilePurchaseCompletedButCreditsFailed": "Satın alma tamamlandı ama kredi eklenemedi. Lütfen destek ile iletişime geçin.",
+  "profilePurchasePending": "Satın alma tamamlandı, krediler birazdan hesabınıza yansıyacak.",
   "profilePurchaseFailed": "Satın alma başarısız.",
   "profileCreditsSuffix": "{credits} kredi",
   "profileSignOut": "Çıkış Yap",

@@ -91,18 +91,16 @@ class ApiService {
     return response.data['credits'] as int;
   }
 
-  // Satın alma sonrası kredi ekle (RevenueCat client-side onayı ile)
-  Future<Map<String, dynamic>> addCredits({
-    required int credits,
+  // Satın alma sonrası durum sorgusu — kredi RevenueCat webhook'u
+  // tarafından zaten eklenmiş olmalı, burada sadece bakiyeyi tazeliyoruz.
+  // {credits: int, processed: bool} döner.
+  Future<Map<String, dynamic>> confirmPurchase({
     required String storeTransactionId,
-    required String platform,
   }) async {
     final response = await _dio.post(
       '/api/credits/add',
       data: {
         'storeTransactionId': storeTransactionId,
-        'credits': credits,
-        'platform': platform,
       },
       options: await _authOptions(),
     );
