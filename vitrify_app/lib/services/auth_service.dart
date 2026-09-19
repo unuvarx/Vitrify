@@ -6,12 +6,15 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:android_id/android_id.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../config/app_config.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
   final Dio _dio = Dio(BaseOptions(baseUrl: AppConfig.apiBaseUrl));
+  static const _secureStorage = FlutterSecureStorage();
+  static const _deviceIdKey = 'vitrify_device_id';
 
   // Mevcut kullanıcı
   User? get currentUser => _auth.currentUser;
@@ -105,9 +108,18 @@ class AuthService {
   // Cihaza özel benzersiz kimlik üret (cihaz kilidi için)
   Future<String> getDeviceId() async {
     if (Platform.isIOS) {
+      // identifierForVendor uygulama silinip yeniden yüklendiğinde (aynı
+      // geliştiriciden başka app kalmamışsa) sıfırlanabiliyor — bu da cihaz
+      // kilidini sil-yükle ile atlatılabilir hale getiriyordu. Keychain ise
+      // uygulama silinse bile cihazda kalıyor: ilk üretilen ID'yi Keychain'e
+      // yazıp bundan sonra hep oradan okuyoruz.
+      final cached = await _secureStorage.read(key: _deviceIdKey);
+      if (cached != null) return cached;
+
       final iosInfo = await DeviceInfoPlugin().iosInfo;
-      // identifierForVendor: cihaza özel, uygulama silinmedikçe sabit
-      return iosInfo.identifierForVendor ?? 'unknown-ios';
+      final freshId = iosInfo.identifierForVendor ?? 'unknown-ios';
+      await _secureStorage.write(key: _deviceIdKey, value: freshId);
+      return freshId;
     } else if (Platform.isAndroid) {
       // NOT: device_info_plus'ın androidInfo.id alanı Build.ID'yi (işletim
       // sistemi build numarası) döndürür — bu cihaza özel DEĞİL, aynı Android
