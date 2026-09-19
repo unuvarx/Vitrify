@@ -43,13 +43,28 @@ public class JobsController : BaseApiController
 
         int totalItems = request.Images.Count * request.Scenarios.Count;
 
-        if (user.Credits < totalItems)
+        // Krediyi ANINDA ve ATOMİK olarak rezerve ediyoruz (sadece kontrol
+        // etmiyoruz) — aksi halde art arda/eşzamanlı gönderilen birden çok
+        // Create isteği, henüz düşülmemiş aynı bakiyeyi hepsi "yeterli" görüp
+        // toplamda kredisinden çok daha fazla ücretsiz Gemini üretimi
+        // tetikleyebilirdi. WHERE Credits >= totalItems, tek bir istek
+        // dışındakilerin bu satırı güncelleyememesini garanti eder.
+        var reserved = await _db.Users
+            .Where(u => u.Id == user.Id && u.Credits >= totalItems)
+            .ExecuteUpdateAsync(s => s.SetProperty(u => u.Credits, u => u.Credits - totalItems));
+
+        if (reserved == 0)
         {
+            var currentCredits = await _db.Users
+                .Where(u => u.Id == user.Id)
+                .Select(u => u.Credits)
+                .FirstAsync();
+
             return BadRequest(new
             {
-                message = $"Yetersiz kredi. Gerekli: {totalItems}, Mevcut: {user.Credits}",
+                message = $"Yetersiz kredi. Gerekli: {totalItems}, Mevcut: {currentCredits}",
                 requiredCredits = totalItems,
-                availableCredits = user.Credits
+                availableCredits = currentCredits
             });
         }
 
@@ -89,7 +104,10 @@ public class JobsController : BaseApiController
                     ImageIndex = i,
                     Scenario = fullPrompt,
                     Status = "pending",
-                    CreditDeducted = false
+                    // Krediler yukarıda TOPLU olarak zaten rezerve edildi —
+                    // her kalem "ödenmiş" başlıyor. Kalıcı olarak başarısız
+                    // olursa iade edilip false'a çekilecek (JobProcessingService).
+                    CreditDeducted = true
                 });
             }
         }
@@ -110,7 +128,7 @@ public class JobsController : BaseApiController
             Message = "Görselleriniz işleme alındı.",
             JobId = job.Id,
             TotalItems = totalItems,
-            RemainingCredits = user.Credits
+            RemainingCredits = user.Credits - totalItems
         });
     }
 

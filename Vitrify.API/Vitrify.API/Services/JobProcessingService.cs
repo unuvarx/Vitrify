@@ -100,17 +100,24 @@ public class JobProcessingService
                 jpegBytes,
                 $"{item.Id}.jpg");
 
-            // SADECE başarılıysa kredi düş — aynı Job'un kalemleri eşzamanlı
-            // işlendiği için oku-değiştir-yaz yerine atomic UPDATE kullanıyoruz
-            // (aksi halde eşzamanlı kalemler birbirinin kredi düşüşünü ezer)
-            var creditDeducted = item.CreditDeducted;
-            if (!creditDeducted)
+            // Kredi zaten Job oluşturulurken (JobsController.Create) TOPLU
+            // olarak rezerve edildi. Bu kalem daha önce başarısız olup iade
+            // edildiyse (CreditDeducted=false) ve şimdi bir Hangfire
+            // yeniden denemesinde başarılı olduysa, krediyi tekrar tahsil
+            // etmeyi deniyoruz — kullanıcı bu arada kredisini başka bir job'da
+            // harcadıysa bu istisnai üretim ücretsiz kalır (nadir, kabul edilebilir).
+            if (!item.CreditDeducted)
             {
                 var rowsAffected = await _db.Users
                     .Where(u => u.Id == item.Job!.UserId && u.Credits > 0)
                     .ExecuteUpdateAsync(s => s.SetProperty(u => u.Credits, u => u.Credits - 1));
 
-                creditDeducted = rowsAffected > 0;
+                if (rowsAffected > 0)
+                {
+                    await _db.JobItems
+                        .Where(i => i.Id == item.Id)
+                        .ExecuteUpdateAsync(s => s.SetProperty(i => i.CreditDeducted, true));
+                }
             }
 
             // JobItem'ı bağımsız atomic UPDATE ile güncelle
@@ -118,8 +125,7 @@ public class JobProcessingService
                 .Where(i => i.Id == item.Id)
                 .ExecuteUpdateAsync(s => s
                     .SetProperty(i => i.OutputUrl, newOutputUrl)
-                    .SetProperty(i => i.Status, "done")
-                    .SetProperty(i => i.CreditDeducted, creditDeducted));
+                    .SetProperty(i => i.Status, "done"));
 
             // Job ilerleme sayacı (sadece başarılı sayımı - progress bar için)
             await _db.Jobs
@@ -147,10 +153,24 @@ public class JobProcessingService
         {
             _logger.LogWarning(ex, "JobItem {JobItemId} başarısız oldu", item.Id);
 
-            // Başarısız → kredi DÜŞMEZ
             await _db.JobItems
                 .Where(i => i.Id == item.Id)
                 .ExecuteUpdateAsync(s => s.SetProperty(i => i.Status, "failed"));
+
+            // Bu kalemin kredisi Job oluşturulurken zaten toplu alınmıştı —
+            // başarısız olduğu için iade ediyoruz. WHERE CreditDeducted=true
+            // koşulu, aynı kalem birden çok kez başarısız olsa bile
+            // (Hangfire retry) sadece BİR kez iade edilmesini garanti eder.
+            var refunded = await _db.JobItems
+                .Where(i => i.Id == item.Id && i.CreditDeducted)
+                .ExecuteUpdateAsync(s => s.SetProperty(i => i.CreditDeducted, false));
+
+            if (refunded > 0)
+            {
+                await _db.Users
+                    .Where(u => u.Id == item.Job!.UserId)
+                    .ExecuteUpdateAsync(s => s.SetProperty(u => u.Credits, u => u.Credits + 1));
+            }
 
             // Flutter'a haber ver: "bu görsel başarısız oldu"
             await _hub.Clients.Group(item.JobId.ToString()).SendAsync(
