@@ -44,6 +44,21 @@ class PurchaseService {
     }
   }
 
+  // Satın almadan HEMEN önce çağrılır — main.dart'taki identify() fire-and-
+  // forget olduğu için satın alma anına kadar bitmemiş olabilir. Bu, RevenueCat
+  // kullanıcısının doğru Firebase hesabına bağlı olduğunu KESİNLEŞTİRMEDEN
+  // satın almaya izin vermez: aksi halde işlem RevenueCat'in anonim
+  // kullanıcısına kaydolur, webhook bunu hiçbir hesapla eşleştiremez ve
+  // kullanıcı öder ama kredi hiç eklenmez.
+  Future<bool> ensureIdentified(String firebaseUid) async {
+    try {
+      await Purchases.logIn(firebaseUid);
+      return true;
+    } catch (_) {
+      return false;
+    }
+  }
+
   Future<Offerings> getOfferings() => Purchases.getOfferings();
 
   Future<PurchaseResult> purchase(Package package) async {

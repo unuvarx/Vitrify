@@ -1,8 +1,10 @@
 import 'package:signalr_netcore/signalr_client.dart';
 import '../config/app_config.dart';
+import 'auth_service.dart';
 
 class SignalRService {
   HubConnection? _connection;
+  final AuthService _auth = AuthService();
 
   Future<void> _ensureConnected() async {
     if (_connection != null &&
@@ -13,8 +15,15 @@ class SignalRService {
     // Eski bağlantıyı temizle
     await disconnect();
 
+    // Hub artık [Authorize] + job sahiplik kontrolü yapıyor — Firebase
+    // token'ını taşımadan bağlantı/abonelik başarısız olur.
     _connection = HubConnectionBuilder()
-        .withUrl(AppConfig.signalRHubUrl)
+        .withUrl(
+          AppConfig.signalRHubUrl,
+          options: HttpConnectionOptions(
+            accessTokenFactory: () async => await _auth.getIdToken() ?? '',
+          ),
+        )
         .withAutomaticReconnect()
         .build();
 

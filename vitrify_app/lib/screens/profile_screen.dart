@@ -88,7 +88,24 @@ class _ProfileScreenState extends State<ProfileScreen> implements Refreshable {
 
   Future<void> _buyPackage(Package package) async {
     final l10n = AppLocalizations.of(context)!;
+    final firebaseUid = _auth.currentUser?.uid;
+    if (firebaseUid == null) {
+      _showMessage(l10n.profilePurchaseFailed);
+      return;
+    }
+
     setState(() => _purchasingPackageId = package.identifier);
+
+    // Satın almadan önce RevenueCat kimliğinin doğru hesaba bağlı olduğunu
+    // kesinleştir — başarısız olursa satın almaya hiç izin verme (aksi halde
+    // ödeme anonim kullanıcıya kaydolup krediye hiç dönüşmeyebilir).
+    final identified = await _purchases.ensureIdentified(firebaseUid);
+    if (!identified) {
+      if (!mounted) return;
+      setState(() => _purchasingPackageId = null);
+      _showMessage(l10n.profilePurchaseFailed);
+      return;
+    }
 
     final result = await _purchases.purchase(package);
 

@@ -65,6 +65,23 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidAudience = firebaseProjectId,
             ValidateLifetime = true
         };
+
+        // SignalR WebSocket bağlantıları özel Authorization header'ı
+        // taşıyamaz — token'ı signalr_netcore'un koyduğu ?access_token=
+        // query string'inden okuyoruz (sadece /jobhub yolu için).
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                var accessToken = context.Request.Query["access_token"];
+                if (!string.IsNullOrEmpty(accessToken) &&
+                    context.HttpContext.Request.Path.StartsWithSegments("/jobhub"))
+                {
+                    context.Token = accessToken;
+                }
+                return Task.CompletedTask;
+            }
+        };
     });
 
 builder.Services.AddAuthorization();
