@@ -66,6 +66,12 @@ public class AuthController : BaseApiController
         var deviceUsedBefore = await _db.Users
             .AnyAsync(u => u.DeviceId == request.DeviceId);
 
+        // TEŞHİS: Android'de bazı cihazlarda yeni hesap açılışında cihaz
+        // kilidi atlanabiliyor (5 kredi tekrar geliyor) — gerçek sebebi
+        // (DeviceId gerçekten değişiyor mu, yoksa başka bir şey mi) görmek için
+        Console.WriteLine($"[DEVICE-LOCK] Yeni kullanıcı, DeviceId='{request.DeviceId}', " +
+                           $"Platform={request.DevicePlatform}, DahaÖnceKullanılmış={deviceUsedBefore}");
+
         // Cihaz ilk kez kullanılıyorsa 5 kredi, değilse 0 kredi
         int startingCredits = deviceUsedBefore ? 0 : 5;
 
