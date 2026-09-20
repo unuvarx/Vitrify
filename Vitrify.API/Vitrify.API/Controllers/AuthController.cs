@@ -1,3 +1,4 @@
+using FirebaseAdmin.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -110,5 +111,39 @@ public class AuthController : BaseApiController
             credits = user.Credits,
             platform = user.DevicePlatform
         });
+    }
+
+    // Hesabı kalıcı olarak sil (Apple/Google mağaza kurallarının hesap
+    // oluşturma özelliği olan uygulamalarda zorunlu tuttuğu hesap silme akışı).
+    // User satırı silinince Jobs/JobItems/JobImages/Purchases cascade ile
+    // (AppDbContext'teki ilişkiler + EF'in zorunlu FK'ler için varsayılan
+    // Cascade davranışı) otomatik silinir. Firebase Auth hesabı da Admin SDK
+    // ile ayrıca siliniyor — aksi halde kullanıcı aynı bilgilerle tekrar
+    // giriş yapıp "silinmemiş" bir hesaba sahip gibi davranabilirdi.
+    [Authorize]
+    [HttpDelete("account")]
+    public async Task<IActionResult> DeleteAccount()
+    {
+        var firebaseUid = GetFirebaseUid();
+        if (string.IsNullOrEmpty(firebaseUid))
+            return Unauthorized();
+
+        var user = await _db.Users.FirstOrDefaultAsync(u => u.FirebaseUid == firebaseUid);
+        if (user != null)
+        {
+            _db.Users.Remove(user);
+            await _db.SaveChangesAsync();
+        }
+
+        try
+        {
+            await FirebaseAuth.DefaultInstance.DeleteUserAsync(firebaseUid);
+        }
+        catch (FirebaseAuthException)
+        {
+            // Firebase hesabı zaten yoksa/silinmişse sorun değil
+        }
+
+        return Ok(new { message = "Hesabınız silindi." });
     }
 }

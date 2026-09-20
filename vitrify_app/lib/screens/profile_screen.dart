@@ -144,6 +144,42 @@ class _ProfileScreenState extends State<ProfileScreen> implements Refreshable {
     // AuthGate, oturum kapandığını otomatik algılayıp LoginScreen'e yönlendirir
   }
 
+  Future<void> _deleteAccount() async {
+    final l10n = AppLocalizations.of(context)!;
+
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(l10n.profileDeleteAccountConfirmTitle),
+        content: Text(l10n.profileDeleteAccountConfirmMessage),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: Text(l10n.profileDeleteAccountCancel),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: Text(
+              l10n.profileDeleteAccountConfirmButton,
+              style: TextStyle(color: AppColors.hataKirmizi(context)),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    if (confirmed != true) return;
+
+    try {
+      await _api.deleteAccount();
+      await _auth.signOut();
+      // AuthGate, oturum kapandığını otomatik algılayıp LoginScreen'e yönlendirir
+    } catch (e) {
+      if (!mounted) return;
+      _showMessage(l10n.profileDeleteAccountFailed);
+    }
+  }
+
   void _showMessage(String message) {
     AppAlert.show(context, message);
   }
@@ -190,6 +226,17 @@ class _ProfileScreenState extends State<ProfileScreen> implements Refreshable {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 12),
+          SizedBox(
+            width: double.infinity,
+            child: TextButton(
+              onPressed: _deleteAccount,
+              child: Text(
+                l10n.profileDeleteAccount,
+                style: TextStyle(color: AppColors.acikGri(context), fontSize: 13),
               ),
             ),
           ),

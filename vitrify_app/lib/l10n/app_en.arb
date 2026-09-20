@@ -106,6 +106,12 @@
     "placeholders": { "credits": { "type": "int" } }
   },
   "profileSignOut": "Sign Out",
+  "profileDeleteAccount": "Delete My Account",
+  "profileDeleteAccountConfirmTitle": "Are you sure you want to delete your account?",
+  "profileDeleteAccountConfirmMessage": "This cannot be undone. Your account, credits, and generation history will be permanently deleted.",
+  "profileDeleteAccountCancel": "Cancel",
+  "profileDeleteAccountConfirmButton": "Delete My Account",
+  "profileDeleteAccountFailed": "Could not delete account. Please try again.",
   "profileThemeTitle": "Appearance",
   "profileThemeLight": "Light",
   "profileThemeDark": "Dark",

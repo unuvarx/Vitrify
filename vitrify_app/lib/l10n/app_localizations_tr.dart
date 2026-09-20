@@ -260,6 +260,27 @@ class AppLocalizationsTr extends AppLocalizations {
   String get profileSignOut => 'Çıkış Yap';
 
   @override
+  String get profileDeleteAccount => 'Hesabımı Sil';
+
+  @override
+  String get profileDeleteAccountConfirmTitle =>
+      'Hesabını silmek istediğine emin misin?';
+
+  @override
+  String get profileDeleteAccountConfirmMessage =>
+      'Bu işlem geri alınamaz. Hesabın, kredilerin ve tüm üretim geçmişin kalıcı olarak silinecek.';
+
+  @override
+  String get profileDeleteAccountCancel => 'Vazgeç';
+
+  @override
+  String get profileDeleteAccountConfirmButton => 'Hesabımı Sil';
+
+  @override
+  String get profileDeleteAccountFailed =>
+      'Hesap silinemedi. Lütfen tekrar dene.';
+
+  @override
   String get profileThemeTitle => 'Görünüm';
 
   @override

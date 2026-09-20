@@ -106,4 +106,12 @@ class ApiService {
     );
     return response.data;
   }
+
+  // Hesabı kalıcı olarak sil (App Store/Play Store zorunlu kılıyor)
+  Future<void> deleteAccount() async {
+    await _dio.delete(
+      '/api/auth/account',
+      options: await _authOptions(),
+    );
+  }
 }

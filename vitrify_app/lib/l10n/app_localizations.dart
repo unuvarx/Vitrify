@@ -548,6 +548,42 @@ abstract class AppLocalizations {
   /// **'Sign Out'**
   String get profileSignOut;
 
+  /// No description provided for @profileDeleteAccount.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete My Account'**
+  String get profileDeleteAccount;
+
+  /// No description provided for @profileDeleteAccountConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to delete your account?'**
+  String get profileDeleteAccountConfirmTitle;
+
+  /// No description provided for @profileDeleteAccountConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This cannot be undone. Your account, credits, and generation history will be permanently deleted.'**
+  String get profileDeleteAccountConfirmMessage;
+
+  /// No description provided for @profileDeleteAccountCancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get profileDeleteAccountCancel;
+
+  /// No description provided for @profileDeleteAccountConfirmButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete My Account'**
+  String get profileDeleteAccountConfirmButton;
+
+  /// No description provided for @profileDeleteAccountFailed.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not delete account. Please try again.'**
+  String get profileDeleteAccountFailed;
+
   /// No description provided for @profileThemeTitle.
   ///
   /// In en, this message translates to:
