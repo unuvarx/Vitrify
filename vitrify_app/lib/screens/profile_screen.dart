@@ -95,6 +95,7 @@ class _ProfileScreenState extends State<ProfileScreen> implements Refreshable {
     }
 
     setState(() => _purchasingPackageId = package.identifier);
+    final creditsBefore = _credits;
 
     // Satın almadan önce RevenueCat kimliğinin doğru hesaba bağlı olduğunu
     // kesinleştir — başarısız olursa satın almaya hiç izin verme (aksi halde
@@ -114,12 +115,27 @@ class _ProfileScreenState extends State<ProfileScreen> implements Refreshable {
     switch (result.outcome) {
       case PurchaseOutcome.success:
         try {
-          final status = await _api.confirmPurchase(
-            storeTransactionId: result.transactionId ?? package.identifier,
-          );
-          await _loadCredits();
+          // RevenueCat'in webhook'a bildirdiği transaction id ile client'a
+          // bildirdiği id her zaman birebir aynı formatta olmuyor — bir
+          // transaction id eşleştirmesine güvenmek yerine, gerçek kaynak olan
+          // bakiyenin artıp artmadığını doğrudan izliyoruz (en fazla ~8sn).
+          var processed = false;
+          for (var attempt = 0; attempt < 8 && mounted; attempt++) {
+            final newCredits = await _api.getCredits();
+            if (newCredits > creditsBefore) {
+              if (!mounted) break;
+              setState(() {
+                _credits = newCredits;
+                _isLoadingCredits = false;
+              });
+              processed = true;
+              break;
+            }
+            await Future.delayed(const Duration(seconds: 1));
+          }
+
           if (!mounted) break;
-          if (status['processed'] == true) {
+          if (processed) {
             final credits = _purchases.creditsFor(package);
             _showMessage(l10n.profileCreditsAdded(credits));
           } else {

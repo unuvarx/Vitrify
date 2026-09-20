@@ -91,22 +91,6 @@ class ApiService {
     return response.data['credits'] as int;
   }
 
-  // Satın alma sonrası durum sorgusu — kredi RevenueCat webhook'u
-  // tarafından zaten eklenmiş olmalı, burada sadece bakiyeyi tazeliyoruz.
-  // {credits: int, processed: bool} döner.
-  Future<Map<String, dynamic>> confirmPurchase({
-    required String storeTransactionId,
-  }) async {
-    final response = await _dio.post(
-      '/api/credits/add',
-      data: {
-        'storeTransactionId': storeTransactionId,
-      },
-      options: await _authOptions(),
-    );
-    return response.data;
-  }
-
   // Hesabı kalıcı olarak sil (App Store/Play Store zorunlu kılıyor)
   Future<void> deleteAccount() async {
     await _dio.delete(
