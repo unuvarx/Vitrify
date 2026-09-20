@@ -118,6 +118,7 @@ class _ProfileScreenState extends State<ProfileScreen> implements Refreshable {
             storeTransactionId: result.transactionId ?? package.identifier,
           );
           await _loadCredits();
+          if (!mounted) break;
           if (status['processed'] == true) {
             final credits = _purchases.creditsFor(package);
             _showMessage(l10n.profileCreditsAdded(credits));
@@ -125,6 +126,7 @@ class _ProfileScreenState extends State<ProfileScreen> implements Refreshable {
             _showMessage(l10n.profilePurchasePending);
           }
         } catch (e) {
+          if (!mounted) break;
           _showMessage(l10n.profilePurchaseCompletedButCreditsFailed);
         }
         break;
