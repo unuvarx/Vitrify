@@ -281,16 +281,30 @@ class _ProfileScreenState extends State<ProfileScreen> implements Refreshable {
         children: [
           Icon(Icons.bolt, color: AppColors.vitrifyMavisi(context), size: 32),
           const SizedBox(height: 8),
-          _isLoadingCredits
-              ? CircularProgressIndicator(color: AppColors.vitrifyMavisi(context))
-              : Text(
-                  '$_credits',
-                  style: TextStyle(
-                    fontSize: 36,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.safBeyaz(context),
-                  ),
-                ),
+          // Sabit yükseklik: yüklenirken/yüklendikten sonra kart boyu
+          // değişip alttaki butonların zıplamasına neden olmasın
+          SizedBox(
+            height: 44,
+            child: Center(
+              child: _isLoadingCredits
+                  ? SizedBox(
+                      width: 28,
+                      height: 28,
+                      child: CircularProgressIndicator(
+                        strokeWidth: 3,
+                        color: AppColors.vitrifyMavisi(context),
+                      ),
+                    )
+                  : Text(
+                      '$_credits',
+                      style: TextStyle(
+                        fontSize: 36,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.safBeyaz(context),
+                      ),
+                    ),
+            ),
+          ),
           const SizedBox(height: 4),
           Text(
             AppLocalizations.of(context)!.profileCreditsRemaining,
@@ -303,8 +317,10 @@ class _ProfileScreenState extends State<ProfileScreen> implements Refreshable {
 
   Widget _packagesList() {
     if (_isLoadingPackages) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 24),
+      // Yüklenen paket listesiyle yaklaşık aynı yükseklik: 3 paket satırı
+      // gelince altındaki butonlar aniden yer değiştirmesin
+      return SizedBox(
+        height: 240,
         child: Center(
           child: CircularProgressIndicator(color: AppColors.vitrifyMavisi(context)),
         ),
