@@ -21,6 +21,7 @@
   "loginPasswordResetSent": "Şifre sıfırlama bağlantısı e-postana gönderildi.",
   "loginOrDivider": "veya",
   "loginGoogleSignIn": "Google ile Giriş Yap",
+  "loginAppleSignIn": "Apple ile Giriş Yap",
 
   "navTheme": "Tema",
   "navCreate": "Oluştur",

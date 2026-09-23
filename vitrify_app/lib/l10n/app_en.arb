@@ -24,6 +24,7 @@
   "loginPasswordResetSent": "A password reset link has been sent to your email.",
   "loginOrDivider": "or",
   "loginGoogleSignIn": "Sign in with Google",
+  "loginAppleSignIn": "Sign in with Apple",
 
   "navTheme": "Theme",
   "navCreate": "Create",

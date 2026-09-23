@@ -70,6 +70,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get loginGoogleSignIn => 'Sign in with Google';
 
   @override
+  String get loginAppleSignIn => 'Sign in with Apple';
+
+  @override
   String get navTheme => 'Theme';
 
   @override

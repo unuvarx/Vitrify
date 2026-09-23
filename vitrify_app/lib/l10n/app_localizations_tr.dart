@@ -70,6 +70,9 @@ class AppLocalizationsTr extends AppLocalizations {
   String get loginGoogleSignIn => 'Google ile Giriş Yap';
 
   @override
+  String get loginAppleSignIn => 'Apple ile Giriş Yap';
+
+  @override
   String get navTheme => 'Tema';
 
   @override

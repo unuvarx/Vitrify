@@ -138,6 +138,39 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  // Google ve Apple butonlarının aynı boyut/font/stil ile görünmesi için
+  // ortak bir buton üretici — sadece ikon ve metin değişiyor.
+  Widget _socialButton({
+    required Widget icon,
+    required String label,
+    required VoidCallback? onPressed,
+  }) {
+    return SizedBox(
+      height: 48,
+      child: OutlinedButton(
+        onPressed: onPressed,
+        style: OutlinedButton.styleFrom(
+          foregroundColor: AppColors.safBeyaz(context),
+          side: BorderSide(color: AppColors.acikGri(context)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            icon,
+            const SizedBox(width: 10),
+            Text(
+              label,
+              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -145,137 +178,157 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              const SizedBox(height: 60),
-
-              // Marka logosu: sistem fontundaki Icons.auto_awesome glyph'i
-              // bazı cihazlarda (ör. iPad) eksik/kırpılmış render edildiği
-              // için, her cihazda piksel piksel aynı görünen kendi ikon
-              // görselimizi kullanıyoruz.
-              ClipRRect(
-                borderRadius: BorderRadius.circular(20),
-                child: Image.asset(
-                  'assets/icon/icon.png',
-                  width: 88,
-                  height: 88,
-                ),
-              ),
-              const SizedBox(height: 16),
-              Text(
-                'Vitrify',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.safBeyaz(context),
-                ),
-              ),
-              const SizedBox(height: 48),
-
-              TextField(
-                controller: _emailController,
-                keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
-                  hintText: l10n.loginEmailHint,
-                  prefixIcon: const Icon(Icons.email_outlined),
-                ),
-              ),
-              const SizedBox(height: 16),
-
-              TextField(
-                controller: _passwordController,
-                obscureText: true,
-                decoration: InputDecoration(
-                  hintText: l10n.loginPasswordHint,
-                  prefixIcon: const Icon(Icons.lock_outline),
-                ),
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: TextButton(
-                  onPressed: _isLoading ? null : _forgotPassword,
-                  child: Text(
-                    l10n.loginForgotPassword,
-                    style: TextStyle(color: AppColors.acikGri(context)),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 8),
-
-              ElevatedButton(
-                onPressed: _isLoading ? null : _submit,
-                child: _isLoading
-                    ? SizedBox(
-                  height: 20,
-                  width: 20,
-                  child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    color: AppColors.safBeyaz(context),
-                  ),
-                )
-                    : Text(_isSignUpMode
-                        ? l10n.loginSignUpButton
-                        : l10n.loginSignInButton),
-              ),
-              const SizedBox(height: 16),
-
-              TextButton(
-                onPressed: _isLoading
-                    ? null
-                    : () => setState(() => _isSignUpMode = !_isSignUpMode),
-                child: Text(
-                  _isSignUpMode
-                      ? l10n.loginSwitchToSignIn
-                      : l10n.loginSwitchToSignUp,
-                  style: TextStyle(color: AppColors.acikGri(context)),
-                ),
-              ),
-
-              const SizedBox(height: 24),
-              Row(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+          // iPad gibi geniş ekranlarda form tam genişliğe yayılıp
+          // profesyonellikten uzak durmasın diye bir üst sınır koyuyoruz —
+          // telefon genişliklerinde zaten hiçbir fark yaratmıyor.
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 400),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Expanded(child: Divider(color: AppColors.acikGri(context))),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                  const SizedBox(height: 12),
+
+                  // Marka logosu: sistem fontundaki Icons.auto_awesome glyph'i
+                  // bazı cihazlarda (ör. iPad) eksik/kırpılmış render edildiği
+                  // için, uygulama ikonunun şeffaf-arka-planlı yıldız katmanını
+                  // (kare/arka plan olmadan, sadece yıldızlar) marka moruyla
+                  // renklendirip kullanıyoruz — her cihazda piksel piksel aynı.
+                  ColorFiltered(
+                    colorFilter: ColorFilter.mode(
+                      AppColors.vitrifyMavisi(context),
+                      BlendMode.srcIn,
+                    ),
+                    child: Image.asset(
+                      'assets/icon/icon_foreground.png',
+                      width: 52,
+                      height: 52,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Vitrify',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 22,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.safBeyaz(context),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+
+                  TextField(
+                    controller: _emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    decoration: InputDecoration(
+                      hintText: l10n.loginEmailHint,
+                      prefixIcon: const Icon(Icons.email_outlined),
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+
+                  TextField(
+                    controller: _passwordController,
+                    obscureText: true,
+                    decoration: InputDecoration(
+                      hintText: l10n.loginPasswordHint,
+                      prefixIcon: const Icon(Icons.lock_outline),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: TextButton(
+                      onPressed: _isLoading ? null : _forgotPassword,
+                      child: Text(
+                        l10n.loginForgotPassword,
+                        style: TextStyle(color: AppColors.acikGri(context)),
+                      ),
+                    ),
+                  ),
+
+                  SizedBox(
+                    height: 48,
+                    child: ElevatedButton(
+                      onPressed: _isLoading ? null : _submit,
+                      child: _isLoading
+                          ? SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: AppColors.safBeyaz(context),
+                              ),
+                            )
+                          : Text(
+                              _isSignUpMode
+                                  ? l10n.loginSignUpButton
+                                  : l10n.loginSignInButton,
+                            ),
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+
+                  TextButton(
+                    onPressed: _isLoading
+                        ? null
+                        : () => setState(() => _isSignUpMode = !_isSignUpMode),
                     child: Text(
-                      l10n.loginOrDivider,
+                      _isSignUpMode
+                          ? l10n.loginSwitchToSignIn
+                          : l10n.loginSwitchToSignUp,
                       style: TextStyle(color: AppColors.acikGri(context)),
                     ),
                   ),
-                  Expanded(child: Divider(color: AppColors.acikGri(context))),
+
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Divider(color: AppColors.acikGri(context)),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: Text(
+                          l10n.loginOrDivider,
+                          style: TextStyle(color: AppColors.acikGri(context)),
+                        ),
+                      ),
+                      Expanded(
+                        child: Divider(color: AppColors.acikGri(context)),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+
+                  _socialButton(
+                    icon: Image.asset(
+                      'assets/icon/google_logo.png',
+                      width: 20,
+                      height: 20,
+                    ),
+                    label: l10n.loginGoogleSignIn,
+                    onPressed: _isLoading ? null : _signInWithGoogle,
+                  ),
+
+                  if (Platform.isIOS) ...[
+                    const SizedBox(height: 8),
+                    _socialButton(
+                      icon: Icon(
+                        Icons.apple,
+                        size: 22,
+                        color: AppColors.safBeyaz(context),
+                      ),
+                      label: l10n.loginAppleSignIn,
+                      onPressed: _isLoading ? null : _signInWithApple,
+                    ),
+                  ],
+
+                  const SizedBox(height: 16),
                 ],
               ),
-              const SizedBox(height: 24),
-
-              OutlinedButton(
-                onPressed: _isLoading ? null : _signInWithGoogle,
-                style: OutlinedButton.styleFrom(
-                  foregroundColor: AppColors.safBeyaz(context),
-                  side: BorderSide(color: AppColors.acikGri(context)),
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                ),
-                child: Text(l10n.loginGoogleSignIn),
-              ),
-
-              if (Platform.isIOS) ...[
-                const SizedBox(height: 12),
-                SignInWithAppleButton(
-                  onPressed: _isLoading ? () {} : _signInWithApple,
-                  style: SignInWithAppleButtonStyle.black,
-                  borderRadius: BorderRadius.circular(12),
-                  height: 52,
-                ),
-              ],
-
-              const SizedBox(height: 40),
-            ],
+            ),
           ),
         ),
       ),
