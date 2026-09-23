@@ -1,9 +1,13 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 import 'package:flutter/foundation.dart';
+import 'package:crypto/crypto.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:android_id/android_id.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -50,6 +54,42 @@ class AuthService {
 
     final result = await _auth.signInWithCredential(credential);
     return result.user;
+  }
+
+  // Apple ile giriş yap (App Store Guideline 4.8: üçüncü taraf girişi
+  // (Google) sunuyorsak, aynı gizlilik standartlarını karşılayan bir
+  // alternatif de sunmamız gerekiyor — Apple'ın kendisi bu şartı sağlıyor)
+  Future<User?> signInWithApple() async {
+    // Firebase'in önerdiği güvenlik deseni: rastgele bir nonce üretip
+    // SHA-256 hash'ini Apple'a, ham halini Firebase'e veriyoruz — bu, geri
+    // gönderilen kimlik token'ının bu isteğe ait olduğunu doğrular.
+    final rawNonce = _generateNonce();
+    final hashedNonce = sha256.convert(utf8.encode(rawNonce)).toString();
+
+    final appleCredential = await SignInWithApple.getAppleIDCredential(
+      scopes: [
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName,
+      ],
+      nonce: hashedNonce,
+    );
+
+    final oauthCredential = OAuthProvider('apple.com').credential(
+      idToken: appleCredential.identityToken,
+      rawNonce: rawNonce,
+      accessToken: appleCredential.authorizationCode,
+    );
+
+    final result = await _auth.signInWithCredential(oauthCredential);
+    return result.user;
+  }
+
+  String _generateNonce([int length = 32]) {
+    const charset =
+        '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
+    final random = Random.secure();
+    return List.generate(length, (_) => charset[random.nextInt(charset.length)])
+        .join();
   }
 
   // Şifremi unuttum — Firebase'in şifre sıfırlama e-postasını gönderir

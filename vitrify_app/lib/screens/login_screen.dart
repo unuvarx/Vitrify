@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import '../config/app_colors.dart';
 import '../l10n/app_localizations.dart';
 import '../services/auth_service.dart';
@@ -115,6 +117,27 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  Future<void> _signInWithApple() async {
+    final l10n = AppLocalizations.of(context)!;
+    setState(() => _isLoading = true);
+
+    try {
+      await _authService.signInWithApple();
+      // Firebase girişi tamamlanır tamamlanmaz AuthGate devreye girer.
+    } catch (e) {
+      if (!mounted) return;
+      if (e is SignInWithAppleAuthorizationException &&
+          e.code == AuthorizationErrorCode.canceled) {
+        return; // kullanıcı iptal etti, mesaj gösterme
+      }
+      AppAlert.show(context, l10n.genericErrorMessage);
+    } finally {
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context)!;
@@ -129,10 +152,17 @@ class _LoginScreenState extends State<LoginScreen> {
             children: [
               const SizedBox(height: 60),
 
-              Icon(
-                Icons.auto_awesome,
-                size: 64,
-                color: AppColors.vitrifyMavisi(context),
+              // Marka logosu: sistem fontundaki Icons.auto_awesome glyph'i
+              // bazı cihazlarda (ör. iPad) eksik/kırpılmış render edildiği
+              // için, her cihazda piksel piksel aynı görünen kendi ikon
+              // görselimizi kullanıyoruz.
+              ClipRRect(
+                borderRadius: BorderRadius.circular(20),
+                child: Image.asset(
+                  'assets/icon/icon.png',
+                  width: 88,
+                  height: 88,
+                ),
               ),
               const SizedBox(height: 16),
               Text(
@@ -233,6 +263,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 child: Text(l10n.loginGoogleSignIn),
               ),
+
+              if (Platform.isIOS) ...[
+                const SizedBox(height: 12),
+                SignInWithAppleButton(
+                  onPressed: _isLoading ? () {} : _signInWithApple,
+                  style: SignInWithAppleButtonStyle.black,
+                  borderRadius: BorderRadius.circular(12),
+                  height: 52,
+                ),
+              ],
 
               const SizedBox(height: 40),
             ],
