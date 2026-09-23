@@ -146,7 +146,7 @@ class _LoginScreenState extends State<LoginScreen> {
     required VoidCallback? onPressed,
   }) {
     return SizedBox(
-      height: 48,
+      height: 44,
       child: OutlinedButton(
         onPressed: onPressed,
         style: OutlinedButton.styleFrom(
@@ -163,7 +163,7 @@ class _LoginScreenState extends State<LoginScreen> {
             const SizedBox(width: 10),
             Text(
               label,
-              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
             ),
           ],
         ),
@@ -203,8 +203,8 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     child: Image.asset(
                       'assets/icon/icon_foreground.png',
-                      width: 52,
-                      height: 52,
+                      width: 68,
+                      height: 68,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -222,9 +222,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   TextField(
                     controller: _emailController,
                     keyboardType: TextInputType.emailAddress,
+                    style: const TextStyle(fontSize: 14),
                     decoration: InputDecoration(
+                      isDense: true,
+                      contentPadding: const EdgeInsets.symmetric(vertical: 14),
                       hintText: l10n.loginEmailHint,
-                      prefixIcon: const Icon(Icons.email_outlined),
+                      hintStyle: const TextStyle(fontSize: 14),
+                      prefixIcon: const Icon(Icons.email_outlined, size: 20),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -232,9 +236,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   TextField(
                     controller: _passwordController,
                     obscureText: true,
+                    style: const TextStyle(fontSize: 14),
                     decoration: InputDecoration(
+                      isDense: true,
+                      contentPadding: const EdgeInsets.symmetric(vertical: 14),
                       hintText: l10n.loginPasswordHint,
-                      prefixIcon: const Icon(Icons.lock_outline),
+                      hintStyle: const TextStyle(fontSize: 14),
+                      prefixIcon: const Icon(Icons.lock_outline, size: 20),
                     ),
                   ),
                   Align(
@@ -243,19 +251,22 @@ class _LoginScreenState extends State<LoginScreen> {
                       onPressed: _isLoading ? null : _forgotPassword,
                       child: Text(
                         l10n.loginForgotPassword,
-                        style: TextStyle(color: AppColors.acikGri(context)),
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: AppColors.acikGri(context),
+                        ),
                       ),
                     ),
                   ),
 
                   SizedBox(
-                    height: 48,
+                    height: 44,
                     child: ElevatedButton(
                       onPressed: _isLoading ? null : _submit,
                       child: _isLoading
                           ? SizedBox(
-                              height: 20,
-                              width: 20,
+                              height: 18,
+                              width: 18,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2,
                                 color: AppColors.safBeyaz(context),
@@ -265,6 +276,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               _isSignUpMode
                                   ? l10n.loginSignUpButton
                                   : l10n.loginSignInButton,
+                              style: const TextStyle(fontSize: 15),
                             ),
                     ),
                   ),
@@ -278,7 +290,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       _isSignUpMode
                           ? l10n.loginSwitchToSignIn
                           : l10n.loginSwitchToSignUp,
-                      style: TextStyle(color: AppColors.acikGri(context)),
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: AppColors.acikGri(context),
+                      ),
                     ),
                   ),
 
@@ -292,7 +307,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 12),
                         child: Text(
                           l10n.loginOrDivider,
-                          style: TextStyle(color: AppColors.acikGri(context)),
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: AppColors.acikGri(context),
+                          ),
                         ),
                       ),
                       Expanded(
@@ -305,8 +323,8 @@ class _LoginScreenState extends State<LoginScreen> {
                   _socialButton(
                     icon: Image.asset(
                       'assets/icon/google_logo.png',
-                      width: 20,
-                      height: 20,
+                      width: 18,
+                      height: 18,
                     ),
                     label: l10n.loginGoogleSignIn,
                     onPressed: _isLoading ? null : _signInWithGoogle,
@@ -317,7 +335,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     _socialButton(
                       icon: Icon(
                         Icons.apple,
-                        size: 22,
+                        size: 20,
                         color: AppColors.safBeyaz(context),
                       ),
                       label: l10n.loginAppleSignIn,
